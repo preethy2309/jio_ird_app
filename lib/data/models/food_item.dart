@@ -19,5 +19,6 @@ class FoodItem {
   });
 
   factory FoodItem.fromJson(Map<String, dynamic> json) => _$FoodItemFromJson(json);
+
   Map<String, dynamic> toJson() => _$FoodItemToJson(this);
 }

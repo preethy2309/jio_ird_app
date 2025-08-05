@@ -18,3 +18,20 @@ final mealsProvider = FutureProvider.autoDispose<List<FoodItem>>((ref) async {
   final repo = ref.watch(foodRepositoryProvider);
   return repo.fetchMeals("RDTSBHF00004205", "12345");
 });
+
+
+/// Toggle for showing only Veg items
+final vegOnlyProvider = StateProvider<bool>((ref) => false);
+
+/// Currently selected category index
+final selectedCategoryProvider = StateProvider<int>((ref) => 0);
+
+/// Currently selected dish index (inside the selected category)
+final selectedDishProvider = StateProvider<int>((ref) => 0);
+
+/// Currently focused dish index (inside the selected category)
+final focusedDishProvider = StateProvider<int>((ref) => 0);
+
+/// Map of dishId to quantity added
+final itemQuantitiesProvider = StateProvider<Map<int, int>>((ref) => {});
+
