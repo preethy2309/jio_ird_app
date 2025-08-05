@@ -27,7 +27,7 @@ final vegOnlyProvider = StateProvider<bool>((ref) => false);
 final selectedCategoryProvider = StateProvider<int>((ref) => 0);
 
 /// Currently selected dish index (inside the selected category)
-final selectedDishProvider = StateProvider<int>((ref) => 0);
+final selectedDishProvider = StateProvider<int>((ref) => -1);
 
 /// Currently focused dish index (inside the selected category)
 final focusedDishProvider = StateProvider<int>((ref) => 0);

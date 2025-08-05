@@ -32,6 +32,9 @@ class DishList extends ConsumerWidget {
           focusNode: node,
           onFocusChange: (hasFocus) {
             if (hasFocus) {
+              if(selectedDish != focusedDish) {
+                ref.read(selectedDishProvider.notifier).state = -1;
+              }
               ref.read(focusedDishProvider.notifier).state = index;
             }
           },
