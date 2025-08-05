@@ -1,0 +1,25 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:jio_ird/ui/screens/meal_screen.dart';
+
+void main() {
+  runApp(const ProviderScope(child: MyApp()));
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'IRD Meals',
+      theme: ThemeData.dark(),
+      home: const MealsScreen(),
+    );
+  }
+}
+
+// Environment configuration
+enum Environment { dev, prod }
+
+const currentEnv = Environment.dev;
