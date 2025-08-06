@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../viewmodel/meals_notifier.dart';
@@ -18,6 +19,7 @@ class DishList extends ConsumerWidget {
     final selectedDish = ref.watch(selectedDishProvider);
     final focusedDish = ref.watch(focusedDishProvider);
     final itemQuantities = ref.watch(itemQuantitiesProvider);
+    final canFocusDishList = ref.watch(canFocusDishListProvider);
 
     return ListView.builder(
       itemCount: dishes.length,
@@ -30,13 +32,23 @@ class DishList extends ConsumerWidget {
 
         return Focus(
           focusNode: node,
+          skipTraversal: !canFocusDishList,
+          canRequestFocus: canFocusDishList,
           onFocusChange: (hasFocus) {
             if (hasFocus) {
-              if(selectedDish != focusedDish) {
+              if (selectedDish != focusedDish) {
                 ref.read(selectedDishProvider.notifier).state = -1;
               }
               ref.read(focusedDishProvider.notifier).state = index;
             }
+          },
+          onKeyEvent: (node, event) {
+            if (event is KeyDownEvent &&
+                event.logicalKey == LogicalKeyboardKey.arrowLeft) {
+              ref.read(showCategoriesProvider.notifier).state = true;
+              return KeyEventResult.handled;
+            }
+            return KeyEventResult.ignored;
           },
           child: InkWell(
             onTap: () {
@@ -47,7 +59,6 @@ class DishList extends ConsumerWidget {
               updated[dish.id] = (updated[dish.id] ?? 0) + 1;
               ref.read(itemQuantitiesProvider.notifier).state = updated;
             },
-
             child: Container(
               height: 90,
               margin: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
@@ -78,7 +89,7 @@ class DishList extends ConsumerWidget {
                         color: Colors.white,
                         fontSize: 16,
                         fontWeight:
-                            isSelected ? FontWeight.bold : FontWeight.normal,
+                        isSelected ? FontWeight.bold : FontWeight.normal,
                       ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,

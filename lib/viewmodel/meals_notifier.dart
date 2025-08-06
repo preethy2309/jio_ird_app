@@ -32,6 +32,14 @@ final selectedDishProvider = StateProvider<int>((ref) => -1);
 /// Currently focused dish index (inside the selected category)
 final focusedDishProvider = StateProvider<int>((ref) => 0);
 
+/// Toggle for showing/hiding categories
+final showCategoriesProvider = StateProvider<bool>((ref) => true);
+
+
 /// Map of dishId to quantity added
 final itemQuantitiesProvider = StateProvider<Map<int, int>>((ref) => {});
+
+final canFocusDishListProvider = StateProvider<bool>((ref) => false);
+
+
 

@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../viewmodel/meals_notifier.dart';
+
 import '../../../data/models/food_item.dart';
+import '../../../viewmodel/meals_notifier.dart';
 
 class CategoryList extends ConsumerWidget {
   final List<FoodItem> categories;
   final List<FocusNode> categoryFocusNodes;
+  final List<FocusNode> dishFocusNodes;
 
   const CategoryList({
     super.key,
     required this.categories,
     required this.categoryFocusNodes,
+    required this.dishFocusNodes,
   });
 
   @override
@@ -22,14 +26,46 @@ class CategoryList extends ConsumerWidget {
       itemBuilder: (context, index) {
         final isSelected = index == selectedCategory;
         final focusNode = categoryFocusNodes[index];
+
         return Focus(
           focusNode: focusNode,
           onFocusChange: (hasFocus) {
             if (hasFocus) {
               ref.read(selectedCategoryProvider.notifier).state = index;
-              ref.read(selectedDishProvider.notifier).state = 0;
+              ref.read(selectedDishProvider.notifier).state = -1;
+
+              // Disable dish list focus when only focusing category
+              ref.read(canFocusDishListProvider.notifier).state = false;
             }
           },
+          onKeyEvent: (node, event) {
+            if (event is KeyDownEvent &&
+                (event.logicalKey == LogicalKeyboardKey.arrowRight ||
+                    event.logicalKey == LogicalKeyboardKey.select)) {
+
+              // ✅ Update selected category
+              ref.read(selectedCategoryProvider.notifier).state = index;
+
+              // ✅ Enable dish list focus
+              ref.read(canFocusDishListProvider.notifier).state = true;
+
+              // ✅ Hide category list
+              ref.read(showCategoriesProvider.notifier).state = false;
+
+              // ✅ Focus first dish (if available)
+              Future.delayed(Duration.zero, () {
+                if (dishFocusNodes.isNotEmpty) {
+                  dishFocusNodes[0].requestFocus();
+                }
+              });
+
+              return KeyEventResult.handled;
+            }
+
+            return KeyEventResult.ignored;
+          },
+
+
           child: Container(
             margin: const EdgeInsets.all(8),
             padding: const EdgeInsets.all(12),

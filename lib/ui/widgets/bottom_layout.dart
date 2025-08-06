@@ -6,7 +6,7 @@ class BottomLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 50,
+      height: 45,
       color: Colors.amber,
       padding: const EdgeInsets.symmetric(horizontal: 30),
       child: Row(
@@ -36,7 +36,7 @@ class BottomLayout extends StatelessWidget {
                   color: Colors.grey,
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: const Icon(Icons.arrow_upward,
+                child: const Icon(Icons.expand_less,
                     color: Colors.black, size: 18),
               ),
               const SizedBox(width: 4),
@@ -46,7 +46,7 @@ class BottomLayout extends StatelessWidget {
                   color: Colors.grey,
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: const Icon(Icons.arrow_downward,
+                child: const Icon(Icons.expand_more,
                     color: Colors.black, size: 18),
               ),
               const SizedBox(width: 8),
