@@ -90,52 +90,20 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
               Expanded(
                 child: Row(
                   children: [
-                    // ← Back Arrow
+                    // < Back Arrow
                     if (!showCategories)
-                      Focus(
-                        onFocusChange: (hasFocus) {
-                          setState(() {
-                            isBackFocused = hasFocus;
-                          });
-                        },
-                        child: Column(
+                      if (!showCategories)
+                        const Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                color: isBackFocused
-                                    ? Colors.white
-                                    : Colors.transparent,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: IconButton(
-                                icon: Icon(
-                                  Icons.arrow_back_ios_new_rounded,
-                                  color: isBackFocused
-                                      ? Colors.black
-                                      : Colors.amber,
-                                  size: 30,
-                                ),
-                                onPressed: () {
-                                  ref
-                                      .read(showCategoriesProvider.notifier)
-                                      .state = true;
-                                  ref
-                                      .read(canFocusDishListProvider.notifier)
-                                      .state = false;
-                                  Future.delayed(
-                                      const Duration(milliseconds: 50), () {
-                                    categoryFocusNodes[
-                                            ref.read(selectedCategoryProvider)]
-                                        .requestFocus();
-                                  });
-                                },
-                              ),
+                            Icon(
+                              Icons.arrow_back_ios_new_rounded,
+                              color: Colors.amber,
+                              size: 30,
                             ),
-                            const SizedBox(width: 100),
+                            SizedBox(width: 100),
                           ],
                         ),
-                      ),
 
                     // Category List
                     if (showCategories)
