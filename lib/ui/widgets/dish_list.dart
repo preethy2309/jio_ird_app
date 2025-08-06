@@ -2,16 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../providers/data_provider.dart';
+import '../../providers/data_provider.dart';
+import '../../providers/focus_provider.dart'; // <-- import focus provider
 
 class DishList extends ConsumerWidget {
   final List<dynamic> dishes;
-  final List<FocusNode> dishFocusNodes;
 
   const DishList({
     super.key,
     required this.dishes,
-    required this.dishFocusNodes,
   });
 
   @override
@@ -29,7 +28,9 @@ class DishList extends ConsumerWidget {
         final isSelected = index == selectedDish;
         final isFocused = index == focusedDish;
         final count = itemQuantities[dish.id] ?? 0;
-        final node = dishFocusNodes[index];
+
+        final node =
+            ref.watch(dishFocusNodeProvider(index)); // 👈 focus from provider
 
         return Focus(
           focusNode: node,
@@ -79,8 +80,9 @@ class DishList extends ConsumerWidget {
                       height: 70,
                       fit: BoxFit.cover,
                       errorBuilder: (_, __, ___) => const Icon(
-                          Icons.image_not_supported,
-                          color: Colors.white54),
+                        Icons.image_not_supported,
+                        color: Colors.white54,
+                      ),
                     ),
                   ),
                   const SizedBox(width: 10),
@@ -112,9 +114,13 @@ class DishList extends ConsumerWidget {
                                 updated;
                           },
                         ),
-                        Text('$count',
-                            style: const TextStyle(
-                                color: Colors.white, fontSize: 16)),
+                        Text(
+                          '$count',
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                          ),
+                        ),
                         IconButton(
                           icon: const Icon(Icons.add, color: Colors.white),
                           onPressed: () {

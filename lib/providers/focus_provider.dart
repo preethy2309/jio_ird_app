@@ -3,19 +3,21 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'data_provider.dart';
 
-/// A generic focus node provider based on a unique key/index.
-/// It automatically disposes the node when not used.
-final focusNodeProvider =
-    Provider.family.autoDispose<FocusNode, String>((ref, key) {
+/// Auto-dispose FocusNode for category item
+final categoryFocusNodeProvider = Provider.family
+    .autoDispose<FocusNode, int>((ref, index) {
   final node = FocusNode();
   ref.onDispose(() => node.dispose());
   return node;
 });
 
-/// Use this for indexed lists, like dish or category items
-FocusNode useIndexedFocusNode(WidgetRef ref, String prefix, int index) {
-  return ref.watch(focusNodeProvider('$prefix-$index'));
-}
+/// Auto-dispose FocusNode for dish item
+final dishFocusNodeProvider = Provider.family
+    .autoDispose<FocusNode, int>((ref, index) {
+  final node = FocusNode();
+  ref.onDispose(() => node.dispose());
+  return node;
+});
 
 /// Category focus nodes
 final categoryFocusNodesProvider = Provider.autoDispose<List<FocusNode>>((ref) {

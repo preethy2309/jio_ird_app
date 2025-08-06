@@ -4,17 +4,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../data/models/food_item.dart';
 import '../../../providers/data_provider.dart';
+import '../../../providers/focus_provider.dart'; // <- import focus providers
 
 class CategoryList extends ConsumerWidget {
   final List<FoodItem> categories;
-  final List<FocusNode> categoryFocusNodes;
-  final List<FocusNode> dishFocusNodes;
 
   const CategoryList({
     super.key,
     required this.categories,
-    required this.categoryFocusNodes,
-    required this.dishFocusNodes,
   });
 
   @override
@@ -25,7 +22,8 @@ class CategoryList extends ConsumerWidget {
       itemCount: categories.length,
       itemBuilder: (context, index) {
         final isSelected = index == selectedCategory;
-        final focusNode = categoryFocusNodes[index];
+        final focusNode = ref.watch(categoryFocusNodeProvider(index));
+        final firstDishFocusNode = ref.watch(dishFocusNodeProvider(0));
 
         return Focus(
           focusNode: focusNode,
@@ -33,8 +31,6 @@ class CategoryList extends ConsumerWidget {
             if (hasFocus) {
               ref.read(selectedCategoryProvider.notifier).state = index;
               ref.read(selectedDishProvider.notifier).state = -1;
-
-              // Disable dish list focus when only focusing category
               ref.read(canFocusDishListProvider.notifier).state = false;
             }
           },
@@ -45,9 +41,11 @@ class CategoryList extends ConsumerWidget {
                     event.logicalKey == LogicalKeyboardKey.select)) {
               ref.read(showCategoriesProvider.notifier).state = false;
               ref.read(canFocusDishListProvider.notifier).state = true;
+
               Future.delayed(const Duration(milliseconds: 50), () {
-                dishFocusNodes[0].requestFocus();
+                firstDishFocusNode.requestFocus();
               });
+
               return KeyEventResult.handled;
             }
             return KeyEventResult.ignored;

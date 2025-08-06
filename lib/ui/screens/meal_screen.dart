@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../providers/data_provider.dart';
+import '../../providers/focus_provider.dart';
 import '../widgets/bottom_layout.dart';
 import '../widgets/category_list.dart';
 import '../widgets/dish_detail.dart';
@@ -16,29 +17,13 @@ class MenuScreen extends ConsumerStatefulWidget {
 }
 
 class _MenuScreenState extends ConsumerState<MenuScreen> {
-  final List<FocusNode> categoryFocusNodes = [];
-  final List<FocusNode> dishFocusNodes = [];
-
-  bool isBackFocused = false;
   bool _hasFocusedOnce = false;
-
-  @override
-  void dispose() {
-    for (final node in categoryFocusNodes) {
-      node.dispose();
-    }
-    for (final node in dishFocusNodes) {
-      node.dispose();
-    }
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
     final vegOnly = ref.watch(vegOnlyProvider);
     final selectedCategory = ref.watch(selectedCategoryProvider);
     final focusedDish = ref.watch(focusedDishProvider);
-    final selectedDish = ref.watch(selectedDishProvider);
     final mealsAsync = ref.watch(mealsProvider);
     final showCategories = ref.watch(showCategoriesProvider);
 
@@ -48,40 +33,30 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (e, _) => Center(child: Text('Error: $e')),
         data: (categories) {
-          if (categoryFocusNodes.length != categories.length) {
-            categoryFocusNodes
-              ..clear()
-              ..addAll(List.generate(categories.length, (_) => FocusNode()));
-          }
-
-          if (!_hasFocusedOnce && categoryFocusNodes.isNotEmpty) {
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              if (showCategories) {
-                categoryFocusNodes[0].requestFocus();
-              } else if (dishFocusNodes.isNotEmpty) {
-                dishFocusNodes[0].requestFocus();
-              }
-            });
-            _hasFocusedOnce = true;
-          }
-
           final selectedCat = categories[selectedCategory];
           final subCategories = selectedCat.sub_categories ?? [];
 
           final allDishes =
-              subCategories.expand((subCat) => subCat.dishes ?? []).toList();
+          subCategories.expand((subCat) => subCat.dishes ?? []).toList();
 
           final filteredDishes = vegOnly
               ? allDishes
-                  .where((dish) => dish.dish_type.toLowerCase() == 'veg')
-                  .toList()
+              .where((dish) => dish.dish_type.toLowerCase() == 'veg')
+              .toList()
               : allDishes;
 
-          if (dishFocusNodes.length != filteredDishes.length) {
-            dishFocusNodes
-              ..clear()
-              ..addAll(
-                  List.generate(filteredDishes.length, (_) => FocusNode()));
+          // Initial focus logic
+          if (!_hasFocusedOnce && categories.isNotEmpty) {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              if (showCategories) {
+                ref
+                    .read(categoryFocusNodeProvider(0))
+                    .requestFocus();
+              } else if (filteredDishes.isNotEmpty) {
+                ref.read(dishFocusNodeProvider(0)).requestFocus();
+              }
+            });
+            _hasFocusedOnce = true;
           }
 
           return Column(
@@ -90,39 +65,35 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
               Expanded(
                 child: Row(
                   children: [
-                    // < Back Arrow
+                    // ← Back Arrow
                     if (!showCategories)
-                      if (!showCategories)
-                        const Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.arrow_back_ios_new_rounded,
-                              color: Colors.amber,
-                              size: 30,
-                            ),
-                            SizedBox(width: 100),
-                          ],
-                        ),
+                      const Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.arrow_back_ios_new_rounded,
+                            color: Colors.amber,
+                            size: 30,
+                          ),
+                          SizedBox(width: 100),
+                        ],
+                      ),
 
                     // Category List
                     if (showCategories)
-                       Expanded(
+                      Expanded(
                         flex: 2,
                         child: CategoryList(
                           categories: categories,
-                          categoryFocusNodes: categoryFocusNodes,
-                          dishFocusNodes: dishFocusNodes,
                         ),
                       ),
 
                     // Dish List
                     Expanded(
                       flex: showCategories ? 2 : 3,
-                      // take more space if category is hidden
                       child: DishList(
-                          dishes: filteredDishes,
-                          dishFocusNodes: dishFocusNodes),
+                        dishes: filteredDishes,
+                      ),
                     ),
 
                     // Dish Detail
