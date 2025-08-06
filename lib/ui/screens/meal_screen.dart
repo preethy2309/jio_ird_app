@@ -56,7 +56,11 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
 
           if (!_hasFocusedOnce && categoryFocusNodes.isNotEmpty) {
             WidgetsBinding.instance.addPostFrameCallback((_) {
-              categoryFocusNodes[0].requestFocus();
+              if (showCategories) {
+                categoryFocusNodes[0].requestFocus();
+              } else if (dishFocusNodes.isNotEmpty) {
+                dishFocusNodes[0].requestFocus();
+              }
             });
             _hasFocusedOnce = true;
           }
@@ -116,6 +120,15 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
                                   ref
                                       .read(showCategoriesProvider.notifier)
                                       .state = true;
+                                  ref
+                                      .read(canFocusDishListProvider.notifier)
+                                      .state = false;
+                                  Future.delayed(
+                                      const Duration(milliseconds: 50), () {
+                                    categoryFocusNodes[
+                                            ref.read(selectedCategoryProvider)]
+                                        .requestFocus();
+                                  });
                                 },
                               ),
                             ),

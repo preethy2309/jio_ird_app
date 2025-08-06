@@ -20,6 +20,7 @@ class DishList extends ConsumerWidget {
     final focusedDish = ref.watch(focusedDishProvider);
     final itemQuantities = ref.watch(itemQuantitiesProvider);
     final canFocusDishList = ref.watch(canFocusDishListProvider);
+    final showCategories = ref.watch(showCategoriesProvider);
 
     return ListView.builder(
       itemCount: dishes.length,
@@ -35,7 +36,7 @@ class DishList extends ConsumerWidget {
           skipTraversal: !canFocusDishList,
           canRequestFocus: canFocusDishList,
           onFocusChange: (hasFocus) {
-            if (hasFocus) {
+            if (hasFocus && !showCategories) {
               if (selectedDish != focusedDish) {
                 ref.read(selectedDishProvider.notifier).state = -1;
               }
@@ -89,7 +90,7 @@ class DishList extends ConsumerWidget {
                         color: Colors.white,
                         fontSize: 16,
                         fontWeight:
-                        isSelected ? FontWeight.bold : FontWeight.normal,
+                            isSelected ? FontWeight.bold : FontWeight.normal,
                       ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,

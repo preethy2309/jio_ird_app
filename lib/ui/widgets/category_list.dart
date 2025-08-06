@@ -41,37 +41,23 @@ class CategoryList extends ConsumerWidget {
           onKeyEvent: (node, event) {
             if (event is KeyDownEvent &&
                 (event.logicalKey == LogicalKeyboardKey.arrowRight ||
+                    event.logicalKey == LogicalKeyboardKey.enter ||
                     event.logicalKey == LogicalKeyboardKey.select)) {
-
-              // ✅ Update selected category
-              ref.read(selectedCategoryProvider.notifier).state = index;
-
-              // ✅ Enable dish list focus
-              ref.read(canFocusDishListProvider.notifier).state = true;
-
-              // ✅ Hide category list
               ref.read(showCategoriesProvider.notifier).state = false;
-
-              // ✅ Focus first dish (if available)
-              Future.delayed(Duration.zero, () {
-                if (dishFocusNodes.isNotEmpty) {
-                  dishFocusNodes[0].requestFocus();
-                }
+              ref.read(canFocusDishListProvider.notifier).state = true;
+              Future.delayed(const Duration(milliseconds: 50), () {
+                dishFocusNodes[0].requestFocus();
               });
-
               return KeyEventResult.handled;
             }
-
             return KeyEventResult.ignored;
           },
-
-
           child: Container(
-            margin: const EdgeInsets.all(8),
+            margin: const EdgeInsets.all(4),
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
               color: isSelected ? Colors.white : Colors.amber,
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(12),
             ),
             child: Text(
               categories[index].category_name,
