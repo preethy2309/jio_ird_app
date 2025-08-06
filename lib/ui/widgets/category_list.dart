@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../data/models/food_item.dart';
-import '../../../viewmodel/meals_notifier.dart';
+import '../../../providers/data_provider.dart';
 
 class CategoryList extends ConsumerWidget {
   final List<FoodItem> categories;

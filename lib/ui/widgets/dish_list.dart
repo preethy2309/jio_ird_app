@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../viewmodel/meals_notifier.dart';
+import '../../../providers/data_provider.dart';
 
 class DishList extends ConsumerWidget {
   final List<dynamic> dishes;
@@ -47,6 +47,7 @@ class DishList extends ConsumerWidget {
             if (event is KeyDownEvent &&
                 event.logicalKey == LogicalKeyboardKey.arrowLeft) {
               ref.read(showCategoriesProvider.notifier).state = true;
+              ref.read(selectedDishProvider.notifier).state = -1;
               return KeyEventResult.handled;
             }
             return KeyEventResult.ignored;

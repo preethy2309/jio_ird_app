@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../viewmodel/meals_notifier.dart';
+import '../../providers/data_provider.dart';
 import '../widgets/bottom_layout.dart';
 import '../widgets/category_list.dart';
 import '../widgets/dish_detail.dart';
@@ -139,7 +139,7 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
 
                     // Category List
                     if (showCategories)
-                      Expanded(
+                       Expanded(
                         flex: 2,
                         child: CategoryList(
                           categories: categories,

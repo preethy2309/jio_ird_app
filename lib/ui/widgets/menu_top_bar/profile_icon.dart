@@ -1,25 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ProfileIcon extends StatefulWidget {
+import '../../../providers/focus_provider.dart';
+
+class ProfileIcon extends ConsumerStatefulWidget {
   const ProfileIcon({super.key});
 
   @override
-  State<ProfileIcon> createState() => _ProfileIconState();
+  ConsumerState<ProfileIcon> createState() => _ProfileIconState();
 }
 
-class _ProfileIconState extends State<ProfileIcon> {
-  final FocusNode profileFocusNode = FocusNode();
+class _ProfileIconState extends ConsumerState<ProfileIcon> {
   bool profileFocused = false;
 
   @override
-  void dispose() {
-    profileFocusNode.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final profileFocusNode = ref.watch(profileFocusProvider);
     return Focus(
       focusNode: profileFocusNode,
       onFocusChange: (hasFocus) => setState(() => profileFocused = hasFocus),

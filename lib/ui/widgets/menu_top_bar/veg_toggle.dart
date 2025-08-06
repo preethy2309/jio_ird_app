@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../viewmodel/meals_notifier.dart';
+import 'package:jio_ird/providers/focus_provider.dart';
+import '../../../providers/data_provider.dart';
 
 class VegToggle extends ConsumerStatefulWidget {
   const VegToggle({super.key});
@@ -11,18 +12,12 @@ class VegToggle extends ConsumerStatefulWidget {
 }
 
 class _VegToggleState extends ConsumerState<VegToggle> {
-  final FocusNode toggleFocusNode = FocusNode();
   bool toggleFocused = false;
-
-  @override
-  void dispose() {
-    toggleFocusNode.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
     final vegOnly = ref.watch(vegOnlyProvider);
+    final toggleFocusNode = ref.watch(toggleFocusProvider);
 
     return Focus(
       focusNode: toggleFocusNode,

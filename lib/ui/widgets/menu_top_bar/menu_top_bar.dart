@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'cart_button.dart';
-import 'veg_toggle.dart';
 import 'profile_icon.dart';
+import 'veg_toggle.dart';
 
 class MenuTopBar extends ConsumerWidget {
   const MenuTopBar({super.key});

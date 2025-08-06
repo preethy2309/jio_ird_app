@@ -1,25 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class CartButton extends StatefulWidget {
+import '../../../providers/focus_provider.dart';
+
+class CartButton extends ConsumerStatefulWidget {
   const CartButton({super.key});
 
   @override
-  State<CartButton> createState() => _CartButtonState();
+  ConsumerState<CartButton> createState() => _CartButtonState();
 }
 
-class _CartButtonState extends State<CartButton> {
-  final FocusNode cartFocusNode = FocusNode();
+class _CartButtonState extends ConsumerState<CartButton> {
   bool cartFocused = false;
 
   @override
-  void dispose() {
-    cartFocusNode.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final cartFocusNode = ref.watch(cartFocusProvider);
     return Focus(
       focusNode: cartFocusNode,
       onFocusChange: (hasFocus) => setState(() => cartFocused = hasFocus),
