@@ -29,7 +29,7 @@ class CartScreen extends StatelessWidget {
                         'Cart',
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 60,
+                          fontSize: 50,
                         ),
                       ),
                       Text(
@@ -43,7 +43,7 @@ class CartScreen extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(height: 24),
+            SizedBox(height: 2),
 
             // Tabs
             TabSwitcher(),
@@ -59,13 +59,13 @@ class CartScreen extends StatelessWidget {
                   children: [
                     // Cart Items List
                     Expanded(
-                      flex: 2,
+                      flex: 4,
                       child: CartItemsList(),
                     ),
                     SizedBox(width: 32),
                     // Delivery Info
                     Expanded(
-                      flex: 1,
+                      flex: 3,
                       child: DeliveryInfoPanel(),
                     ),
                   ],
@@ -73,7 +73,7 @@ class CartScreen extends StatelessWidget {
               ),
             ),
 
-            SizedBox(height: 20),
+            SizedBox(height: 10),
 
             // Bottom Bar
             BottomLayout(),

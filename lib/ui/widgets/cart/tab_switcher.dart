@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-/// Tabs enum
 enum CartTab { items, info }
 
-/// StateProvider to manage selected tab
 final selectedCartTabProvider = StateProvider<CartTab>((ref) => CartTab.items);
 
 class TabSwitcher extends ConsumerStatefulWidget {
@@ -42,27 +40,35 @@ class _TabSwitcherState extends ConsumerState<TabSwitcher> {
   Widget build(BuildContext context) {
     final selectedTab = ref.watch(selectedCartTabProvider);
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        _buildTab(
-          label: "Cart Items",
-          isSelected: selectedTab == CartTab.items,
-          focusNode: itemsTabFocusNode,
-          onSelect: () {
-            ref.read(selectedCartTabProvider.notifier).state = CartTab.items;
-          },
-        ),
-        const SizedBox(width: 30),
-        _buildTab(
-          label: "Delivery Info",
-          isSelected: selectedTab == CartTab.info,
-          focusNode: infoTabFocusNode,
-          onSelect: () {
-            ref.read(selectedCartTabProvider.notifier).state = CartTab.info;
-          },
-        ),
-      ],
+    return Container(
+      padding: const EdgeInsets.all(4),
+      decoration: BoxDecoration(
+        color: Colors.grey.shade900,
+        border: Border.all(color: Colors.grey.shade800, width: 1.5),
+        borderRadius: BorderRadius.circular(30),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          _buildTab(
+            label: "Cart",
+            isSelected: selectedTab == CartTab.items,
+            focusNode: itemsTabFocusNode,
+            onSelect: () {
+              ref.read(selectedCartTabProvider.notifier).state = CartTab.items;
+            },
+          ),
+          const SizedBox(width: 4),
+          _buildTab(
+            label: "My Orders",
+            isSelected: selectedTab == CartTab.info,
+            focusNode: infoTabFocusNode,
+            onSelect: () {
+              ref.read(selectedCartTabProvider.notifier).state = CartTab.info;
+            },
+          ),
+        ],
+      ),
     );
   }
 
@@ -72,6 +78,8 @@ class _TabSwitcherState extends ConsumerState<TabSwitcher> {
     required FocusNode focusNode,
     required VoidCallback onSelect,
   }) {
+    final bool isFocused = focusNode.hasFocus;
+
     return Focus(
       focusNode: focusNode,
       onKeyEvent: (node, event) {
@@ -83,25 +91,24 @@ class _TabSwitcherState extends ConsumerState<TabSwitcher> {
         }
         return KeyEventResult.ignored;
       },
-      child: GestureDetector(
+      child: InkWell(
         onTap: onSelect,
         child: AnimatedContainer(
+          width: 120,
           duration: const Duration(milliseconds: 200),
-          padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
           decoration: BoxDecoration(
-            color: isSelected
-                ? const Color(0xFFE0B054)
-                : (focusNode.hasFocus ? Colors.white24 : Colors.transparent),
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: Colors.white24),
+            color: isFocused ? Colors.amber : Colors.transparent,
+            borderRadius: BorderRadius.circular(50),
           ),
           child: Text(
             label,
             style: TextStyle(
-              color: Colors.white,
-              fontSize: 20,
-              fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+              color: isFocused ? Colors.black : Colors.amber,
+              fontSize: 16,
+              fontWeight: isFocused ? FontWeight.bold : FontWeight.normal,
             ),
+            textAlign: TextAlign.center,
           ),
         ),
       ),
