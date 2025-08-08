@@ -4,6 +4,7 @@ import 'package:jio_ird/ui/widgets/menu/menu_top_bar/profile_icon.dart';
 import '../widgets/cart/cart_item_list.dart';
 import '../widgets/cart/delivery_info_panel.dart';
 import '../widgets/cart/tab_switcher.dart';
+import '../widgets/header.dart';
 import '../widgets/menu/bottom_layout.dart';
 
 class CartScreen extends StatelessWidget {
@@ -17,26 +18,13 @@ class CartScreen extends StatelessWidget {
         child: Column(
           children: [
             SizedBox(height: 8),
-            // Title and Room No
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 32),
+              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
               child: Row(
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Cart',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 50,
-                        ),
-                      ),
-                      Text(
-                        'Room No. 132',
-                        style: TextStyle(color: Colors.white70, fontSize: 18),
-                      ),
-                    ],
+                  Header(
+                    title: "Cart",
+                    description: "Room No: 1234",
                   ),
                   Spacer(),
                   ProfileIcon()
@@ -53,7 +41,7 @@ class CartScreen extends StatelessWidget {
             // Main Body
             Expanded(
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 32),
+                padding: EdgeInsets.symmetric(horizontal: 16),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

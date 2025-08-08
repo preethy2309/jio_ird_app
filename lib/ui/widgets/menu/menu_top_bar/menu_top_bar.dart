@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:jio_ird/ui/widgets/header.dart';
 
 import 'cart_button.dart';
 import 'profile_icon.dart';
@@ -16,27 +17,9 @@ class MenuTopBar extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           // 🏨 Title and Room
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'In-Room Dining',
-                style: TextStyle(
-                  fontSize: 50,
-                  color: Colors.white,
-                  fontStyle: FontStyle.italic,
-                ),
-              ),
-              SizedBox(height: 2),
-              Text(
-                'Room No. 204',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white30,
-                ),
-              ),
-            ],
+          Header(
+            title: "In-Room Dining",
+            description: "Room No. 204",
           ),
           Spacer(),
           VegToggle(),
