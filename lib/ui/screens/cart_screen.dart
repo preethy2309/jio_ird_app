@@ -60,14 +60,13 @@ class CartScreen extends StatelessWidget {
                 ),
               ),
             ),
+            // MyOrderList(),
 
             SizedBox(height: 10),
-
-            // Bottom Bar
-            BottomLayout(),
           ],
         ),
       ),
+      bottomNavigationBar: BottomLayout(),
     );
   }
 }

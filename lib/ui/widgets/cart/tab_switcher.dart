@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-enum CartTab { items, info }
+enum CartTab { cart, orders }
 
-final selectedCartTabProvider = StateProvider<CartTab>((ref) => CartTab.items);
+final selectedCartTabProvider = StateProvider<CartTab>((ref) => CartTab.cart);
 
 class TabSwitcher extends ConsumerStatefulWidget {
   const TabSwitcher({super.key});
@@ -41,7 +41,7 @@ class _TabSwitcherState extends ConsumerState<TabSwitcher> {
     final selectedTab = ref.watch(selectedCartTabProvider);
 
     return Container(
-      padding: const EdgeInsets.all(4),
+      padding: const EdgeInsets.all(6),
       decoration: BoxDecoration(
         color: Colors.grey.shade900,
         border: Border.all(color: Colors.grey.shade800, width: 1.5),
@@ -52,19 +52,19 @@ class _TabSwitcherState extends ConsumerState<TabSwitcher> {
         children: [
           _buildTab(
             label: "Cart",
-            isSelected: selectedTab == CartTab.items,
+            isSelected: selectedTab == CartTab.cart,
             focusNode: itemsTabFocusNode,
             onSelect: () {
-              ref.read(selectedCartTabProvider.notifier).state = CartTab.items;
+              ref.read(selectedCartTabProvider.notifier).state = CartTab.cart;
             },
           ),
           const SizedBox(width: 4),
           _buildTab(
             label: "My Orders",
-            isSelected: selectedTab == CartTab.info,
+            isSelected: selectedTab == CartTab.orders,
             focusNode: infoTabFocusNode,
             onSelect: () {
-              ref.read(selectedCartTabProvider.notifier).state = CartTab.info;
+              ref.read(selectedCartTabProvider.notifier).state = CartTab.orders;
             },
           ),
         ],
