@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../providers/focus_provider.dart';
+import '../../../../providers/state_provider.dart';
 import '../../../screens/cart_screen.dart';
 
 class CartButton extends ConsumerStatefulWidget {
@@ -18,6 +19,13 @@ class _CartButtonState extends ConsumerState<CartButton> {
   @override
   Widget build(BuildContext context) {
     final cartFocusNode = ref.watch(cartFocusProvider);
+
+    // Get total cart count from itemQuantitiesProvider
+    final totalCount = ref
+        .watch(itemQuantitiesProvider)
+        .values
+        .fold(0, (sum, qty) => sum + qty);
+
     return Focus(
       focusNode: cartFocusNode,
       onFocusChange: (hasFocus) => setState(() => cartFocused = hasFocus),
@@ -31,26 +39,54 @@ class _CartButtonState extends ConsumerState<CartButton> {
       },
       child: GestureDetector(
         onTap: _goToCart,
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          decoration: BoxDecoration(
-            color: cartFocused ? Colors.amber : Colors.grey[800],
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: const Row(
-            children: [
-              Icon(Icons.shopping_cart, color: Colors.white),
-              SizedBox(width: 8),
-              Text('Go to Cart', style: TextStyle(color: Colors.white)),
-            ],
-          ),
+        child: Stack(
+          clipBehavior: Clip.none,
+          children: [
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              decoration: BoxDecoration(
+                color: cartFocused ? Colors.amber : Colors.grey[800],
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: const Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Icons.shopping_cart, color: Colors.white),
+                  SizedBox(width: 8),
+                  Text(
+                    'Go to Cart',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ],
+              ),
+            ),
+            if (totalCount > 0)
+              Positioned(
+                top: -6,
+                right: -6,
+                child: Container(
+                  padding: const EdgeInsets.all(6),
+                  decoration: const BoxDecoration(
+                    color: Colors.amber,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Text(
+                    '$totalCount',
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 10,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+          ],
         ),
       ),
     );
   }
 
   void _goToCart() {
-    debugPrint('Go to Cart pressed');
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => const CartScreen()),
