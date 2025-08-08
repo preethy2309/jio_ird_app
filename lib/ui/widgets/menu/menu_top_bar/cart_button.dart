@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../providers/focus_provider.dart';
+import '../../../../providers/focus_provider.dart';
+import '../../../screens/cart_screen.dart';
 
 class CartButton extends ConsumerStatefulWidget {
   const CartButton({super.key});
@@ -50,6 +51,9 @@ class _CartButtonState extends ConsumerState<CartButton> {
 
   void _goToCart() {
     debugPrint('Go to Cart pressed');
-    // Navigate to cart
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const CartScreen()),
+    );
   }
 }

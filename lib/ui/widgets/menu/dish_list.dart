@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../providers/data_provider.dart';
-import '../../providers/focus_provider.dart'; // <-- import focus provider
+import '../../../providers/state_provider.dart';
+import '../../../providers/focus_provider.dart';
 
 class DishList extends ConsumerWidget {
   final List<dynamic> dishes;
@@ -21,6 +21,10 @@ class DishList extends ConsumerWidget {
     final canFocusDishList = ref.watch(canFocusDishListProvider);
     final showCategories = ref.watch(showCategoriesProvider);
 
+    final dishFocusNodes = ref.watch(dishFocusNodesProvider);
+    final categoryFocusNodes = ref.watch(categoryFocusNodesProvider);
+    final selectedCategory = ref.watch(selectedCategoryProvider);
+
     return ListView.builder(
       itemCount: dishes.length,
       itemBuilder: (context, index) {
@@ -28,9 +32,7 @@ class DishList extends ConsumerWidget {
         final isSelected = index == selectedDish;
         final isFocused = index == focusedDish;
         final count = itemQuantities[dish.id] ?? 0;
-
-        final node =
-            ref.watch(dishFocusNodeProvider(index)); // 👈 focus from provider
+        final node = dishFocusNodes[index];
 
         return Focus(
           focusNode: node,
@@ -47,8 +49,15 @@ class DishList extends ConsumerWidget {
           onKeyEvent: (node, event) {
             if (event is KeyDownEvent &&
                 event.logicalKey == LogicalKeyboardKey.arrowLeft) {
+              // ✅ Focus the selected category
               ref.read(showCategoriesProvider.notifier).state = true;
-              ref.read(selectedDishProvider.notifier).state = -1;
+              ref.read(canFocusDishListProvider.notifier).state = false;
+
+              Future.delayed(const Duration(milliseconds: 50), () {
+                final categoryNode = categoryFocusNodes[selectedCategory];
+                categoryNode.requestFocus();
+              });
+
               return KeyEventResult.handled;
             }
             return KeyEventResult.ignored;
@@ -93,7 +102,7 @@ class DishList extends ConsumerWidget {
                         color: Colors.white,
                         fontSize: 16,
                         fontWeight:
-                            isSelected ? FontWeight.bold : FontWeight.normal,
+                        isSelected ? FontWeight.bold : FontWeight.normal,
                       ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -114,13 +123,9 @@ class DishList extends ConsumerWidget {
                                 updated;
                           },
                         ),
-                        Text(
-                          '$count',
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                          ),
-                        ),
+                        Text('$count',
+                            style: const TextStyle(
+                                color: Colors.white, fontSize: 16)),
                         IconButton(
                           icon: const Icon(Icons.add, color: Colors.white),
                           onPressed: () {

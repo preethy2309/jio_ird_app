@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../providers/data_provider.dart';
+import '../../providers/state_provider.dart';
 import '../../providers/focus_provider.dart';
-import '../widgets/bottom_layout.dart';
-import '../widgets/category_list.dart';
-import '../widgets/dish_detail.dart';
-import '../widgets/dish_list.dart';
-import '../widgets/menu_top_bar/menu_top_bar.dart';
+import '../widgets/menu/bottom_layout.dart';
+import '../widgets/menu/category_list.dart';
+import '../widgets/menu/dish_detail.dart';
+import '../widgets/menu/dish_list.dart';
+import '../widgets/menu/menu_top_bar/menu_top_bar.dart';
 
 class MenuScreen extends ConsumerStatefulWidget {
   const MenuScreen({super.key});

@@ -1,11 +1,12 @@
 import '../../main.dart';
-import '../datasources/local_json_loader.dart';
-import '../datasources/remote_api_client.dart';
+
 import '../models/food_item.dart';
+import '../services/api_service.dart';
+import '../services/local_json_loader.dart';
 import 'food_repository.dart';
 
 class FoodRepositoryImpl implements FoodRepository {
-  final RemoteApiClient apiClient;
+  final ApiService apiClient;
   final LocalJsonLoader jsonLoader;
 
   FoodRepositoryImpl(this.apiClient, this.jsonLoader);
@@ -15,8 +16,7 @@ class FoodRepositoryImpl implements FoodRepository {
     if (currentEnv == Environment.dev) {
       return await jsonLoader.loadMealsFromAssets();
     } else {
-      return await apiClient.getMeals(
-          serialNum: serial, propertyId: propertyId);
+      return await apiClient.getFoodDetails(serial, propertyId);
     }
   }
 }

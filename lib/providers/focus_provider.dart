@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'data_provider.dart';
+import 'state_provider.dart';
 
 /// Auto-dispose FocusNode for category item
 final categoryFocusNodeProvider = Provider.family
@@ -49,7 +49,10 @@ final dishFocusNodesProvider = Provider.autoDispose<List<FocusNode>>((ref) {
       : null;
 
   final subCats = selectedCat?.sub_categories ?? [];
-  final allDishes = subCats.expand((s) => s.dishes ?? []).toList();
+  final allDishes = subCats
+      .expand((s) => (s.dishes ?? []) as Iterable)
+      .toList();
+
 
   final filtered = vegOnly
       ? allDishes.where((d) => d.dish_type.toLowerCase() == 'veg').toList()

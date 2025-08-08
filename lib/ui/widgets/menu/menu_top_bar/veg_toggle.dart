@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:jio_ird/providers/focus_provider.dart';
-import '../../../providers/data_provider.dart';
+
+import '../../../../providers/state_provider.dart';
 
 class VegToggle extends ConsumerStatefulWidget {
   const VegToggle({super.key});
@@ -23,10 +24,38 @@ class _VegToggleState extends ConsumerState<VegToggle> {
       focusNode: toggleFocusNode,
       onFocusChange: (hasFocus) => setState(() => toggleFocused = hasFocus),
       onKeyEvent: (node, event) {
-        if (event.logicalKey == LogicalKeyboardKey.select ||
-            event.logicalKey == LogicalKeyboardKey.enter) {
-          ref.read(vegOnlyProvider.notifier).state = !vegOnly;
-          return KeyEventResult.handled;
+        if (event is KeyDownEvent) {
+          final key = event.logicalKey;
+
+          if (key == LogicalKeyboardKey.select || key == LogicalKeyboardKey.enter) {
+            ref.read(vegOnlyProvider.notifier).state = !vegOnly;
+            return KeyEventResult.handled;
+          }
+
+          if (key == LogicalKeyboardKey.arrowDown) {
+            final showCategories = ref.read(showCategoriesProvider);
+            print('Arrow Down pressed, showCategories: $showCategories');
+            if (showCategories) {
+              final index = ref.read(selectedCategoryProvider);
+              final categoryNodes = ref.read(categoryFocusNodesProvider);
+              print('Current category index: $index, total categories: ${categoryNodes.length}');
+              if (index < categoryNodes.length) {
+                Future.delayed(Duration.zero, () {
+                  print('Requesting focus on category index: $index');
+                  categoryNodes[index].requestFocus();
+                });
+              }
+            } else {
+              print('Arrow Down pressed, focusing on dishes');
+              final dishNodes = ref.read(dishFocusNodesProvider);
+              if (dishNodes.isNotEmpty) {
+                Future.delayed(Duration.zero, () {
+                  dishNodes[0].requestFocus();
+                });
+              }
+            }
+            return KeyEventResult.handled;
+          }
         }
         return KeyEventResult.ignored;
       },

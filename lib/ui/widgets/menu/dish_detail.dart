@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../data/models/dish_model.dart';
+import '../../../data/models/dish_model.dart';
 
 class DishDetail extends StatelessWidget {
   final Dish dish;

@@ -1,15 +1,16 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../data/datasources/local_json_loader.dart';
-import '../data/datasources/remote_api_client.dart';
+import '../config/env_config.dart';
 import '../data/models/food_item.dart';
 import '../data/repositories/food_repository.dart';
 import '../data/repositories/food_repositoty_impl.dart';
+import '../data/services/api_service.dart';
+import '../data/services/local_json_loader.dart';
 
 final foodRepositoryProvider = Provider<FoodRepository>((ref) {
   final dio = Dio();
-  final client = RemoteApiClient(dio);
+  final client = ApiService(dio, baseUrl: EnvConfig.baseUrl);
   final loader = LocalJsonLoader();
   return FoodRepositoryImpl(client, loader);
 });
