@@ -14,7 +14,7 @@ final dioProvider = Provider<Dio>((ref) {
         options.headers['Authorization'] = token;
         return handler.next(options);
       },
-      onError: (DioError error, handler) async {
+      onError: (DioException error, handler) async {
         if (error.response?.statusCode == 401) {
           final storage = ref.read(tokenStorageProvider);
           await storage.clearToken(); // Remove old token

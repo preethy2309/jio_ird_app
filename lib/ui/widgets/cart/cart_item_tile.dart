@@ -53,7 +53,7 @@ class CartItemTile extends StatelessWidget {
             ),
           ),
 
-          Spacer(),
+          const Spacer(),
           // Quantity controls
           // Quantity controls container
           Container(

@@ -1,7 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../data/models/order_request.dart';
-import '../data/models/order_status.dart';
 import 'api_service_provider.dart';
 import 'token_provider.dart';
 
