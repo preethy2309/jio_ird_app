@@ -5,7 +5,7 @@ import 'package:jio_ird/ui/widgets/my_orders/status_step.dart';
 class OrderCard extends StatelessWidget {
   final String dishName;
   final int qty;
-  final int price;
+  final String price;
   final String status;
   final bool isSelected;
 

@@ -4,15 +4,25 @@ import 'package:jio_ird/ui/widgets/my_orders/order_info.dart';
 
 import '../../../data/models/order_status_response.dart';
 import '../../../providers/state_provider.dart';
+import '../../screens/order_detail_screen.dart';
 
-class MyOrderList extends ConsumerWidget {
+class MyOrderList extends ConsumerStatefulWidget {
   const MyOrderList({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<MyOrderList> createState() => _MyOrderListState();
+}
+
+class _MyOrderListState extends ConsumerState<MyOrderList> {
+  int? focusedIndex;
+
+  @override
+  Widget build(BuildContext context) {
     final orderStatusAsync = ref.watch(orderStatusProvider);
 
     return orderStatusAsync.when(
+      loading: () => const Center(child: CircularProgressIndicator()),
+      error: (err, _) => Center(child: Text('Error: $err')),
       data: (orders) {
         if (orders.isEmpty) {
           return const Center(child: Text('No orders found'));
@@ -23,38 +33,77 @@ class MyOrderList extends ConsumerWidget {
           itemCount: orders.length,
           itemBuilder: (context, index) {
             final order = orders[index];
-            final itemCount = order.dish_details.fold<int>(
-              0,
-                  (sum, dish) => sum + int.tryParse(dish.quantity.toString())!,
-            );
-            final isActive = false; // TODO: implement active order logic
+            final action = _getOrderAction(order.dish_details);
 
             return Padding(
               padding: const EdgeInsets.only(bottom: 12),
-              child: _orderTile(
-                orderNo: order.order_id.toString(),
-                billDetails: '$itemCount Items',
-                toPay: '₹ ${calculateTotal(order.dish_details)}',
-                isActive: isActive,
-                buttonText: 'Track Order',
+              child: InkWell(
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => OrderDetailScreen(order: order),
+                  ),
+                ),
+                child: Focus(
+                  onFocusChange: (hasFocus) {
+                    setState(() {
+                      focusedIndex = hasFocus ? index : focusedIndex;
+                    });
+                  },
+                  child: _orderTile(
+                    orderNo: order.order_id.toString(),
+                    billDetails: '${order.dish_details.length} Items',
+                    toPay: '₹ ${_calculateTotal(order.dish_details)}',
+                    isActive: focusedIndex == index,
+                    isButton: action.isButton,
+                    buttonText: action.buttonText,
+                  ),
+                ),
               ),
             );
           },
         );
       },
-      loading: () => const Center(child: CircularProgressIndicator()),
-      error: (err, stack) => Center(child: Text('Error: $err')),
     );
   }
 
-  String calculateTotal(List<OrderDishDetail> dishes) {
-    double total = 0;
-    for (var dish in dishes) {
-      final price = (dish.price is num)
-          ? (dish.price as num).toDouble()
-          : double.tryParse(dish.price.toString()) ?? 0;
-      total += price * dish.quantity;
+  /// Map dish status to a consistent format
+  String _mapStatus(String? status) {
+    switch (status?.toLowerCase()) {
+      case "submitted":
+        return "Submitted";
+      case "accepted":
+        return "Accepted";
+      case "preparing":
+      case "in progress":
+        return "Preparing";
+      case "delivered":
+      case "served":
+        return "Served";
+      case "cancelled":
+        return "Cancelled";
+      default:
+        return status ?? "";
     }
+  }
+
+  /// Decide button/label text and type
+  _OrderAction _getOrderAction(List<OrderDishDetail> dishes) {
+    final statuses = dishes.map((d) => _mapStatus(d.status)).toList();
+    final allServed = statuses.every((s) => s == "Served");
+    final allCancelled = statuses.every((s) => s == "Cancelled");
+
+    if (allServed) return _OrderAction("Order Served!", false);
+    if (allCancelled) return _OrderAction("Order Cancelled!", false);
+    return _OrderAction("Track Order", true);
+  }
+
+  String _calculateTotal(List<OrderDishDetail> dishes) {
+    final total = dishes.fold<double>(
+      0,
+      (sum, dish) =>
+          sum + (double.tryParse(dish.price.toString()) ?? 0) * dish.quantity,
+    );
     return total.toStringAsFixed(0);
   }
 
@@ -64,7 +113,7 @@ class MyOrderList extends ConsumerWidget {
     required String toPay,
     bool isActive = false,
     required String buttonText,
-    bool isButton = true,
+    bool isButton = false,
   }) {
     return Container(
       decoration: BoxDecoration(
@@ -79,27 +128,29 @@ class MyOrderList extends ConsumerWidget {
           OrderInfo(orderNo: orderNo, billDetails: billDetails, toPay: toPay),
           isButton
               ? ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.white,
-              foregroundColor: Colors.black,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30),
-              ),
-            ),
-            onPressed: () {
-              // TODO: Implement order tracking action
-            },
-            child: Text(buttonText),
-          )
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    foregroundColor: Colors.black,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                  ),
+                  onPressed: () {},
+                  child: Text(buttonText),
+                )
               : Text(
-            buttonText,
-            style: const TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
+                  buttonText,
+                  style: const TextStyle(color: Colors.white38),
+                ),
         ],
       ),
     );
   }
+}
+
+class _OrderAction {
+  final String buttonText;
+  final bool isButton;
+
+  _OrderAction(this.buttonText, this.isButton);
 }

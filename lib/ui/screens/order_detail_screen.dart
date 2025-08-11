@@ -1,14 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:jio_ird/ui/widgets/menu/bottom_layout.dart';
+import 'package:jio_ird/ui/widgets/my_orders/order_card.dart';
+import 'package:jio_ird/ui/widgets/my_orders/order_info.dart';
 
-import '../widgets/my_orders/order_card.dart';
-import '../widgets/my_orders/order_info.dart';
+import '../../../data/models/order_status_response.dart';
 
 class OrderDetailScreen extends StatelessWidget {
-  const OrderDetailScreen({super.key});
+  final OrderStatusResponse order;
+
+  const OrderDetailScreen({
+    super.key,
+    required this.order,
+  });
 
   @override
   Widget build(BuildContext context) {
+    // Calculate total price from dish_details
+    String calculateTotal(List<OrderDishDetail> dishes) {
+      double total = 0;
+      for (var dish in dishes) {
+        final price = (dish.price is num)
+            ? (dish.price as num).toDouble()
+            : double.tryParse(dish.price.toString()) ?? 0;
+        total += price * dish.quantity;
+      }
+      return total.toStringAsFixed(0);
+    }
+
     return Scaffold(
       backgroundColor: const Color(0xFF111111),
       body: Padding(
@@ -26,44 +44,37 @@ class OrderDetailScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 4),
-            const Text(
-              "Room No. 132",
-              style: TextStyle(
+            Text(
+              "Room No. ${order.room_no ?? ''}",
+              style: const TextStyle(
                 fontSize: 16,
                 color: Colors.white70,
               ),
             ),
             const SizedBox(height: 30),
 
-            // Order details row
-            const OrderInfo(
-                orderNo: "000000", billDetails: "billDetails", toPay: "100"),
+            // Order summary info
+            OrderInfo(
+              orderNo: order.order_id.toString(),
+              billDetails: "${order.dish_details.length} Items",
+              toPay: "₹ ${calculateTotal(order.dish_details)}",
+            ),
             const SizedBox(height: 30),
 
             // Orders list
             Expanded(
-              child: ListView(
-                children: const [
-                  OrderCard(
-                    dishName: "Paneer Butter Masala",
-                    qty: 1,
-                    price: 110,
-                    isSelected: true,
-                    status: "Order Placed",
-                  ),
-                  OrderCard(
-                    dishName: "Stuffed Portobello Mushrooms",
-                    qty: 1,
-                    price: 125,
-                    status: "Order Placed",
-                  ),
-                  OrderCard(
-                    dishName: "Portobello Veg Burger",
-                    qty: 1,
-                    price: 125,
-                    status: "Served",
-                  ),
-                ],
+              child: ListView.builder(
+                itemCount: order.dish_details.length,
+                itemBuilder: (context, index) {
+                  final dish = order.dish_details[index];
+                  return OrderCard(
+                    dishName: dish.name ?? '',
+                    qty: dish.quantity,
+                    price: dish.price,
+                    status: dish.status ?? '',
+                    isSelected: false, // set based on your selection logic
+                  );
+                },
               ),
             ),
           ],

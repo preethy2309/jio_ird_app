@@ -39,7 +39,7 @@
         "price": "450",
         "id": 300,
         "dish_type": "non-veg",
-        "status": "In Progress",
+        "status": "Preparing",
         "image": "https://example.com/images/chicken_biryani.jpg"
       },
       {
@@ -48,7 +48,7 @@
         "price": "120",
         "id": 301,
         "dish_type": "veg",
-        "status": "In Progress",
+        "status": "Preparing",
         "image": "https://example.com/images/cold_coffee.jpg"
       }
     ]
@@ -66,7 +66,7 @@
         "price": "90",
         "id": 400,
         "dish_type": "veg",
-        "status": "Delivered",
+        "status": "Served",
         "image": "https://example.com/images/masala_dosa.jpg"
       },
       {
@@ -75,7 +75,7 @@
         "price": "80",
         "id": 401,
         "dish_type": "veg",
-        "status": "Delivered",
+        "status": "Served",
         "image": "https://example.com/images/filter_coffee.jpg"
       }
     ]
