@@ -8,25 +8,36 @@ import '../../../data/models/order_status_response.dart';
 class OrderDetailScreen extends StatelessWidget {
   final OrderStatusResponse order;
 
-  const OrderDetailScreen({
+  OrderDetailScreen({
     super.key,
     required this.order,
   });
 
+  final List<String> _statusOrder = [
+    "placed",
+    "accepted",
+    "preparing",
+    "served",
+  ];
+
+  int _getStepIndex(String? status) {
+    if (status == null) return 0;
+    return _statusOrder.indexOf(status.toLowerCase());
+  }
+
+  String _calculateTotal(List<OrderDishDetail> dishes) {
+    double total = 0;
+    for (var dish in dishes) {
+      final price = (dish.price is num)
+          ? (dish.price as num).toDouble()
+          : double.tryParse(dish.price.toString()) ?? 0;
+      total += price * dish.quantity;
+    }
+    return total.toStringAsFixed(0);
+  }
+
   @override
   Widget build(BuildContext context) {
-    // Calculate total price from dish_details
-    String calculateTotal(List<OrderDishDetail> dishes) {
-      double total = 0;
-      for (var dish in dishes) {
-        final price = (dish.price is num)
-            ? (dish.price as num).toDouble()
-            : double.tryParse(dish.price.toString()) ?? 0;
-        total += price * dish.quantity;
-      }
-      return total.toStringAsFixed(0);
-    }
-
     return Scaffold(
       backgroundColor: const Color(0xFF111111),
       body: Padding(
@@ -34,7 +45,6 @@ class OrderDetailScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Title
             const Text(
               "My Order",
               style: TextStyle(
@@ -52,28 +62,31 @@ class OrderDetailScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 30),
-
-            // Order summary info
             OrderInfo(
               orderNo: order.order_id.toString(),
               billDetails: "${order.dish_details.length} Items",
-              toPay: "₹ ${calculateTotal(order.dish_details)}",
+              toPay: "₹ ${_calculateTotal(order.dish_details)}",
             ),
             const SizedBox(height: 30),
-
-            // Orders list
             Expanded(
               child: ListView.builder(
                 itemCount: order.dish_details.length,
                 itemBuilder: (context, index) {
                   final dish = order.dish_details[index];
+                  final currentStep = _getStepIndex(dish.status);
+
+                  // Build a color mapping for the 4 statuses
+                  final Map<String, Color> stepColors = {};
+                  for (int i = 0; i < _statusOrder.length; i++) {
+                    stepColors[_statusOrder[i]] =
+                        (i <= currentStep) ? Colors.amber : Colors.grey;
+                  }
+
                   return OrderCard(
-                    dishName: dish.name ?? '',
-                    qty: dish.quantity,
-                    price: dish.price,
-                    status: dish.status ?? '',
-                    isSelected: false, // set based on your selection logic
-                  );
+                      dishName: dish.name ?? '',
+                      qty: dish.quantity,
+                      price: dish.price,
+                      status: dish.status ?? '');
                 },
               ),
             ),
