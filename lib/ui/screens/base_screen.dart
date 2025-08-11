@@ -30,7 +30,6 @@ class BaseScreen extends StatelessWidget {
               description: description,
               icons: icons,
             ),
-            const SizedBox(height: 16),
             Expanded(child: child), // your screen content
           ],
         ),
