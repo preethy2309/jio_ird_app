@@ -54,18 +54,20 @@ class DeliveryInfoPanel extends StatelessWidget {
             title: "Specific Instructions",
             value: "None",
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 10),
           Center(
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.white,
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+                    const EdgeInsets.symmetric(horizontal: 24),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30),
                 ),
               ),
-              onPressed: () {},
+              onPressed: () {
+
+              },
               child: const Text(
                 "Place order - Rs. ${1100}",
                 style: TextStyle(

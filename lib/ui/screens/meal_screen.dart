@@ -64,6 +64,7 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
             icons: const [VegToggle(), CartButton()],
             child: Column(
               children: [
+                const SizedBox(height: 16),
                 Expanded(
                   child: Row(
                     children: [
