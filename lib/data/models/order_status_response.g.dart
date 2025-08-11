@@ -8,11 +8,11 @@ part of 'order_status_response.dart';
 
 OrderStatusResponse _$OrderStatusResponseFromJson(Map<String, dynamic> json) =>
     OrderStatusResponse(
-      order_id: (json['order_id'] as num).toInt(),
+      order_id: _toInt(json['order_id']),
       guest_name: json['guest_name'] as String,
       guest_id: json['guest_id'] as String,
       room_no: json['room_no'] as String,
-      display_id: json['display_id'] as String,
+      display_id: _toString(json['display_id']),
       dish_details: (json['dish_details'] as List<dynamic>)
           .map((e) => OrderDishDetail.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -32,9 +32,9 @@ Map<String, dynamic> _$OrderStatusResponseToJson(
 OrderDishDetail _$OrderDishDetailFromJson(Map<String, dynamic> json) =>
     OrderDishDetail(
       name: json['name'] as String,
-      quantity: (json['quantity'] as num).toInt(),
-      price: json['price'] as String,
-      id: (json['id'] as num).toInt(),
+      quantity: _toInt(json['quantity']),
+      price: _toString(json['price']),
+      id: _toInt(json['id']),
       dish_type: json['dish_type'] as String,
       status: json['status'] as String,
       image: json['image'] as String,

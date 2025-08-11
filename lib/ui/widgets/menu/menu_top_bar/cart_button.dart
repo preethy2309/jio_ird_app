@@ -67,7 +67,7 @@ class _CartButtonState extends ConsumerState<CartButton> {
                 child: Container(
                   padding: const EdgeInsets.all(6),
                   decoration: const BoxDecoration(
-                    color: Colors.amber,
+                    color: Colors.red,
                     shape: BoxShape.circle,
                   ),
                   child: Text(

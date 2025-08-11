@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-enum CartTab { cart, orders }
-
-final selectedCartTabProvider = StateProvider<CartTab>((ref) => CartTab.cart);
+import '../../../providers/state_provider.dart';
 
 class TabSwitcher extends ConsumerStatefulWidget {
   const TabSwitcher({super.key});
@@ -23,9 +21,10 @@ class _TabSwitcherState extends ConsumerState<TabSwitcher> {
     itemsTabFocusNode = FocusNode();
     infoTabFocusNode = FocusNode();
 
-    // Set initial focus on first tab
+    // Give initial focus to Cart
     WidgetsBinding.instance.addPostFrameCallback((_) {
       itemsTabFocusNode.requestFocus();
+      ref.read(selectedCartTabProvider.notifier).state = CartTab.cart;
     });
   }
 
@@ -57,6 +56,11 @@ class _TabSwitcherState extends ConsumerState<TabSwitcher> {
             onSelect: () {
               ref.read(selectedCartTabProvider.notifier).state = CartTab.cart;
             },
+            onRight: () {
+              infoTabFocusNode.requestFocus();
+              ref.read(selectedCartTabProvider.notifier).state = CartTab.orders;
+            },
+            onLeft: null, // no left from Cart
           ),
           const SizedBox(width: 4),
           _buildTab(
@@ -65,6 +69,12 @@ class _TabSwitcherState extends ConsumerState<TabSwitcher> {
             focusNode: infoTabFocusNode,
             onSelect: () {
               ref.read(selectedCartTabProvider.notifier).state = CartTab.orders;
+            },
+            onRight: null,
+            // no right from My Orders
+            onLeft: () {
+              itemsTabFocusNode.requestFocus();
+              ref.read(selectedCartTabProvider.notifier).state = CartTab.cart;
             },
           ),
         ],
@@ -77,39 +87,45 @@ class _TabSwitcherState extends ConsumerState<TabSwitcher> {
     required bool isSelected,
     required FocusNode focusNode,
     required VoidCallback onSelect,
+    VoidCallback? onLeft,
+    VoidCallback? onRight,
   }) {
-    final bool isFocused = focusNode.hasFocus;
-
     return Focus(
       focusNode: focusNode,
+      onFocusChange: (hasFocus) {
+        if (hasFocus) onSelect();
+      },
       onKeyEvent: (node, event) {
-        if (event is KeyDownEvent &&
-            (event.logicalKey == LogicalKeyboardKey.enter ||
-                event.logicalKey == LogicalKeyboardKey.select)) {
-          onSelect();
-          return KeyEventResult.handled;
+        if (event is KeyDownEvent) {
+          if (event.logicalKey == LogicalKeyboardKey.arrowRight &&
+              onRight != null) {
+            onRight();
+            return KeyEventResult.handled;
+          }
+          if (event.logicalKey == LogicalKeyboardKey.arrowLeft &&
+              onLeft != null) {
+            onLeft();
+            return KeyEventResult.handled;
+          }
         }
         return KeyEventResult.ignored;
       },
-      child: InkWell(
-        onTap: onSelect,
-        child: AnimatedContainer(
-          width: 120,
-          duration: const Duration(milliseconds: 200),
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-          decoration: BoxDecoration(
-            color: isFocused ? Colors.amber : Colors.transparent,
-            borderRadius: BorderRadius.circular(50),
+      child: AnimatedContainer(
+        width: 120,
+        duration: const Duration(milliseconds: 200),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+        decoration: BoxDecoration(
+          color: isSelected ? Colors.amber : Colors.transparent,
+          borderRadius: BorderRadius.circular(50),
+        ),
+        child: Text(
+          label,
+          style: TextStyle(
+            color: isSelected ? Colors.black : Colors.amber,
+            fontSize: 16,
+            fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
           ),
-          child: Text(
-            label,
-            style: TextStyle(
-              color: isFocused ? Colors.black : Colors.amber,
-              fontSize: 16,
-              fontWeight: isFocused ? FontWeight.bold : FontWeight.normal,
-            ),
-            textAlign: TextAlign.center,
-          ),
+          textAlign: TextAlign.center,
         ),
       ),
     );

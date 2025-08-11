@@ -1,30 +1,61 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:jio_ird/ui/widgets/my_orders/order_info.dart';
 
-class MyOrderList extends StatelessWidget {
+import '../../../data/models/order_status_response.dart';
+import '../../../providers/state_provider.dart';
+
+class MyOrderList extends ConsumerWidget {
   const MyOrderList({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        _orderTile(
-          orderNo: '005053',
-          billDetails: '4 Items',
-          toPay: '₹ 700',
-          isActive: true,
-          buttonText: 'Track order',
-        ),
-        const SizedBox(height: 12),
-        _orderTile(
-          orderNo: '005053',
-          billDetails: '2 Items',
-          toPay: '₹ 200',
-          isActive: false,
-          buttonText: 'Track Order',
-        ),
-      ],
+  Widget build(BuildContext context, WidgetRef ref) {
+    final orderStatusAsync = ref.watch(orderStatusProvider);
+
+    return orderStatusAsync.when(
+      data: (orders) {
+        if (orders.isEmpty) {
+          return const Center(child: Text('No orders found'));
+        }
+
+        return ListView.builder(
+          padding: const EdgeInsets.symmetric(vertical: 12),
+          itemCount: orders.length,
+          itemBuilder: (context, index) {
+            final order = orders[index];
+            final itemCount = order.dish_details.fold<int>(
+              0,
+                  (sum, dish) => sum + int.tryParse(dish.quantity.toString())!,
+            );
+            final isActive = false; // TODO: implement active order logic
+
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 12),
+              child: _orderTile(
+                orderNo: order.order_id.toString(),
+                billDetails: '$itemCount Items',
+                toPay: '₹ ${calculateTotal(order.dish_details)}',
+                isActive: isActive,
+                buttonText: 'Track Order',
+              ),
+            );
+          },
+        );
+      },
+      loading: () => const Center(child: CircularProgressIndicator()),
+      error: (err, stack) => Center(child: Text('Error: $err')),
     );
+  }
+
+  String calculateTotal(List<OrderDishDetail> dishes) {
+    double total = 0;
+    for (var dish in dishes) {
+      final price = (dish.price is num)
+          ? (dish.price as num).toDouble()
+          : double.tryParse(dish.price.toString()) ?? 0;
+      total += price * dish.quantity;
+    }
+    return total.toStringAsFixed(0);
   }
 
   Widget _orderTile({
@@ -45,29 +76,28 @@ class MyOrderList extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          // Left side details
           OrderInfo(orderNo: orderNo, billDetails: billDetails, toPay: toPay),
-
-          // Right side button
           isButton
               ? ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    foregroundColor: Colors.black,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                  ),
-                  onPressed: () {},
-                  child: Text(buttonText),
-                )
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.white,
+              foregroundColor: Colors.black,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30),
+              ),
+            ),
+            onPressed: () {
+              // TODO: Implement order tracking action
+            },
+            child: Text(buttonText),
+          )
               : Text(
-                  buttonText,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+            buttonText,
+            style: const TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
         ],
       ),
     );

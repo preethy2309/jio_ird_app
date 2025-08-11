@@ -1,24 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:jio_ird/ui/widgets/menu/menu_top_bar/profile_icon.dart';
 
+import '../../providers/state_provider.dart';
 import '../widgets/cart/cart_item_list.dart';
 import '../widgets/cart/delivery_info_panel.dart';
 import '../widgets/cart/tab_switcher.dart';
 import '../widgets/header.dart';
 import '../widgets/menu/bottom_layout.dart';
+import '../widgets/my_orders/my_order_list.dart';
 
-class CartScreen extends StatelessWidget {
+class CartScreen extends ConsumerWidget {
   const CartScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
+  Widget build(BuildContext context, WidgetRef ref) {
+    final selectedTab = ref.watch(selectedCartTabProvider);
+
+    return Scaffold(
       backgroundColor: Colors.black,
       body: SafeArea(
         child: Column(
           children: [
-            SizedBox(height: 8),
-            Padding(
+            const SizedBox(height: 8),
+            const Padding(
               padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
               child: Row(
                 children: [
@@ -31,42 +36,38 @@ class CartScreen extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(height: 2),
-
             // Tabs
-            TabSwitcher(),
+            const TabSwitcher(),
 
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
 
-            // Main Body
+            // Switch content based on selected tab
             Expanded(
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Cart Items List
-                    Expanded(
-                      flex: 4,
-                      child: CartItemsList(),
-                    ),
-                    SizedBox(width: 32),
-                    // Delivery Info
-                    Expanded(
-                      flex: 3,
-                      child: DeliveryInfoPanel(),
-                    ),
-                  ],
-                ),
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: selectedTab == CartTab.cart
+                    ? const Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            flex: 4,
+                            child: CartItemsList(),
+                          ),
+                          SizedBox(width: 32),
+                          Expanded(
+                            flex: 3,
+                            child: DeliveryInfoPanel(),
+                          ),
+                        ],
+                      )
+                    : const MyOrderList(),
               ),
             ),
-            // MyOrderList(),
-
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
           ],
         ),
       ),
-      bottomNavigationBar: BottomLayout(),
+      bottomNavigationBar: const BottomLayout(),
     );
   }
 }
