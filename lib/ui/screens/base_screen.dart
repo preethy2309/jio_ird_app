@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:jio_ird/ui/widgets/menu/bottom_layout.dart';
-
-import '../widgets/header.dart';
+import 'package:jio_ird/ui/widgets/menu/menu_top_bar/menu_top_bar.dart';
 
 class BaseScreen extends StatelessWidget {
   final String title;
   final String description;
+  final List<Widget>? icons;
   final Widget child;
 
   const BaseScreen({
     super.key,
     required this.title,
     required this.description,
+    this.icons,
     required this.child,
   });
 
@@ -24,8 +25,12 @@ class BaseScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Header(title: title, description: description),
-            const SizedBox(height: 20),
+            MenuTopBar(
+              title: title,
+              description: description,
+              icons: icons,
+            ),
+            const SizedBox(height: 16),
             Expanded(child: child), // your screen content
           ],
         ),

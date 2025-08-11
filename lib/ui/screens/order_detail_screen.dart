@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jio_ird/ui/widgets/menu/bottom_layout.dart';
+import 'package:jio_ird/ui/screens/base_screen.dart';
 import 'package:jio_ird/ui/widgets/my_orders/order_card.dart';
 import 'package:jio_ird/ui/widgets/my_orders/order_info.dart';
 
@@ -38,30 +38,14 @@ class OrderDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFF111111),
-      body: Padding(
+    return BaseScreen(
+      title: "My Order",
+      description: "Room No. 204",
+      child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 100, vertical: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              "My Order",
-              style: TextStyle(
-                fontSize: 42,
-                fontWeight: FontWeight.w400,
-                color: Colors.white,
-              ),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              "Room No. ${order.room_no ?? ''}",
-              style: const TextStyle(
-                fontSize: 16,
-                color: Colors.white70,
-              ),
-            ),
-            const SizedBox(height: 30),
             OrderInfo(
               orderNo: order.order_id.toString(),
               billDetails: "${order.dish_details.length} Items",
@@ -95,7 +79,6 @@ class OrderDetailScreen extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: const BottomLayout(),
     );
   }
 }

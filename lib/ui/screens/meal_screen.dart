@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:jio_ird/ui/screens/base_screen.dart';
+import 'package:jio_ird/ui/widgets/menu/menu_top_bar/cart_button.dart';
+import 'package:jio_ird/ui/widgets/menu/menu_top_bar/veg_toggle.dart';
 
-import '../../providers/state_provider.dart';
 import '../../providers/focus_provider.dart';
-import '../widgets/menu/bottom_layout.dart';
+import '../../providers/state_provider.dart';
 import '../widgets/menu/category_list.dart';
 import '../widgets/menu/dish_detail.dart';
 import '../widgets/menu/dish_list.dart';
-import '../widgets/menu/menu_top_bar/menu_top_bar.dart';
 
 class MenuScreen extends ConsumerStatefulWidget {
   const MenuScreen({super.key});
@@ -37,21 +38,19 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
           final subCategories = selectedCat.sub_categories ?? [];
 
           final allDishes =
-          subCategories.expand((subCat) => subCat.dishes ?? []).toList();
+              subCategories.expand((subCat) => subCat.dishes ?? []).toList();
 
           final filteredDishes = vegOnly
               ? allDishes
-              .where((dish) => dish.dish_type.toLowerCase() == 'veg')
-              .toList()
+                  .where((dish) => dish.dish_type.toLowerCase() == 'veg')
+                  .toList()
               : allDishes;
 
           // Initial focus logic
           if (!_hasFocusedOnce && categories.isNotEmpty) {
             WidgetsBinding.instance.addPostFrameCallback((_) {
               if (showCategories) {
-                ref
-                    .read(categoryFocusNodeProvider(0))
-                    .requestFocus();
+                ref.read(categoryFocusNodeProvider(0)).requestFocus();
               } else if (filteredDishes.isNotEmpty) {
                 ref.read(dishFocusNodeProvider(0)).requestFocus();
               }
@@ -59,53 +58,56 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
             _hasFocusedOnce = true;
           }
 
-          return Column(
-            children: [
-              const MenuTopBar(),
-              Expanded(
-                child: Row(
-                  children: [
-                    // ← Back Arrow
-                    if (!showCategories)
-                      const Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.arrow_back_ios_new_rounded,
-                            color: Colors.amber,
-                            size: 30,
-                          ),
-                          SizedBox(width: 100),
-                        ],
-                      ),
+          return BaseScreen(
+            title: "In Room Dining",
+            description: "Room No. 204",
+            icons: const [VegToggle(), CartButton()],
+            child: Column(
+              children: [
+                Expanded(
+                  child: Row(
+                    children: [
+                      // ← Back Arrow
+                      if (!showCategories)
+                        const Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.arrow_back_ios_new_rounded,
+                              color: Colors.amber,
+                              size: 30,
+                            ),
+                            SizedBox(width: 100),
+                          ],
+                        ),
 
-                    // Category List
-                    if (showCategories)
+                      // Category List
+                      if (showCategories)
+                        Expanded(
+                          flex: 2,
+                          child: CategoryList(
+                            categories: categories,
+                          ),
+                        ),
+
+                      // Dish List
                       Expanded(
-                        flex: 2,
-                        child: CategoryList(
-                          categories: categories,
+                        flex: showCategories ? 2 : 3,
+                        child: DishList(
+                          dishes: filteredDishes,
                         ),
                       ),
 
-                    // Dish List
-                    Expanded(
-                      flex: showCategories ? 2 : 3,
-                      child: DishList(
-                        dishes: filteredDishes,
+                      // Dish Detail
+                      Expanded(
+                        flex: showCategories ? 4 : 6,
+                        child: DishDetail(dish: filteredDishes[focusedDish]),
                       ),
-                    ),
-
-                    // Dish Detail
-                    Expanded(
-                      flex: showCategories ? 4 : 6,
-                      child: DishDetail(dish: filteredDishes[focusedDish]),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              const BottomLayout(),
-            ],
+              ],
+            ),
           );
         },
       ),
