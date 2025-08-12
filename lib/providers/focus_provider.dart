@@ -97,3 +97,7 @@ final myOrdersTabFocusNodeProvider = Provider<FocusNode>((ref) {
   ref.onDispose(() => node.dispose());
   return node;
 });
+
+final dishDetailFocusNodeProvider = Provider<FocusNode>((ref) {
+  return FocusNode();
+});

@@ -31,31 +31,6 @@ class _VegToggleState extends ConsumerState<VegToggle> {
             ref.read(vegOnlyProvider.notifier).state = !vegOnly;
             return KeyEventResult.handled;
           }
-
-          if (key == LogicalKeyboardKey.arrowDown) {
-            final showCategories = ref.read(showCategoriesProvider);
-            print('Arrow Down pressed, showCategories: $showCategories');
-            if (showCategories) {
-              final index = ref.read(selectedCategoryProvider);
-              final categoryNodes = ref.read(categoryFocusNodesProvider);
-              print('Current category index: $index, total categories: ${categoryNodes.length}');
-              if (index < categoryNodes.length) {
-                Future.delayed(Duration.zero, () {
-                  print('Requesting focus on category index: $index');
-                  categoryNodes[index].requestFocus();
-                });
-              }
-            } else {
-              print('Arrow Down pressed, focusing on dishes');
-              final dishNodes = ref.read(dishFocusNodesProvider);
-              if (dishNodes.isNotEmpty) {
-                Future.delayed(Duration.zero, () {
-                  dishNodes[0].requestFocus();
-                });
-              }
-            }
-            return KeyEventResult.handled;
-          }
         }
         return KeyEventResult.ignored;
       },

@@ -18,7 +18,6 @@ class MenuScreen extends ConsumerStatefulWidget {
 }
 
 class _MenuScreenState extends ConsumerState<MenuScreen> {
-  bool _hasFocusedOnce = false;
 
   @override
   Widget build(BuildContext context) {
@@ -46,16 +45,15 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
                   .toList()
               : allDishes;
 
-          // Initial focus logic
-          if (!_hasFocusedOnce && categories.isNotEmpty) {
+          if (categories.isNotEmpty) {
             WidgetsBinding.instance.addPostFrameCallback((_) {
               if (showCategories) {
-                ref.read(categoryFocusNodeProvider(0)).requestFocus();
+                var index = selectedCategory == -1 ? 0 : selectedCategory;
+                ref.read(categoryFocusNodeProvider(index)).requestFocus();
               } else if (filteredDishes.isNotEmpty) {
                 ref.read(dishFocusNodeProvider(0)).requestFocus();
               }
             });
-            _hasFocusedOnce = true;
           }
 
           return BaseScreen(
