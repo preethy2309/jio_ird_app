@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../data/models/dish_with_quantity.dart';
 import '../../../providers/focus_provider.dart';
 import '../../../providers/state_provider.dart';
+import '../quantity_selector.dart';
 
 class DishList extends ConsumerWidget {
   final List<dynamic> dishes;
@@ -123,48 +124,37 @@ class DishList extends ConsumerWidget {
                     ),
                   ),
                   if (isSelected)
-                    Row(
-                      children: [
-                        IconButton(
-                          icon: const Icon(Icons.remove, color: Colors.white),
-                          onPressed: () {
-                            final currentList = [...itemQuantities];
-                            final existingIndex = currentList
-                                .indexWhere((e) => e.dish.id == dish.id);
-                            if (existingIndex >= 0) {
-                              final newQty =
-                                  currentList[existingIndex].quantity - 1;
-                              if (newQty <= 0) {
-                                currentList.removeAt(existingIndex);
-                              } else {
-                                currentList[existingIndex].quantity = newQty;
-                              }
-                              ref.read(itemQuantitiesProvider.notifier).state =
-                                  currentList;
-                            }
-                          },
-                        ),
-                        Text('$count',
-                            style: const TextStyle(
-                                color: Colors.white, fontSize: 16)),
-                        IconButton(
-                          icon: const Icon(Icons.add, color: Colors.white),
-                          onPressed: () {
-                            final currentList = [...itemQuantities];
-                            final existingIndex = currentList
-                                .indexWhere((e) => e.dish.id == dish.id);
-                            if (existingIndex >= 0) {
-                              currentList[existingIndex].quantity++;
+                    QuantitySelector(
+                        quantity: dish.quantity,
+                        onIncrement: () {
+                          final currentList = [...itemQuantities];
+                          final existingIndex = currentList
+                              .indexWhere((e) => e.dish.id == dish.id);
+                          if (existingIndex >= 0) {
+                            currentList[existingIndex].quantity++;
+                          } else {
+                            currentList
+                                .add(DishWithQuantity(dish: dish, quantity: 1));
+                          }
+                          ref.read(itemQuantitiesProvider.notifier).state =
+                              currentList;
+                        },
+                        onDecrement: () {
+                          final currentList = [...itemQuantities];
+                          final existingIndex = currentList
+                              .indexWhere((e) => e.dish.id == dish.id);
+                          if (existingIndex >= 0) {
+                            final newQty =
+                                currentList[existingIndex].quantity - 1;
+                            if (newQty <= 0) {
+                              currentList.removeAt(existingIndex);
                             } else {
-                              currentList.add(
-                                  DishWithQuantity(dish: dish, quantity: 1));
+                              currentList[existingIndex].quantity = newQty;
                             }
                             ref.read(itemQuantitiesProvider.notifier).state =
                                 currentList;
-                          },
-                        ),
-                      ],
-                    ),
+                          }
+                        })
                 ],
               ),
             ),

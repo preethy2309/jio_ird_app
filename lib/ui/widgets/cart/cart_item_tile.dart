@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 
+import '../quantity_selector.dart';
+
 class CartItemTile extends StatelessWidget {
   final String title;
   final int quantity;
   final String price;
   final String type; // "veg" or "non-veg"
 
-  final VoidCallback? onIncrement;
-  final VoidCallback? onDecrement;
+  final VoidCallback onIncrement;
+  final VoidCallback onDecrement;
 
   const CartItemTile({
     super.key,
@@ -15,8 +17,8 @@ class CartItemTile extends StatelessWidget {
     required this.quantity,
     required this.price,
     this.type = "veg",
-    this.onIncrement,
-    this.onDecrement,
+    required this.onIncrement,
+    required this.onDecrement,
   });
 
   @override
@@ -63,33 +65,11 @@ class CartItemTile extends StatelessWidget {
           ),
 
           const Spacer(),
-          // Quantity controls
-          // Quantity controls container
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
-            decoration: BoxDecoration(
-              color: Colors.grey.shade800,
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Row(
-              children: [
-                InkWell(
-                  onTap: onDecrement,
-                  child: _buildQtyButton(Icons.remove),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
-                  child: Text(
-                    quantity.toString(),
-                    style: const TextStyle(fontSize: 16, color: Colors.white),
-                  ),
-                ),
-                InkWell(
-                  onTap: onIncrement,
-                  child: _buildQtyButton(Icons.add),
-                ),
-              ],
-            ),
+
+          QuantitySelector(
+            quantity: quantity,
+            onIncrement: onIncrement,
+            onDecrement:onDecrement,
           ),
 
           const SizedBox(width: 12),
@@ -102,19 +82,6 @@ class CartItemTile extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-
-  Widget _buildQtyButton(IconData icon) {
-    return Container(
-      width: 28,
-      height: 28,
-      alignment: Alignment.center,
-      decoration: const BoxDecoration(
-        color: Colors.grey,
-        shape: BoxShape.circle,
-      ),
-      child: Icon(icon, color: Colors.black, size: 18),
     );
   }
 }

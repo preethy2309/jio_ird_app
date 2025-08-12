@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../providers/state_provider.dart'; // import your provider file
+import '../../../providers/state_provider.dart';
 import 'cart_item_tile.dart';
 
 class CartItemsList extends ConsumerWidget {
