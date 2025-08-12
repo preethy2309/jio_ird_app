@@ -18,14 +18,12 @@ class CartScreen extends ConsumerWidget {
     final selectedTab = ref.watch(selectedCartTabProvider);
     final orderPlaced = ref.watch(orderPlacedProvider);
 
+    final cartItems = ref.watch(itemQuantitiesProvider);
+
     void onTrackOrderPressed() {
       ref.read(selectedCartTabProvider.notifier).state = CartTab.orders;
-
-      // Request focus on My Orders tab
       final infoTabFocusNode = ref.read(myOrdersTabFocusNodeProvider);
       infoTabFocusNode.requestFocus();
-
-      // Reset order placed state
       ref.read(orderPlacedProvider.notifier).state = false;
     }
 
@@ -43,20 +41,28 @@ class CartScreen extends ConsumerWidget {
                 child: orderPlaced
                     ? OrderPlaced(onTrackOrder: onTrackOrderPressed)
                     : (selectedTab == CartTab.cart
-                        ? const Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Expanded(
-                                flex: 4,
-                                child: CartItemsList(),
-                              ),
-                              SizedBox(width: 32),
-                              Expanded(
-                                flex: 3,
-                                child: DeliveryInfoPanel(),
-                              ),
-                            ],
-                          )
+                        ? (cartItems.isEmpty
+                            ? const Center(
+                                child: Text(
+                                  'Cart is empty',
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 18),
+                                ),
+                              )
+                            : const Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Expanded(
+                                    flex: 4,
+                                    child: CartItemsList(),
+                                  ),
+                                  SizedBox(width: 32),
+                                  Expanded(
+                                    flex: 3,
+                                    child: DeliveryInfoPanel(),
+                                  ),
+                                ],
+                              ))
                         : const MyOrderList()),
               ),
             ),

@@ -3,17 +3,27 @@ import 'package:flutter/material.dart';
 class CartItemTile extends StatelessWidget {
   final String title;
   final int quantity;
-  final double price;
+  final String price;
+  final String type; // "veg" or "non-veg"
+
+  final VoidCallback? onIncrement;
+  final VoidCallback? onDecrement;
 
   const CartItemTile({
     super.key,
     required this.title,
     required this.quantity,
     required this.price,
+    this.type = "veg",
+    this.onIncrement,
+    this.onDecrement,
   });
 
   @override
   Widget build(BuildContext context) {
+    final Color dotColor =
+        type.toLowerCase() == "veg" ? Colors.green : Colors.red;
+
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(12),
@@ -23,20 +33,19 @@ class CartItemTile extends StatelessWidget {
       ),
       child: Row(
         children: [
-          // Veg/Non-Veg dot + Title in same row
           Container(
             padding: const EdgeInsets.all(2),
             decoration: BoxDecoration(
               color: Colors.black,
-              border: Border.all(color: Colors.green, width: 1),
+              border: Border.all(color: dotColor, width: 1),
               borderRadius: BorderRadius.circular(2),
             ),
             child: Container(
               width: 5,
               height: 5,
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: Colors.green,
+                color: dotColor,
               ),
             ),
           ),
@@ -64,7 +73,10 @@ class CartItemTile extends StatelessWidget {
             ),
             child: Row(
               children: [
-                _buildQtyButton(Icons.remove),
+                InkWell(
+                  onTap: onDecrement,
+                  child: _buildQtyButton(Icons.remove),
+                ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 12),
                   child: Text(
@@ -72,7 +84,10 @@ class CartItemTile extends StatelessWidget {
                     style: const TextStyle(fontSize: 16, color: Colors.white),
                   ),
                 ),
-                _buildQtyButton(Icons.add),
+                InkWell(
+                  onTap: onIncrement,
+                  child: _buildQtyButton(Icons.add),
+                ),
               ],
             ),
           ),
@@ -82,7 +97,7 @@ class CartItemTile extends StatelessWidget {
           const Spacer(),
           // Price
           Text(
-            "₹${price.toStringAsFixed(0)}",
+            "₹$price",
             style: const TextStyle(fontSize: 18, color: Colors.white),
           ),
         ],

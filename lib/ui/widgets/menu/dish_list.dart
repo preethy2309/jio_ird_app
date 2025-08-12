@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../providers/state_provider.dart';
+import '../../../data/models/dish_with_quantity.dart';
 import '../../../providers/focus_provider.dart';
+import '../../../providers/state_provider.dart';
 
 class DishList extends ConsumerWidget {
   final List<dynamic> dishes;
@@ -31,7 +32,14 @@ class DishList extends ConsumerWidget {
         final dish = dishes[index];
         final isSelected = index == selectedDish;
         final isFocused = index == focusedDish;
-        final count = itemQuantities[dish.id] ?? 0;
+
+        // Find quantity of this dish from the list, 0 if not found
+        final existing = itemQuantities.firstWhere(
+          (element) => element.dish.id == dish.id,
+          orElse: () => DishWithQuantity(dish: dish, quantity: 0),
+        );
+        final count = existing.quantity;
+
         final node = dishFocusNodes[index];
 
         return Focus(
@@ -49,7 +57,6 @@ class DishList extends ConsumerWidget {
           onKeyEvent: (node, event) {
             if (event is KeyDownEvent &&
                 event.logicalKey == LogicalKeyboardKey.arrowLeft) {
-              // ✅ Focus the selected category
               ref.read(showCategoriesProvider.notifier).state = true;
               ref.read(canFocusDishListProvider.notifier).state = false;
 
@@ -67,9 +74,16 @@ class DishList extends ConsumerWidget {
               ref.read(selectedDishProvider.notifier).state = index;
               ref.read(focusedDishProvider.notifier).state = index;
 
-              final updated = {...itemQuantities};
-              updated[dish.id] = (updated[dish.id] ?? 0) + 1;
-              ref.read(itemQuantitiesProvider.notifier).state = updated;
+              final currentList = [...itemQuantities];
+              final existingIndex =
+                  currentList.indexWhere((e) => e.dish.id == dish.id);
+              if (existingIndex >= 0) {
+                // Increase quantity
+                currentList[existingIndex].quantity++;
+              } else {
+                currentList.add(DishWithQuantity(dish: dish, quantity: 1));
+              }
+              ref.read(itemQuantitiesProvider.notifier).state = currentList;
             },
             child: Container(
               height: 90,
@@ -102,7 +116,7 @@ class DishList extends ConsumerWidget {
                         color: Colors.white,
                         fontSize: 16,
                         fontWeight:
-                        isSelected ? FontWeight.bold : FontWeight.normal,
+                            isSelected ? FontWeight.bold : FontWeight.normal,
                       ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -114,13 +128,20 @@ class DishList extends ConsumerWidget {
                         IconButton(
                           icon: const Icon(Icons.remove, color: Colors.white),
                           onPressed: () {
-                            final updated = {...itemQuantities};
-                            updated[dish.id] = (updated[dish.id] ?? 0) - 1;
-                            if (updated[dish.id]! <= 0) {
-                              updated.remove(dish.id);
+                            final currentList = [...itemQuantities];
+                            final existingIndex = currentList
+                                .indexWhere((e) => e.dish.id == dish.id);
+                            if (existingIndex >= 0) {
+                              final newQty =
+                                  currentList[existingIndex].quantity - 1;
+                              if (newQty <= 0) {
+                                currentList.removeAt(existingIndex);
+                              } else {
+                                currentList[existingIndex].quantity = newQty;
+                              }
+                              ref.read(itemQuantitiesProvider.notifier).state =
+                                  currentList;
                             }
-                            ref.read(itemQuantitiesProvider.notifier).state =
-                                updated;
                           },
                         ),
                         Text('$count',
@@ -129,10 +150,17 @@ class DishList extends ConsumerWidget {
                         IconButton(
                           icon: const Icon(Icons.add, color: Colors.white),
                           onPressed: () {
-                            final updated = {...itemQuantities};
-                            updated[dish.id] = (updated[dish.id] ?? 0) + 1;
+                            final currentList = [...itemQuantities];
+                            final existingIndex = currentList
+                                .indexWhere((e) => e.dish.id == dish.id);
+                            if (existingIndex >= 0) {
+                              currentList[existingIndex].quantity++;
+                            } else {
+                              currentList.add(
+                                  DishWithQuantity(dish: dish, quantity: 1));
+                            }
                             ref.read(itemQuantitiesProvider.notifier).state =
-                                updated;
+                                currentList;
                           },
                         ),
                       ],

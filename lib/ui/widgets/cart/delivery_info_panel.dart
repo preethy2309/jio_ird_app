@@ -10,6 +10,16 @@ class DeliveryInfoPanel extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final items = ref.watch(itemQuantitiesProvider);
+
+    final totalPrice = items.fold<double>(
+      0,
+      (sum, dishWithQty) {
+        final price = double.tryParse(dishWithQty.dish.dish_price ?? '') ?? 0.0;
+        return sum + price * dishWithQty.quantity;
+      },
+    );
+
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -63,9 +73,9 @@ class DeliveryInfoPanel extends ConsumerWidget {
               onPressed: () {
                 ref.read(orderPlacedProvider.notifier).state = true;
               },
-              child: const Text(
-                "Place order - Rs. 1100",
-                style: TextStyle(
+              child: Text(
+                "Place order - Rs. ${totalPrice.toStringAsFixed(2)}",
+                style: const TextStyle(
                   color: Colors.black,
                   fontSize: 14,
                   fontWeight: FontWeight.bold,

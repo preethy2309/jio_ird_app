@@ -20,11 +20,9 @@ class _CartButtonState extends ConsumerState<CartButton> {
   Widget build(BuildContext context) {
     final cartFocusNode = ref.watch(cartFocusProvider);
 
-    // Get total cart count from itemQuantitiesProvider
     final totalCount = ref
         .watch(itemQuantitiesProvider)
-        .values
-        .fold(0, (sum, qty) => sum + qty);
+        .fold(0, (sum, dishWithQty) => sum + dishWithQty.quantity);
 
     return Focus(
       focusNode: cartFocusNode,

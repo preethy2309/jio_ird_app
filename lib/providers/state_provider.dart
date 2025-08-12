@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:jio_ird/data/models/order_status_response.dart';
 
 import '../config/env_config.dart';
+import '../data/models/dish_with_quantity.dart';
 import '../data/models/food_item.dart';
 import '../data/repositories/food_repository.dart';
 import '../data/repositories/food_repositoty_impl.dart';
@@ -44,8 +45,7 @@ final focusedDishProvider = StateProvider<int>((ref) => 0);
 /// Toggle for showing/hiding categories
 final showCategoriesProvider = StateProvider<bool>((ref) => true);
 
-/// Map of dishId to quantity added
-final itemQuantitiesProvider = StateProvider<Map<int, int>>((ref) => {});
+final itemQuantitiesProvider = StateProvider<List<DishWithQuantity>>((ref) => []);
 
 final canFocusDishListProvider = StateProvider<bool>((ref) => false);
 
