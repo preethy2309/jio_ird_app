@@ -52,3 +52,5 @@ final canFocusDishListProvider = StateProvider<bool>((ref) => false);
 final hasNavigatedToDishesProvider = StateProvider<bool>((ref) => false);
 
 final selectedCartTabProvider = StateProvider<CartTab>((ref) => CartTab.cart);
+
+final orderPlacedProvider = StateProvider<bool>((ref) => false);

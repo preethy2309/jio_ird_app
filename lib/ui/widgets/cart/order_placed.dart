@@ -1,7 +1,33 @@
 import 'package:flutter/material.dart';
 
-class OrderPlaced extends StatelessWidget {
-  const OrderPlaced({super.key});
+class OrderPlaced extends StatefulWidget {
+  final VoidCallback onTrackOrder;
+
+  const OrderPlaced({super.key, required this.onTrackOrder});
+
+  @override
+  State<OrderPlaced> createState() => _OrderPlacedState();
+}
+
+class _OrderPlacedState extends State<OrderPlaced> {
+  late FocusNode _trackOrderButtonFocusNode;
+
+  @override
+  void initState() {
+    super.initState();
+    _trackOrderButtonFocusNode = FocusNode();
+
+    // Request focus after the first frame is rendered
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _trackOrderButtonFocusNode.requestFocus();
+    });
+  }
+
+  @override
+  void dispose() {
+    _trackOrderButtonFocusNode.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,13 +56,25 @@ class OrderPlaced extends StatelessWidget {
           ),
           const SizedBox(height: 20),
           ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.white,
-              shape: const StadiumBorder(),
+            focusNode: _trackOrderButtonFocusNode,
+            style: ButtonStyle(
+              backgroundColor:
+              WidgetStateProperty.resolveWith<Color>((states) {
+                if (states.contains(WidgetState.focused)) {
+                  return Colors.amber;
+                }
+                return Colors.white;
+              }),
+              padding: WidgetStateProperty.all(
+                const EdgeInsets.symmetric(horizontal: 24),
+              ),
+              shape: WidgetStateProperty.all(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30),
+                ),
+              ),
             ),
-            onPressed: () {
-              // Navigate to tracking screen
-            },
+            onPressed: widget.onTrackOrder,
             child: const Text(
               "Track order",
               style: TextStyle(color: Colors.black),

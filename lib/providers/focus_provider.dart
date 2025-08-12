@@ -85,3 +85,15 @@ final profileFocusProvider = Provider.autoDispose<FocusNode>((ref) {
   ref.onDispose(() => node.dispose());
   return node;
 });
+
+final cartTabFocusNodeProvider = Provider<FocusNode>((ref) {
+  final node = FocusNode();
+  ref.onDispose(() => node.dispose());
+  return node;
+});
+
+final myOrdersTabFocusNodeProvider = Provider<FocusNode>((ref) {
+  final node = FocusNode();
+  ref.onDispose(() => node.dispose());
+  return node;
+});

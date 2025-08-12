@@ -1,29 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class DeliveryInfoPanel extends StatelessWidget {
-  // final String deliveryTime;
-  // final int guestCount;
-  // final VoidCallback onIncreaseGuest;
-  // final VoidCallback onDecreaseGuest;
-  // final String allergies;
-  // final String instructions;
-  // final double totalAmount;
-  // final VoidCallback onPlaceOrder;
+import '../../../providers/state_provider.dart';
 
+class DeliveryInfoPanel extends ConsumerWidget {
   const DeliveryInfoPanel({
     super.key,
-    // required this.deliveryTime,
-    // required this.guestCount,
-    // required this.onIncreaseGuest,
-    // required this.onDecreaseGuest,
-    // required this.allergies,
-    // required this.instructions,
-    // required this.totalAmount,
-    // required this.onPlaceOrder,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -57,19 +43,28 @@ class DeliveryInfoPanel extends StatelessWidget {
           const SizedBox(height: 10),
           Center(
             child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.white,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 24),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30),
+              style: ButtonStyle(
+                backgroundColor:
+                    WidgetStateProperty.resolveWith<Color>((states) {
+                  if (states.contains(WidgetState.focused)) {
+                    return Colors.amber;
+                  }
+                  return Colors.white;
+                }),
+                padding: WidgetStateProperty.all(
+                  const EdgeInsets.symmetric(horizontal: 24),
+                ),
+                shape: WidgetStateProperty.all(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
                 ),
               ),
               onPressed: () {
-
+                ref.read(orderPlacedProvider.notifier).state = true;
               },
               child: const Text(
-                "Place order - Rs. ${1100}",
+                "Place order - Rs. 1100",
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 14,
@@ -142,7 +137,7 @@ class DeliveryInfoPanel extends StatelessWidget {
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 12),
                 child: Text(
-                 "1",
+                  "1",
                   style: TextStyle(fontSize: 16, color: Colors.white),
                 ),
               ),

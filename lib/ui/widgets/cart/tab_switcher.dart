@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../providers/focus_provider.dart';
 import '../../../providers/state_provider.dart';
 
 class TabSwitcher extends ConsumerStatefulWidget {
@@ -12,32 +13,21 @@ class TabSwitcher extends ConsumerStatefulWidget {
 }
 
 class _TabSwitcherState extends ConsumerState<TabSwitcher> {
-  late FocusNode itemsTabFocusNode;
-  late FocusNode infoTabFocusNode;
-
   @override
   void initState() {
     super.initState();
-    itemsTabFocusNode = FocusNode();
-    infoTabFocusNode = FocusNode();
-
-    // Give initial focus to Cart
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      itemsTabFocusNode.requestFocus();
+      final cartFocusNode = ref.read(cartTabFocusNodeProvider);
+      cartFocusNode.requestFocus();
       ref.read(selectedCartTabProvider.notifier).state = CartTab.cart;
     });
   }
 
   @override
-  void dispose() {
-    itemsTabFocusNode.dispose();
-    infoTabFocusNode.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     final selectedTab = ref.watch(selectedCartTabProvider);
+    final itemsTabFocusNode = ref.watch(cartTabFocusNodeProvider);
+    final infoTabFocusNode = ref.watch(myOrdersTabFocusNodeProvider);
 
     return Container(
       padding: const EdgeInsets.all(6),
@@ -55,12 +45,13 @@ class _TabSwitcherState extends ConsumerState<TabSwitcher> {
             focusNode: itemsTabFocusNode,
             onSelect: () {
               ref.read(selectedCartTabProvider.notifier).state = CartTab.cart;
+              itemsTabFocusNode.requestFocus();
             },
             onRight: () {
               infoTabFocusNode.requestFocus();
               ref.read(selectedCartTabProvider.notifier).state = CartTab.orders;
             },
-            onLeft: null, // no left from Cart
+            onLeft: null,
           ),
           const SizedBox(width: 4),
           _buildTab(
@@ -69,9 +60,9 @@ class _TabSwitcherState extends ConsumerState<TabSwitcher> {
             focusNode: infoTabFocusNode,
             onSelect: () {
               ref.read(selectedCartTabProvider.notifier).state = CartTab.orders;
+              infoTabFocusNode.requestFocus();
             },
             onRight: null,
-            // no right from My Orders
             onLeft: () {
               itemsTabFocusNode.requestFocus();
               ref.read(selectedCartTabProvider.notifier).state = CartTab.cart;
