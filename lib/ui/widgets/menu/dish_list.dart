@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:jio_ird/ui/theme/app_colors.dart';
 
 import '../../../data/models/dish_with_quantity.dart';
 import '../../../providers/focus_provider.dart';
@@ -76,11 +77,11 @@ class DishList extends ConsumerWidget {
               ref.read(itemQuantitiesProvider.notifier).state = currentList;
             },
             child: Container(
-              height: 90,
-              margin: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+              height: 76,
+              margin: const EdgeInsets.all(2),
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
-                color: isFocused ? Colors.amber.shade300 : Colors.grey.shade900,
+                color: isFocused ? AppColors.primary : Colors.transparent,
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Row(
@@ -89,20 +90,20 @@ class DishList extends ConsumerWidget {
                     borderRadius: BorderRadius.circular(6),
                     child: Image.network(
                       dish.dish_image,
-                      width: 80,
-                      height: 70,
+                      width: 75,
+                      height: 75,
                       fit: BoxFit.cover,
                       errorBuilder: (context, error, stackTrace) {
                         return Image.asset(
                           'assets/images/default_dish.png',
-                          width: 80,
-                          height: 70,
+                          width: 75,
+                          height: 75,
                           fit: BoxFit.cover,
                         );
                       },
                     ),
                   ),
-                  const SizedBox(width: 20),
+                  const SizedBox(width: 10),
                   if (isSelected)
                     QuantitySelector(
                       quantity: dish.quantity,

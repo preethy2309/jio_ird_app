@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:jio_ird/providers/focus_provider.dart';
+import 'package:jio_ird/ui/theme/app_colors.dart';
 
 import '../../../../providers/state_provider.dart';
 
@@ -27,7 +28,8 @@ class _VegToggleState extends ConsumerState<VegToggle> {
         if (event is KeyDownEvent) {
           final key = event.logicalKey;
 
-          if (key == LogicalKeyboardKey.select || key == LogicalKeyboardKey.enter) {
+          if (key == LogicalKeyboardKey.select ||
+              key == LogicalKeyboardKey.enter) {
             ref.read(vegOnlyProvider.notifier).state = !vegOnly;
             return KeyEventResult.handled;
           }
@@ -39,36 +41,45 @@ class _VegToggleState extends ConsumerState<VegToggle> {
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
           decoration: BoxDecoration(
-            color: toggleFocused ? Colors.amber : Colors.transparent,
-            borderRadius: BorderRadius.circular(8),
+            color: toggleFocused ? AppColors.primary : Colors.transparent,
+            borderRadius: BorderRadius.circular(26),
           ),
-          child: Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(4),
-                decoration: BoxDecoration(
-                  color: Colors.black,
-                  border: Border.all(color: Colors.green, width: 2),
-                  borderRadius: BorderRadius.circular(4),
-                ),
-                child: Container(
-                  width: 10,
-                  height: 10,
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.green,
+          child: SizedBox(
+            height: 26,
+            child: Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(4),
+                  decoration: BoxDecoration(
+                    color: Colors.transparent,
+                    border: Border.all(color: Colors.green, width: 2),
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                  child: Container(
+                    width: 10,
+                    height: 10,
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.green,
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(width: 10),
-              const Text('Veg Only', style: TextStyle(color: Colors.white)),
-              const SizedBox(width: 8),
-              Switch(
-                value: vegOnly,
-                onChanged: (value) =>
-                ref.read(vegOnlyProvider.notifier).state = value,
-              ),
-            ],
+                const SizedBox(width: 10),
+                const Text('Veg Only', style: TextStyle(color: Colors.white)),
+                const SizedBox(width: 8),
+                SizedBox(
+                  width: 46,
+                  height: 26,
+                  child: Switch(
+                    activeColor: Colors.amber,
+                    autofocus: true,
+                    value: vegOnly,
+                    onChanged: (value) =>
+                        ref.read(vegOnlyProvider.notifier).state = value,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

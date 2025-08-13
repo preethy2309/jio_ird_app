@@ -69,6 +69,11 @@ flutter:
     - assets/dummy/meals.json
     - assets/dummy/order_status.json
     - assets/images/default_dish.png
+    - assets/images/hotel_logo.png
+    - assets/images/down_arrow.png
+    - assets/images/up_arrow.png
+    - assets/images/ok.png
+    - assets/images/bg.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:

@@ -16,22 +16,28 @@ class MenuTopBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Header(
-          title: title,
-          description: description,
-        ),
-        if (icons != null && icons!.isNotEmpty) ...[
-          for (int i = 0; i < icons!.length; i++) ...[
-            const Spacer(),
-            icons![i],
+    return SizedBox(
+      height: 60,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Header(
+            title: title,
+            description: description,
+          ),
+          if (icons != null && icons!.isNotEmpty) ...[
+            const SizedBox(
+              width: 100,
+            ),
+            for (int i = 0; i < icons!.length; i++) ...[
+              const Spacer(),
+              icons![i],
+            ],
           ],
+          const Spacer(),
+          const ProfileIcon()
         ],
-        const Spacer(),
-        const ProfileIcon()
-      ],
+      ),
     );
   }
 }

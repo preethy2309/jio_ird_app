@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:jio_ird/ui/theme/app_colors.dart';
 
 import '../../../../data/models/food_item.dart';
-import '../../../../providers/state_provider.dart';
 import '../../../../providers/focus_provider.dart'; // <- import focus providers
+import '../../../../providers/state_provider.dart';
 
 class CategoryList extends ConsumerWidget {
   final List<FoodItem> categories;
@@ -51,15 +52,20 @@ class CategoryList extends ConsumerWidget {
             return KeyEventResult.ignored;
           },
           child: Container(
-            margin: const EdgeInsets.all(4),
-            padding: const EdgeInsets.all(12),
+            alignment: Alignment.centerLeft,
+            height: 36,
+            margin: const EdgeInsets.all(2),
+            padding: const EdgeInsets.symmetric(horizontal: 12),
             decoration: BoxDecoration(
-              color: isSelected ? Colors.white : Colors.amber,
-              borderRadius: BorderRadius.circular(12),
+              color: isSelected ? Colors.amber : AppColors.primary,
+              borderRadius: BorderRadius.circular(14),
             ),
             child: Text(
               categories[index].category_name,
-              style: const TextStyle(color: Colors.black, fontSize: 16),
+              style: TextStyle(
+                color: !isSelected ? Colors.amber : AppColors.primary,
+                fontSize: 16,
+              ),
             ),
           ),
         );

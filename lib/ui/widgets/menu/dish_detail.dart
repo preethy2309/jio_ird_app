@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import '../../../data/models/dish_model.dart';
 import '../../../providers/focus_provider.dart';
 
@@ -20,13 +21,13 @@ class DishDetail extends ConsumerWidget {
 
           return Container(
             decoration: BoxDecoration(
-              color: Colors.black87,
               border: Border.all(
                 color: hasFocus ? Colors.amber : Colors.transparent,
                 width: 2,
               ),
             ),
-            padding: const EdgeInsets.all(20),
+            margin: const EdgeInsets.all(2),
+            padding: const EdgeInsets.only(left: 20),
             child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -35,13 +36,13 @@ class DishDetail extends ConsumerWidget {
                     Image.network(
                       dish.dish_image,
                       width: double.infinity,
-                      height: 200,
+                      height: 242,
                       fit: BoxFit.cover,
                       errorBuilder: (context, error, stackTrace) {
                         return Image.asset(
                           'assets/images/default_dish.png',
                           width: double.infinity,
-                          height: 200,
+                          height: 242,
                           fit: BoxFit.cover,
                         );
                       },

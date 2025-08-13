@@ -18,7 +18,6 @@ class MenuScreen extends ConsumerStatefulWidget {
 }
 
 class _MenuScreenState extends ConsumerState<MenuScreen> {
-
   @override
   Widget build(BuildContext context) {
     final vegOnly = ref.watch(vegOnlyProvider);
@@ -27,89 +26,80 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
     final mealsAsync = ref.watch(mealsProvider);
     final showCategories = ref.watch(showCategoriesProvider);
 
-    return Scaffold(
-      backgroundColor: Colors.black,
-      body: mealsAsync.when(
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (e, _) => Center(child: Text('Error: $e')),
-        data: (categories) {
-          final selectedCat = categories[selectedCategory];
-          final subCategories = selectedCat.sub_categories ?? [];
+    return mealsAsync.when(
+      loading: () => const Center(child: CircularProgressIndicator()),
+      error: (e, _) => Center(child: Text('Error: $e')),
+      data: (categories) {
+        final selectedCat = categories[selectedCategory];
+        final subCategories = selectedCat.sub_categories ?? [];
 
-          final allDishes =
-              subCategories.expand((subCat) => subCat.dishes ?? []).toList();
+        final allDishes =
+            subCategories.expand((subCat) => subCat.dishes ?? []).toList();
 
-          final filteredDishes = vegOnly
-              ? allDishes
-                  .where((dish) => dish.dish_type.toLowerCase() == 'veg')
-                  .toList()
-              : allDishes;
+        final filteredDishes = vegOnly
+            ? allDishes
+                .where((dish) => dish.dish_type.toLowerCase() == 'veg')
+                .toList()
+            : allDishes;
 
-          if (categories.isNotEmpty) {
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              if (showCategories) {
-                var index = selectedCategory == -1 ? 0 : selectedCategory;
-                ref.read(categoryFocusNodeProvider(index)).requestFocus();
-              } else if (filteredDishes.isNotEmpty) {
-                ref.read(dishFocusNodeProvider(0)).requestFocus();
-              }
-            });
-          }
+        if (categories.isNotEmpty) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (showCategories) {
+              var index = selectedCategory == -1 ? 0 : selectedCategory;
+              ref.read(categoryFocusNodeProvider(index)).requestFocus();
+            } else if (filteredDishes.isNotEmpty) {
+              ref.read(dishFocusNodeProvider(0)).requestFocus();
+            }
+          });
+        }
 
-          return BaseScreen(
-            title: "In Room Dining",
-            description: "Room No. 204",
-            icons: const [VegToggle(), CartButton()],
-            child: Column(
-              children: [
-                const SizedBox(height: 16),
-                Expanded(
-                  child: Row(
+        return BaseScreen(
+          title: "In Room Dining",
+          description: "Room No. 204",
+          icons: const [VegToggle(), CartButton()],
+          child: Row(
+            children: [
+              // Back arrow
+              if (!showCategories)
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      // ← Back Arrow
-                      if (!showCategories)
-                        const Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.arrow_back_ios_new_rounded,
-                              color: Colors.amber,
-                              size: 30,
-                            ),
-                            SizedBox(width: 100),
-                          ],
-                        ),
-
-                      // Category List
-                      if (showCategories)
-                        Expanded(
-                          flex: 2,
-                          child: CategoryList(
-                            categories: categories,
-                          ),
-                        ),
-
-                      // Dish List
-                      Expanded(
-                        flex: showCategories ? 2 : 3,
-                        child: DishList(
-                          dishes: filteredDishes,
-                        ),
-                      ),
-
-                      // Dish Detail
-                      Expanded(
-                        flex: showCategories ? 4 : 6,
-                        child: DishDetail(dish: filteredDishes[focusedDish]),
+                      Icon(
+                        Icons.arrow_back_ios_new_rounded,
+                        color: Colors.amber,
+                        size: 30,
                       ),
                     ],
                   ),
                 ),
-              ],
-            ),
-          );
-        },
-      ),
+
+              // Category List (Fixed width)
+              if (showCategories)
+                SizedBox(
+                  width: 202,
+                  child: CategoryList(categories: categories),
+                ),
+
+              // Dish List (Fixed width)
+              SizedBox(
+                width: showCategories ? 250 : 280,
+                child: DishList(dishes: filteredDishes),
+              ),
+
+              // Dish Detail (Takes remaining space)
+              Expanded(
+                child: DishDetail(
+                  dish: filteredDishes.isNotEmpty
+                      ? filteredDishes[focusedDish]
+                      : null,
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

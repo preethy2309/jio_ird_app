@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jio_ird/ui/theme/app_colors.dart';
 
 class BottomLayout extends StatelessWidget {
   const BottomLayout({super.key});
@@ -6,66 +7,61 @@ class BottomLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 45,
-      color: Colors.amber,
-      padding: const EdgeInsets.symmetric(horizontal: 30),
+      height: 36,
+      color: AppColors.primary,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Row(
             children: [
-              Container(
-                padding: const EdgeInsets.all(6),
-                decoration: BoxDecoration(
-                  color: Colors.grey,
-                  borderRadius: BorderRadius.circular(8), // Rounded corners
-                ),
-                child: const Text("OK",
-                    style: TextStyle(color: Colors.black, fontSize: 12)),
+              Image.asset(
+                width: 20,
+                height: 24,
+                'assets/images/ok.png',
+                fit: BoxFit.fitWidth,
               ),
-              const SizedBox(width: 8),
-              const Text('Select', style: TextStyle(color: Colors.black)),
+              const SizedBox(
+                width: 8,
+                height: 16,
+              ),
+              const Text('Select',
+                  style: TextStyle(color: AppColors.textAmber, fontSize: 12)),
             ],
           ),
-          const SizedBox(width: 40),
+          const SizedBox(width: 60),
           Row(
             children: [
-              Container(
-                padding: const EdgeInsets.all(6),
-                decoration: BoxDecoration(
-                  color: Colors.grey,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: const Icon(Icons.expand_less,
-                    color: Colors.black, size: 18),
+              Image.asset(
+                width: 16,
+                height: 16,
+                'assets/images/down_arrow.png',
+                fit: BoxFit.cover,
               ),
               const SizedBox(width: 4),
-              Container(
-                padding: const EdgeInsets.all(6),
-                decoration: BoxDecoration(
-                  color: Colors.grey,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: const Icon(Icons.expand_more,
-                    color: Colors.black, size: 18),
+              Image.asset(
+                width: 16,
+                height: 16,
+                'assets/images/up_arrow.png',
+                fit: BoxFit.cover,
               ),
               const SizedBox(width: 8),
-              const Text('Navigate', style: TextStyle(color: Colors.black)),
+              const Text('Navigate',
+                  style: TextStyle(color: AppColors.textAmber, fontSize: 12)),
             ],
           ),
-          const SizedBox(width: 40),
+          const SizedBox(width: 60),
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.all(6),
                 decoration: BoxDecoration(
-                  color: Colors.green,
-                  borderRadius: BorderRadius.circular(8),
+                  color: AppColors.greenColor,
+                  borderRadius: BorderRadius.circular(12),
                 ),
-                child: const Icon(Icons.clear, color: Colors.black, size: 18),
+                child: const SizedBox(width: 25, height: 16),
               ),
               const SizedBox(width: 8),
-              const Text('Clear App', style: TextStyle(color: Colors.black)),
+              const Text('Clear App',
+                  style: TextStyle(color: AppColors.textAmber, fontSize: 12)),
             ],
           ),
         ],

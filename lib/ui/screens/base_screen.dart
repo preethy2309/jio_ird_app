@@ -19,21 +19,34 @@ class BaseScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF111111),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            MenuTopBar(
-              title: title,
-              description: description,
-              icons: icons,
+      body: Stack(
+        children: [
+          Positioned.fill(
+            child: Image.asset(
+              'assets/images/bg.png',
+              fit: BoxFit.cover,
             ),
-            Expanded(child: child), // your screen content
-          ],
-        ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 38, right: 32, top: 26),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                MenuTopBar(
+                  title: title,
+                  description: description,
+                  icons: icons,
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Expanded(child: child),
+              ],
+            ),
+          ),
+        ],
       ),
+      backgroundColor: const Color(0x80000000),
       bottomNavigationBar: const BottomLayout(),
     );
   }

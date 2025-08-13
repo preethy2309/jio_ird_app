@@ -18,16 +18,16 @@ class Header extends StatelessWidget {
         Text(
           title,
           style: const TextStyle(
-            color: Colors.white,
-            fontSize: 40,
+            color: Colors.amber,
+            fontSize: 28,
           ),
         ),
         Text(
           description,
           style: const TextStyle(
-            color: Colors.white70,
+            color: Colors.white,
             fontWeight: FontWeight.bold,
-            fontSize: 16,
+            fontSize: 12,
           ),
         ),
       ],

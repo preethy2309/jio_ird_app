@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:jio_ird/ui/theme/app_colors.dart';
 
 import '../../../../providers/focus_provider.dart';
 import '../../../../providers/state_provider.dart';
@@ -41,21 +42,24 @@ class _CartButtonState extends ConsumerState<CartButton> {
           clipBehavior: Clip.none,
           children: [
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
               decoration: BoxDecoration(
-                color: cartFocused ? Colors.amber : Colors.grey[800],
-                borderRadius: BorderRadius.circular(8),
+                color: cartFocused ? AppColors.primary : Colors.grey[800],
+                borderRadius: BorderRadius.circular(26),
               ),
-              child: const Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(Icons.shopping_cart, color: Colors.white),
-                  SizedBox(width: 8),
-                  Text(
-                    'Go to Cart',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ],
+              child: const SizedBox(
+                height: 26,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(Icons.shopping_cart, color: Colors.white),
+                    SizedBox(width: 8),
+                    Text(
+                      'Go to Cart',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ],
+                ),
               ),
             ),
             if (totalCount > 0)
