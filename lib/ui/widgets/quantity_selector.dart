@@ -40,10 +40,14 @@ class QuantitySelector extends StatelessWidget {
               onRight: () => minusButtonFocusNode.requestFocus(),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12),
-              child: Text(
-                quantity.toString(),
-                style: const TextStyle(fontSize: 16, color: Colors.white),
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: SizedBox(
+                width: 20,
+                child: Text(
+                  quantity.toString(),
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(fontSize: 16, color: Colors.white),
+                ),
               ),
             ),
             _AnimatedQtyButton(
