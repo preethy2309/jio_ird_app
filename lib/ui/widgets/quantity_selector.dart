@@ -19,47 +19,50 @@ class QuantitySelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(alignment: Alignment.center, children: [
-      Container(
-        width: 100,
-        height: 38,
-        decoration: BoxDecoration(
-          color: Colors.grey.shade800,
-          borderRadius: BorderRadius.circular(38),
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        Container(
+          width: 100,
+          height: 38,
+          decoration: BoxDecoration(
+            color: Colors.grey.shade800,
+            borderRadius: BorderRadius.circular(38),
+          ),
         ),
-      ),
-      SizedBox(
-        width: 100,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            _AnimatedQtyButton(
-              icon: Icons.add,
-              onTap: onIncrement,
-              focusNode: plusButtonFocusNode,
-              onRight: () => minusButtonFocusNode.requestFocus(),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
-              child: SizedBox(
-                width: 20,
-                child: Text(
-                  quantity.toString(),
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(fontSize: 16, color: Colors.white),
+        SizedBox(
+          width: 100,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _AnimatedQtyButton(
+                icon: Icons.add,
+                onTap: onIncrement,
+                focusNode: plusButtonFocusNode,
+                onRight: () => minusButtonFocusNode.requestFocus(),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: SizedBox(
+                  width: 20, // fixed width
+                  child: Text(
+                    quantity.toString().padLeft(2, ' '), // keeps alignment
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(fontSize: 16, color: Colors.white),
+                  ),
                 ),
               ),
-            ),
-            _AnimatedQtyButton(
-              icon: Icons.remove,
-              onTap: onDecrement,
-              focusNode: minusButtonFocusNode,
-              onLeft: () => plusButtonFocusNode.requestFocus(),
-            ),
-          ],
+              _AnimatedQtyButton(
+                icon: Icons.remove,
+                onTap: onDecrement,
+                focusNode: minusButtonFocusNode,
+                onLeft: () => plusButtonFocusNode.requestFocus(),
+              ),
+            ],
+          ),
         ),
-      ),
-    ]);
+      ],
+    );
   }
 }
 
@@ -125,7 +128,8 @@ class _AnimatedQtyButtonState extends State<_AnimatedQtyButton> {
         focusColor: Colors.transparent,
         splashColor: Colors.transparent,
         highlightColor: Colors.transparent,
-        child: Container(
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 150),
           width: _isFocused ? 36 : 28,
           height: _isFocused ? 36 : 28,
           alignment: Alignment.center,
@@ -133,13 +137,10 @@ class _AnimatedQtyButtonState extends State<_AnimatedQtyButton> {
             color: _isFocused ? Colors.amber : Colors.grey,
             shape: BoxShape.circle,
           ),
-          child: AnimatedContainer(
-            duration: const Duration(milliseconds: 150),
-            child: Icon(
-              widget.icon,
-              color: _isFocused ? Colors.white : Colors.black,
-              size: _isFocused ? 26 : 18, // only icon changes size
-            ),
+          child: Icon(
+            widget.icon,
+            color: _isFocused ? Colors.white : Colors.black,
+            size: _isFocused ? 26 : 18,
           ),
         ),
       ),

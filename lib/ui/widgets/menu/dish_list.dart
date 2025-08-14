@@ -128,7 +128,13 @@ class DishList extends ConsumerWidget {
                   const SizedBox(width: 10),
                   if (isSelected)
                     QuantitySelector(
-                      quantity: dish.quantity,
+                      quantity: itemQuantities
+                          .firstWhere(
+                            (e) => e.dish.id == dish.id,
+                            orElse: () =>
+                                DishWithQuantity(dish: dish, quantity: 0),
+                          )
+                          .quantity,
                       onIncrement: () {
                         final currentList = [...itemQuantities];
                         final existingIndex =
