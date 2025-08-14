@@ -21,9 +21,12 @@ class DishList extends ConsumerWidget {
     final selectedDish = ref.watch(selectedDishProvider);
     final focusedDish = ref.watch(focusedDishProvider);
     final itemQuantities = ref.watch(itemQuantitiesProvider);
-    final canFocusDishList = ref.watch(canFocusDishListProvider);
 
     final dishFocusNodes = ref.watch(dishFocusNodesProvider);
+    final showCategories = ref.watch(showCategoriesProvider);
+
+    final FocusNode plusFocusNode = FocusNode();
+    final FocusNode minusFocusNode = FocusNode();
 
     return ListView.builder(
       itemCount: dishes.length,
@@ -33,11 +36,18 @@ class DishList extends ConsumerWidget {
         final isFocused = index == focusedDish;
 
         final node = dishFocusNodes[index];
+        if (focusedDish == index) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (node.canRequestFocus) {
+              node.requestFocus();
+            }
+          });
+        }
 
         return Focus(
           focusNode: node,
-          skipTraversal: !canFocusDishList,
-          canRequestFocus: canFocusDishList,
+          skipTraversal: showCategories,
+          canRequestFocus: !showCategories,
           onFocusChange: (hasFocus) {
             if (hasFocus) {
               if (selectedDish != focusedDish) {
@@ -51,10 +61,22 @@ class DishList extends ConsumerWidget {
               if (event.logicalKey == LogicalKeyboardKey.arrowLeft) {
                 ref.read(showCategoriesProvider.notifier).state = true;
               }
-              if (event.logicalKey == LogicalKeyboardKey.arrowRight) {
-                Future.delayed(const Duration(milliseconds: 50), () {
-                  ref.read(dishDetailFocusNodeProvider).requestFocus();
-                });
+              if ((event.logicalKey == LogicalKeyboardKey.enter ||
+                  event.logicalKey == LogicalKeyboardKey.select)) {
+                plusFocusNode.requestFocus();
+                ref.read(selectedDishProvider.notifier).state = index;
+                ref.read(focusedDishProvider.notifier).state = index;
+
+                final currentList = [...itemQuantities];
+                final existingIndex =
+                    currentList.indexWhere((e) => e.dish.id == dish.id);
+                if (existingIndex >= 0) {
+                  // Increase quantity
+                  currentList[existingIndex].quantity++;
+                } else {
+                  currentList.add(DishWithQuantity(dish: dish, quantity: 1));
+                }
+                ref.read(itemQuantitiesProvider.notifier).state = currentList;
                 return KeyEventResult.handled;
               }
             }
@@ -64,7 +86,7 @@ class DishList extends ConsumerWidget {
             onTap: () {
               ref.read(selectedDishProvider.notifier).state = index;
               ref.read(focusedDishProvider.notifier).state = index;
-
+              plusFocusNode.requestFocus();
               final currentList = [...itemQuantities];
               final existingIndex =
                   currentList.indexWhere((e) => e.dish.id == dish.id);
@@ -136,6 +158,8 @@ class DishList extends ConsumerWidget {
                               currentList;
                         }
                       },
+                      plusButtonFocusNode: plusFocusNode,
+                      minusButtonFocusNode: minusFocusNode,
                     )
                   else
                     Expanded(

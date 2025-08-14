@@ -1,19 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:jio_ird/ui/theme/app_colors.dart';
 
 import '../../../data/models/dish_model.dart';
 import '../../../providers/focus_provider.dart';
+import '../veg_indicator.dart';
 
 class DishDetail extends ConsumerWidget {
   final Dish dish;
+  final String categoryName;
 
-  const DishDetail({super.key, required this.dish});
+  const DishDetail({super.key, required this.dish, required this.categoryName});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final focusNode = ref.watch(dishDetailFocusNodeProvider);
 
     return Focus(
+      canRequestFocus: false,
       focusNode: focusNode,
       child: Builder(
         builder: (context) {
@@ -22,7 +26,7 @@ class DishDetail extends ConsumerWidget {
           return Container(
             decoration: BoxDecoration(
               border: Border.all(
-                color: hasFocus ? Colors.amber : Colors.transparent,
+                color: hasFocus ? AppColors.primary : Colors.transparent,
                 width: 2,
               ),
             ),
@@ -47,6 +51,22 @@ class DishDetail extends ConsumerWidget {
                         );
                       },
                     ),
+                  const SizedBox(height: 12),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      VegIndicator(color: (dish.dish_type.toLowerCase() == 'veg' ? Colors.green : Colors.red)), // ✅ Using your existing widget
+                      const SizedBox(width: 6),
+                      Text(
+                        categoryName,
+                        style: const TextStyle(
+                          color: Colors.white70,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
                   const SizedBox(height: 12),
                   Text(
                     dish.name,

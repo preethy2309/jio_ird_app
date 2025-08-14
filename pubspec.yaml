@@ -74,6 +74,7 @@ flutter:
     - assets/images/up_arrow.png
     - assets/images/ok.png
     - assets/images/bg.png
+    - assets/images/cart_empty.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:

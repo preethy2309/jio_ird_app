@@ -40,16 +40,12 @@ final selectedCategoryProvider = StateProvider<int>((ref) => 0);
 final selectedDishProvider = StateProvider<int>((ref) => -1);
 
 /// Currently focused dish index (inside the selected category)
-final focusedDishProvider = StateProvider<int>((ref) => 0);
+final focusedDishProvider = StateProvider<int>((ref) => -1);
 
 /// Toggle for showing/hiding categories
 final showCategoriesProvider = StateProvider<bool>((ref) => true);
 
 final itemQuantitiesProvider = StateProvider<List<DishWithQuantity>>((ref) => []);
-
-final canFocusDishListProvider = StateProvider<bool>((ref) => false);
-
-final hasNavigatedToDishesProvider = StateProvider<bool>((ref) => false);
 
 final selectedCartTabProvider = StateProvider<CartTab>((ref) => CartTab.cart);
 

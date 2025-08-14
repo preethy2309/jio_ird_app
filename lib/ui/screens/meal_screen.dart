@@ -61,17 +61,21 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
             children: [
               // Back arrow
               if (!showCategories)
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.arrow_back_ios_new_rounded,
-                        color: Colors.amber,
-                        size: 30,
-                      ),
-                    ],
+                Container(
+                  margin: const EdgeInsets.only(right: 16),
+                  width: 36,
+                  height: 36,
+                  decoration: const BoxDecoration(
+                    color: Color(0x33FFFFFF),
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Padding(
+                    padding: EdgeInsets.all(6.0), // Inner spacing for the icon
+                    child: Icon(
+                      Icons.arrow_back_ios_new_rounded,
+                      color: Colors.amber,
+                      size: 20,
+                    ),
                   ),
                 ),
 
@@ -91,9 +95,11 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
               // Dish Detail (Takes remaining space)
               Expanded(
                 child: DishDetail(
-                  dish: filteredDishes.isNotEmpty
+                  dish: (focusedDish >= 0 &&
+                          focusedDish < filteredDishes.length)
                       ? filteredDishes[focusedDish]
-                      : null,
+                      : (filteredDishes.isNotEmpty ? filteredDishes[0] : null),
+                  categoryName: selectedCat.category_name,
                 ),
               ),
             ],

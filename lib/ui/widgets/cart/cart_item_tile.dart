@@ -25,6 +25,8 @@ class CartItemTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final Color dotColor =
         type.toLowerCase() == "veg" ? Colors.green : Colors.red;
+    final FocusNode plusFocusNode = FocusNode();
+    final FocusNode minusFocusNode = FocusNode();
 
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
@@ -33,52 +35,53 @@ class CartItemTile extends StatelessWidget {
         color: Colors.grey.shade900,
         borderRadius: BorderRadius.circular(8),
       ),
-      child: Row(
+      child: Stack(
+        alignment: Alignment.center,
         children: [
-          Container(
-            padding: const EdgeInsets.all(2),
-            decoration: BoxDecoration(
-              color: Colors.black,
-              border: Border.all(color: dotColor, width: 1),
-              borderRadius: BorderRadius.circular(2),
-            ),
-            child: Container(
-              width: 5,
-              height: 5,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: dotColor,
+          Row(
+            children: [
+              // Veg/Non-Veg dot
+              Container(
+                padding: const EdgeInsets.all(2),
+                decoration: BoxDecoration(
+                  color: Colors.black,
+                  border: Border.all(color: dotColor, width: 1),
+                  borderRadius: BorderRadius.circular(2),
+                ),
+                child: Container(
+                  width: 5,
+                  height: 5,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: dotColor,
+                  ),
+                ),
               ),
-            ),
-          ),
-          const SizedBox(width: 6),
-          Expanded(
-            child: Text(
-              title,
-              style: const TextStyle(
-                fontSize: 14,
-                color: Colors.white,
+              const SizedBox(width: 6),
+              // Title
+              Expanded(
+                child: Text(
+                  title,
+                  style: const TextStyle(fontSize: 14, color: Colors.white),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-            ),
+              const SizedBox(width: 60), // Space for QuantitySelector
+              // Price
+              Text(
+                "₹$price",
+                style: const TextStyle(fontSize: 18, color: Colors.white),
+              ),
+            ],
           ),
-
-          const Spacer(),
 
           QuantitySelector(
             quantity: quantity,
             onIncrement: onIncrement,
-            onDecrement:onDecrement,
-          ),
-
-          const SizedBox(width: 12),
-
-          const Spacer(),
-          // Price
-          Text(
-            "₹$price",
-            style: const TextStyle(fontSize: 18, color: Colors.white),
+            onDecrement: onDecrement,
+            plusButtonFocusNode: plusFocusNode,
+            minusButtonFocusNode: minusFocusNode,
           ),
         ],
       ),

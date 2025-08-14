@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:jio_ird/providers/focus_provider.dart';
 import 'package:jio_ird/ui/theme/app_colors.dart';
+import 'package:jio_ird/ui/widgets/veg_indicator.dart';
 
 import '../../../../providers/state_provider.dart';
 
@@ -23,7 +24,14 @@ class _VegToggleState extends ConsumerState<VegToggle> {
 
     return Focus(
       focusNode: toggleFocusNode,
-      onFocusChange: (hasFocus) => setState(() => toggleFocused = hasFocus),
+      onFocusChange: (hasFocus) {
+        setState(() => toggleFocused = hasFocus);
+        if(hasFocus) {
+          ref
+              .read(focusedDishProvider.notifier)
+              .state = -1;
+        }
+      },
       onKeyEvent: (node, event) {
         if (event is KeyDownEvent) {
           final key = event.logicalKey;
@@ -48,22 +56,7 @@ class _VegToggleState extends ConsumerState<VegToggle> {
             height: 26,
             child: Row(
               children: [
-                Container(
-                  padding: const EdgeInsets.all(4),
-                  decoration: BoxDecoration(
-                    color: Colors.transparent,
-                    border: Border.all(color: Colors.green, width: 2),
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                  child: Container(
-                    width: 10,
-                    height: 10,
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.green,
-                    ),
-                  ),
-                ),
+                const VegIndicator(),
                 const SizedBox(width: 10),
                 const Text('Veg Only', style: TextStyle(color: Colors.white)),
                 const SizedBox(width: 8),

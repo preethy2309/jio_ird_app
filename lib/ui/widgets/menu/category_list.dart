@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:jio_ird/ui/theme/app_colors.dart';
 
 import '../../../../data/models/food_item.dart';
-import '../../../../providers/focus_provider.dart'; // <- import focus providers
+import '../../../../providers/focus_provider.dart';
 import '../../../../providers/state_provider.dart';
 
 class CategoryList extends ConsumerWidget {
@@ -24,7 +24,6 @@ class CategoryList extends ConsumerWidget {
       itemBuilder: (context, index) {
         final isSelected = index == selectedCategory;
         final focusNode = ref.watch(categoryFocusNodeProvider(index));
-        final firstDishFocusNode = ref.watch(dishFocusNodeProvider(0));
 
         return Focus(
           focusNode: focusNode,
@@ -32,7 +31,7 @@ class CategoryList extends ConsumerWidget {
             if (hasFocus) {
               ref.read(selectedCategoryProvider.notifier).state = index;
               ref.read(selectedDishProvider.notifier).state = -1;
-              ref.read(canFocusDishListProvider.notifier).state = false;
+              ref.read(focusedDishProvider.notifier).state = -1;
             }
           },
           onKeyEvent: (node, event) {
@@ -41,11 +40,7 @@ class CategoryList extends ConsumerWidget {
                     event.logicalKey == LogicalKeyboardKey.enter ||
                     event.logicalKey == LogicalKeyboardKey.select)) {
               ref.read(showCategoriesProvider.notifier).state = false;
-              ref.read(canFocusDishListProvider.notifier).state = true;
-
-              Future.delayed(const Duration(milliseconds: 50), () {
-                firstDishFocusNode.requestFocus();
-              });
+              ref.read(focusedDishProvider.notifier).state = 0;
 
               return KeyEventResult.handled;
             }
@@ -65,6 +60,7 @@ class CategoryList extends ConsumerWidget {
               style: TextStyle(
                 color: !isSelected ? Colors.amber : AppColors.primary,
                 fontSize: 16,
+                fontWeight: FontWeight.bold,
               ),
             ),
           ),

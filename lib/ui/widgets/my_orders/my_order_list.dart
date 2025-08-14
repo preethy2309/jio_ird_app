@@ -5,6 +5,7 @@ import 'package:jio_ird/ui/widgets/my_orders/order_info.dart';
 import '../../../data/models/order_status_response.dart';
 import '../../../providers/state_provider.dart';
 import '../../screens/order_detail_screen.dart';
+import '../cart/cart_empty.dart';
 
 class MyOrderList extends ConsumerStatefulWidget {
   const MyOrderList({super.key});
@@ -25,7 +26,7 @@ class _MyOrderListState extends ConsumerState<MyOrderList> {
       error: (err, _) => Center(child: Text('Error: $err')),
       data: (orders) {
         if (orders.isEmpty) {
-          return const Center(child: Text('No orders found'));
+          const EmptyCartScreen(title: "No Orders");
         }
 
         return ListView.builder(

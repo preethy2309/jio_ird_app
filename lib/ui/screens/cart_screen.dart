@@ -1,5 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:jio_ird/ui/widgets/cart/bill_summary.dart';
+import 'package:jio_ird/ui/widgets/cart/cart_empty.dart';
 
 import '../../providers/focus_provider.dart';
 import '../../providers/state_provider.dart';
@@ -43,23 +47,19 @@ class CartScreen extends ConsumerWidget {
                     : (selectedTab == CartTab.cart
                         ? (cartItems.isEmpty
                             ? const Center(
-                                child: Text(
-                                  'Cart is empty',
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 18),
-                                ),
+                                child: EmptyCartScreen(title: "Empty Cart"),
                               )
                             : const Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Expanded(
-                                    flex: 4,
-                                    child: CartItemsList(),
+                                    flex: 3,
+                                    child: BillSummaryScreen(),
                                   ),
                                   SizedBox(width: 32),
                                   Expanded(
-                                    flex: 3,
-                                    child: DeliveryInfoPanel(),
+                                    flex: 4,
+                                    child: CartItemsList(),
                                   ),
                                 ],
                               ))
