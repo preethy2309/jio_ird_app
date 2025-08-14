@@ -5,10 +5,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:jio_ird/ui/widgets/cart/bill_summary.dart';
 import 'package:jio_ird/ui/widgets/cart/cart_empty.dart';
 
+import '../../providers/cart_provider.dart';
 import '../../providers/focus_provider.dart';
 import '../../providers/state_provider.dart';
 import '../widgets/cart/cart_item_list.dart';
-import '../widgets/cart/delivery_info_panel.dart';
 import '../widgets/cart/order_placed.dart';
 import '../widgets/cart/tab_switcher.dart';
 import '../widgets/my_orders/my_order_list.dart';
@@ -42,10 +42,10 @@ class CartScreen extends ConsumerWidget {
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: orderPlaced
-                    ? OrderPlaced(onTrackOrder: onTrackOrderPressed)
-                    : (selectedTab == CartTab.cart
-                        ? (cartItems.isEmpty
+                child: (selectedTab == CartTab.cart
+                    ? (orderPlaced
+                        ? OrderPlaced(onTrackOrder: onTrackOrderPressed)
+                        : (cartItems.isEmpty
                             ? const Center(
                                 child: EmptyCartScreen(title: "Empty Cart"),
                               )
@@ -62,8 +62,8 @@ class CartScreen extends ConsumerWidget {
                                     child: CartItemsList(),
                                   ),
                                 ],
-                              ))
-                        : const MyOrderList()),
+                              )))
+                    : const MyOrderList()),
               ),
             ),
           ],

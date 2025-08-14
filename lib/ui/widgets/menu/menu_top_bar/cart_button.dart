@@ -3,8 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:jio_ird/ui/theme/app_colors.dart';
 
-import '../../../../providers/focus_provider.dart';
-import '../../../../providers/state_provider.dart';
+import '../../../../providers/cart_provider.dart';
 import '../../../screens/cart_screen.dart';
 
 class CartButton extends ConsumerStatefulWidget {
@@ -19,14 +18,11 @@ class _CartButtonState extends ConsumerState<CartButton> {
 
   @override
   Widget build(BuildContext context) {
-    final cartFocusNode = ref.watch(cartFocusProvider);
-
     final totalCount = ref
         .watch(itemQuantitiesProvider)
         .fold(0, (sum, dishWithQty) => sum + dishWithQty.quantity);
 
     return Focus(
-      focusNode: cartFocusNode,
       onFocusChange: (hasFocus) => setState(() => cartFocused = hasFocus),
       onKeyEvent: (node, event) {
         if (event.logicalKey == LogicalKeyboardKey.select ||

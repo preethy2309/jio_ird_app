@@ -14,11 +14,8 @@ class DishDetail extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final focusNode = ref.watch(dishDetailFocusNodeProvider);
-
     return Focus(
       canRequestFocus: false,
-      focusNode: focusNode,
       child: Builder(
         builder: (context) {
           final hasFocus = Focus.of(context).hasFocus;

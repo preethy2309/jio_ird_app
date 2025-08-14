@@ -48,7 +48,8 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
               var index = selectedCategory == -1 ? 0 : selectedCategory;
               ref.read(categoryFocusNodeProvider(index)).requestFocus();
             } else if (filteredDishes.isNotEmpty) {
-              ref.read(dishFocusNodeProvider(0)).requestFocus();
+              var index = ref.watch(focusedDishProvider);
+              ref.read(dishFocusNodeProvider(index == -1 ? 0 : index)).requestFocus();
             }
           });
         }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:jio_ird/ui/theme/app_colors.dart';
 import 'package:jio_ird/ui/widgets/my_orders/order_info.dart';
 
 import '../../../data/models/order_status_response.dart';
@@ -118,7 +119,7 @@ class _MyOrderListState extends ConsumerState<MyOrderList> {
   }) {
     return Container(
       decoration: BoxDecoration(
-        color: isActive ? Colors.amber : const Color(0xFF1E1E1E),
+        color: isActive ? AppColors.primary : const Color(0xFF1E1E1E),
         borderRadius: BorderRadius.circular(16),
       ),
       margin: const EdgeInsets.symmetric(horizontal: 100),

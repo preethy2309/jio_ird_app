@@ -1,8 +1,19 @@
-import 'dish_model.dart';
-
 class DishWithQuantity {
-  final Dish dish;
-  int quantity;
+  final dynamic dish;
+  final int quantity;
 
-  DishWithQuantity({required this.dish, this.quantity = 1});
+  DishWithQuantity({
+    required this.dish,
+    required this.quantity,
+  });
+
+  DishWithQuantity copyWith({
+    dynamic dish,
+    int? quantity,
+  }) {
+    return DishWithQuantity(
+      dish: dish ?? this.dish,
+      quantity: quantity ?? this.quantity,
+    );
+  }
 }

@@ -20,10 +20,8 @@ class _VegToggleState extends ConsumerState<VegToggle> {
   @override
   Widget build(BuildContext context) {
     final vegOnly = ref.watch(vegOnlyProvider);
-    final toggleFocusNode = ref.watch(toggleFocusProvider);
 
     return Focus(
-      focusNode: toggleFocusNode,
       onFocusChange: (hasFocus) {
         setState(() => toggleFocused = hasFocus);
         if(hasFocus) {

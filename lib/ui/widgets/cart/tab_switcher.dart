@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:jio_ird/ui/theme/app_colors.dart';
 
 import '../../../providers/focus_provider.dart';
 import '../../../providers/state_provider.dart';
@@ -59,6 +60,7 @@ class _TabSwitcherState extends ConsumerState<TabSwitcher> {
             isSelected: selectedTab == CartTab.orders,
             focusNode: infoTabFocusNode,
             onSelect: () {
+              ref.read(orderPlacedProvider.notifier).state = false;
               ref.read(selectedCartTabProvider.notifier).state = CartTab.orders;
               infoTabFocusNode.requestFocus();
             },
@@ -106,13 +108,13 @@ class _TabSwitcherState extends ConsumerState<TabSwitcher> {
         duration: const Duration(milliseconds: 200),
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
         decoration: BoxDecoration(
-          color: isSelected ? Colors.amber : Colors.transparent,
+          color: isSelected ? AppColors.primary : Colors.transparent,
           borderRadius: BorderRadius.circular(50),
         ),
         child: Text(
           label,
           style: TextStyle(
-            color: isSelected ? Colors.black : Colors.amber,
+            color: Colors.amber,
             fontSize: 16,
             fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
           ),

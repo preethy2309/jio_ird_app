@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
-
 import '../quantity_selector.dart';
 
 class CartItemTile extends StatelessWidget {
   final String title;
   final int quantity;
   final String price;
-  final String type; // "veg" or "non-veg"
+  final String type;
 
   final VoidCallback onIncrement;
   final VoidCallback onDecrement;
+
+  final FocusNode plusFocusNode;
+  final FocusNode minusFocusNode;
 
   const CartItemTile({
     super.key,
@@ -19,17 +21,16 @@ class CartItemTile extends StatelessWidget {
     this.type = "veg",
     required this.onIncrement,
     required this.onDecrement,
+    required this.plusFocusNode,
+    required this.minusFocusNode,
   });
 
   @override
   Widget build(BuildContext context) {
-    final Color dotColor =
-        type.toLowerCase() == "veg" ? Colors.green : Colors.red;
-    final FocusNode plusFocusNode = FocusNode();
-    final FocusNode minusFocusNode = FocusNode();
+    final Color dotColor = type.toLowerCase() == "veg" ? Colors.green : Colors.red;
 
     return Container(
-      margin: const EdgeInsets.only(bottom: 12),
+      margin: const EdgeInsets.only(bottom: 8),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: Colors.grey.shade900,
@@ -44,7 +45,7 @@ class CartItemTile extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(2),
                 decoration: BoxDecoration(
-                  color: Colors.black,
+                  color: Colors.transparent,
                   border: Border.all(color: dotColor, width: 1),
                   borderRadius: BorderRadius.circular(2),
                 ),
@@ -75,7 +76,6 @@ class CartItemTile extends StatelessWidget {
               ),
             ],
           ),
-
           QuantitySelector(
             quantity: quantity,
             onIncrement: onIncrement,

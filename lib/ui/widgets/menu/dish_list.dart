@@ -1,103 +1,153 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:jio_ird/ui/theme/app_colors.dart';
+import 'package:jio_ird/providers/focus_provider.dart';
 
 import '../../../data/models/dish_with_quantity.dart';
-import '../../../providers/focus_provider.dart';
+import '../../../providers/cart_provider.dart';
 import '../../../providers/state_provider.dart';
+import '../../theme/app_colors.dart';
 import '../quantity_selector.dart';
 
-class DishList extends ConsumerWidget {
+class DishList extends ConsumerStatefulWidget {
   final List<dynamic> dishes;
 
-  const DishList({
-    super.key,
-    required this.dishes,
-  });
+  const DishList({super.key, required this.dishes});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<DishList> createState() => _DishListState();
+}
+
+class _DishListState extends ConsumerState<DishList> {
+  final ScrollController _scrollController = ScrollController();
+
+  late List<FocusNode> plusFocusNodes;
+  late List<FocusNode> minusFocusNodes;
+
+  @override
+  void initState() {
+    super.initState();
+
+    plusFocusNodes = List.generate(widget.dishes.length, (_) => FocusNode());
+    minusFocusNodes = List.generate(widget.dishes.length, (_) => FocusNode());
+  }
+
+  @override
+  void dispose() {
+    for (final node in plusFocusNodes) node.dispose();
+    for (final node in minusFocusNodes) node.dispose();
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _ensureVisible(FocusNode node) async {
+    if (node.context != null) {
+      await Scrollable.ensureVisible(
+        node.context!,
+        alignment: 0.5,
+        duration: const Duration(milliseconds: 200),
+        curve: Curves.easeInOut,
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final selectedDish = ref.watch(selectedDishProvider);
     final focusedDish = ref.watch(focusedDishProvider);
     final itemQuantities = ref.watch(itemQuantitiesProvider);
-
-    final dishFocusNodes = ref.watch(dishFocusNodesProvider);
     final showCategories = ref.watch(showCategoriesProvider);
 
-    final FocusNode plusFocusNode = FocusNode();
-    final FocusNode minusFocusNode = FocusNode();
-
     return ListView.builder(
-      itemCount: dishes.length,
+      controller: _scrollController,
+      itemCount: widget.dishes.length,
       itemBuilder: (context, index) {
-        final dish = dishes[index];
+        final dish = widget.dishes[index];
         final isSelected = index == selectedDish;
         final isFocused = index == focusedDish;
 
-        final node = dishFocusNodes[index];
-        if (focusedDish == index) {
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            if (node.canRequestFocus) {
-              node.requestFocus();
-            }
-          });
-        }
+        final dishNode = ref.watch(dishFocusNodeProvider(index));
+        final plusNode = plusFocusNodes[index];
+        final minusNode = minusFocusNodes[index];
 
         return Focus(
-          focusNode: node,
-          skipTraversal: showCategories,
-          canRequestFocus: !showCategories,
+          focusNode: dishNode,
+          skipTraversal: showCategories || isSelected,
+          canRequestFocus: !showCategories && !isSelected,
           onFocusChange: (hasFocus) {
             if (hasFocus) {
+              ref.read(focusedDishProvider.notifier).state = index;
+              _ensureVisible(dishNode);
               if (selectedDish != focusedDish) {
                 ref.read(selectedDishProvider.notifier).state = -1;
               }
-              ref.read(focusedDishProvider.notifier).state = index;
             }
           },
           onKeyEvent: (node, event) {
-            if (event is KeyDownEvent) {
-              if (event.logicalKey == LogicalKeyboardKey.arrowLeft) {
+            if (event is! KeyDownEvent) return KeyEventResult.ignored;
+
+            if (event.logicalKey == LogicalKeyboardKey.arrowLeft) {
+              if (isSelected) {
+                Future.microtask(() {
+                  plusNode.requestFocus();
+                  _ensureVisible(plusNode);
+                });
+                return KeyEventResult.handled;
+              } else {
                 ref.read(showCategoriesProvider.notifier).state = true;
               }
-              if ((event.logicalKey == LogicalKeyboardKey.enter ||
-                  event.logicalKey == LogicalKeyboardKey.select)) {
-                plusFocusNode.requestFocus();
-                ref.read(selectedDishProvider.notifier).state = index;
-                ref.read(focusedDishProvider.notifier).state = index;
+            }
 
-                final currentList = [...itemQuantities];
-                final existingIndex =
-                    currentList.indexWhere((e) => e.dish.id == dish.id);
-                if (existingIndex >= 0) {
-                  // Increase quantity
-                  currentList[existingIndex].quantity++;
-                } else {
-                  currentList.add(DishWithQuantity(dish: dish, quantity: 1));
-                }
-                ref.read(itemQuantitiesProvider.notifier).state = currentList;
+            if (event.logicalKey == LogicalKeyboardKey.arrowRight) {
+              if (isSelected) {
+                Future.microtask(() {
+                  minusNode.requestFocus();
+                  _ensureVisible(minusNode);
+                });
                 return KeyEventResult.handled;
               }
             }
-            return KeyEventResult.ignored;
-          },
-          child: InkWell(
-            onTap: () {
+
+            if (event.logicalKey == LogicalKeyboardKey.enter ||
+                event.logicalKey == LogicalKeyboardKey.select) {
+              final idx =
+                  itemQuantities.indexWhere((e) => e.dish.id == dish.id);
+              final currentQty = idx >= 0 ? itemQuantities[idx].quantity : 0;
+
               ref.read(selectedDishProvider.notifier).state = index;
               ref.read(focusedDishProvider.notifier).state = index;
-              plusFocusNode.requestFocus();
-              final currentList = [...itemQuantities];
-              final existingIndex =
-                  currentList.indexWhere((e) => e.dish.id == dish.id);
-              if (existingIndex >= 0) {
-                // Increase quantity
-                currentList[existingIndex].quantity++;
+
+              if (currentQty == 0) {
+                // Add 1 and move focus to plus button
+                ref
+                    .read(itemQuantitiesProvider.notifier)
+                    .addItem(DishWithQuantity(dish: dish, quantity: 1));
+                Future.microtask(() {
+                  plusNode.requestFocus();
+                  _ensureVisible(plusNode);
+                });
               } else {
-                currentList.add(DishWithQuantity(dish: dish, quantity: 1));
+                // Increment / decrement depending on focus
+                Future.microtask(() {
+                  if (plusNode.hasFocus ||
+                      (!plusNode.hasFocus && !minusNode.hasFocus)) {
+                    ref.read(itemQuantitiesProvider.notifier).increment(idx);
+                    plusNode.requestFocus();
+                    _ensureVisible(plusNode);
+                  } else if (minusNode.hasFocus) {
+                    ref.read(itemQuantitiesProvider.notifier).decrement(idx);
+                    minusNode.requestFocus();
+                    _ensureVisible(minusNode);
+                  }
+                });
               }
-              ref.read(itemQuantitiesProvider.notifier).state = currentList;
-            },
+
+              return KeyEventResult.handled;
+            }
+
+            return KeyEventResult.ignored;
+          },
+          child: GestureDetector(
             child: Container(
               height: 76,
               margin: const EdgeInsets.all(2),
@@ -126,46 +176,41 @@ class DishList extends ConsumerWidget {
                     ),
                   ),
                   const SizedBox(width: 10),
-                  if (isSelected)
+                  if (selectedDish == index)
                     QuantitySelector(
                       quantity: itemQuantities
-                          .firstWhere(
-                            (e) => e.dish.id == dish.id,
-                            orElse: () =>
-                                DishWithQuantity(dish: dish, quantity: 0),
-                          )
+                          .firstWhere((e) => e.dish.id == dish.id,
+                              orElse: () =>
+                                  DishWithQuantity(dish: dish, quantity: 0))
                           .quantity,
                       onIncrement: () {
-                        final currentList = [...itemQuantities];
-                        final existingIndex =
-                            currentList.indexWhere((e) => e.dish.id == dish.id);
-                        if (existingIndex >= 0) {
-                          currentList[existingIndex].quantity++;
-                        } else {
-                          currentList
-                              .add(DishWithQuantity(dish: dish, quantity: 1));
+                        final idx = itemQuantities
+                            .indexWhere((e) => e.dish.id == dish.id);
+                        if (idx >= 0) {
+                          ref
+                              .read(itemQuantitiesProvider.notifier)
+                              .increment(idx);
+                          Future.microtask(() {
+                            plusNode.requestFocus();
+                            _ensureVisible(plusNode);
+                          });
                         }
-                        ref.read(itemQuantitiesProvider.notifier).state =
-                            currentList;
                       },
                       onDecrement: () {
-                        final currentList = [...itemQuantities];
-                        final existingIndex =
-                            currentList.indexWhere((e) => e.dish.id == dish.id);
-                        if (existingIndex >= 0) {
-                          final newQty =
-                              currentList[existingIndex].quantity - 1;
-                          if (newQty <= 0) {
-                            currentList.removeAt(existingIndex);
-                          } else {
-                            currentList[existingIndex].quantity = newQty;
-                          }
-                          ref.read(itemQuantitiesProvider.notifier).state =
-                              currentList;
+                        final idx = itemQuantities
+                            .indexWhere((e) => e.dish.id == dish.id);
+                        if (idx >= 0) {
+                          ref
+                              .read(itemQuantitiesProvider.notifier)
+                              .decrement(idx);
+                          Future.microtask(() {
+                            minusNode.requestFocus();
+                            _ensureVisible(minusNode);
+                          });
                         }
                       },
-                      plusButtonFocusNode: plusFocusNode,
-                      minusButtonFocusNode: minusFocusNode,
+                      plusButtonFocusNode: plusNode,
+                      minusButtonFocusNode: minusNode,
                     )
                   else
                     Expanded(

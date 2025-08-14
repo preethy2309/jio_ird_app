@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../providers/cart_provider.dart';
 import '../../../providers/state_provider.dart';
 
 class BillSummaryScreen extends ConsumerWidget {
@@ -133,7 +134,9 @@ class BillSummaryScreen extends ConsumerWidget {
             width: 160,
             child: ElevatedButton(
               onPressed: () {
+                ref.read(itemQuantitiesProvider.notifier).clearCart();
                 ref.read(orderPlacedProvider.notifier).state = true;
+                //TODO call api and decide based on that
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.amber[600],
