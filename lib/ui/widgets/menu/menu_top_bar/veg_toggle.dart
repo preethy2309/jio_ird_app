@@ -23,6 +23,11 @@ class _VegToggleState extends ConsumerState<VegToggle> {
     return Focus(
       onFocusChange: (hasFocus) {
         setState(() => toggleFocused = hasFocus);
+        if(hasFocus) {
+          ref
+              .read(focusedDishProvider.notifier)
+              .state = -2;
+        }
       },
       onKeyEvent: (node, event) {
         if (event is KeyDownEvent) {
