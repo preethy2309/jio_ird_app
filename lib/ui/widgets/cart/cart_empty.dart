@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../../screens/menu_screen.dart';
-
 class EmptyCartScreen extends StatefulWidget {
   final String title;
 
@@ -18,7 +16,6 @@ class EmptyCartScreen extends StatefulWidget {
 class _EmptyCartScreenState extends State<EmptyCartScreen> {
   final FocusNode _buttonFocusNode = FocusNode();
   bool _isFocused = false;
-
 
   @override
   void dispose() {
@@ -72,8 +69,9 @@ class _EmptyCartScreenState extends State<EmptyCartScreen> {
               if (event is KeyDownEvent &&
                   (event.logicalKey == LogicalKeyboardKey.enter ||
                       event.logicalKey == LogicalKeyboardKey.select)) {
-                Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (_) => const MenuScreen()),
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                  '/menu',
+                  (route) => false, // removes everything from stack
                 );
                 return KeyEventResult.handled;
               }
@@ -96,7 +94,12 @@ class _EmptyCartScreenState extends State<EmptyCartScreen> {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
                 ),
-                onPressed: () => {Navigator.of(context).pop()},
+                onPressed: () => {
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                    '/menu',
+                        (route) => false, // removes everything from stack
+                  )
+                },
                 child: const Text(
                   "Go To Menu",
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),

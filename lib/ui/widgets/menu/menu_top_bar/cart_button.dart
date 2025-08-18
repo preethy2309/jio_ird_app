@@ -85,9 +85,6 @@ class _CartButtonState extends ConsumerState<CartButton> {
   }
 
   void _goToCart() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const CartScreen()),
-    );
+    Navigator.of(context).pushNamed('/cart');
   }
 }
