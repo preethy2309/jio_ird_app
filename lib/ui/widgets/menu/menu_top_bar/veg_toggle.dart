@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:jio_ird/providers/focus_provider.dart';
 import 'package:jio_ird/ui/theme/app_colors.dart';
 import 'package:jio_ird/ui/widgets/veg_indicator.dart';
 
@@ -24,11 +23,6 @@ class _VegToggleState extends ConsumerState<VegToggle> {
     return Focus(
       onFocusChange: (hasFocus) {
         setState(() => toggleFocused = hasFocus);
-        if(hasFocus) {
-          ref
-              .read(focusedDishProvider.notifier)
-              .state = -1;
-        }
       },
       onKeyEvent: (node, event) {
         if (event is KeyDownEvent) {

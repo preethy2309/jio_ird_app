@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../../screens/meal_screen.dart';
+import '../../screens/menu_screen.dart';
 
 class EmptyCartScreen extends StatefulWidget {
   final String title;
