@@ -27,3 +27,10 @@ final myOrdersTabFocusNodeProvider = Provider<FocusNode>((ref) {
   ref.onDispose(() => node.dispose());
   return node;
 });
+
+
+final vegToggleFocusNodeProvider = Provider<FocusNode>((ref) {
+  final node = FocusNode();
+  ref.onDispose(() => node.dispose());
+  return node;
+});

@@ -42,14 +42,17 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
                 .toList()
             : allDishes;
 
-        if (categories.isNotEmpty) {
+        if (categories.isNotEmpty &&
+            !ref.watch(vegToggleFocusNodeProvider).hasFocus) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
             if (showCategories) {
               var index = selectedCategory == -1 ? 0 : selectedCategory;
               ref.read(categoryFocusNodeProvider(index)).requestFocus();
             } else if (filteredDishes.isNotEmpty) {
               var index = ref.watch(focusedDishProvider);
-              ref.read(dishFocusNodeProvider(index == -1 ? 0 : index)).requestFocus();
+              ref
+                  .read(dishFocusNodeProvider(index == -1 ? 0 : index))
+                  .requestFocus();
             }
           });
         }

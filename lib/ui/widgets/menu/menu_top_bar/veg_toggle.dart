@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:jio_ird/providers/focus_provider.dart';
 import 'package:jio_ird/ui/theme/app_colors.dart';
 import 'package:jio_ird/ui/widgets/veg_indicator.dart';
 
@@ -19,8 +20,10 @@ class _VegToggleState extends ConsumerState<VegToggle> {
   @override
   Widget build(BuildContext context) {
     final vegOnly = ref.watch(vegOnlyProvider);
+    final focusNode = ref.watch(vegToggleFocusNodeProvider);
 
     return Focus(
+      focusNode: focusNode,
       onFocusChange: (hasFocus) {
         setState(() => toggleFocused = hasFocus);
         if(hasFocus) {
