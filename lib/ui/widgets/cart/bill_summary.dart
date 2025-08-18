@@ -129,20 +129,33 @@ class BillSummaryScreen extends ConsumerWidget {
           const Divider(color: Colors.white38),
 
           const SizedBox(height: 8),
+
           // Place order button
           SizedBox(
             width: 160,
             child: ElevatedButton(
+              autofocus: true,
               onPressed: () {
                 ref.read(itemQuantitiesProvider.notifier).clearCart();
                 ref.read(orderPlacedProvider.notifier).state = true;
                 //TODO call api and decide based on that
               },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.amber[600],
-                padding: const EdgeInsets.symmetric(vertical: 14),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(24),
+              style: ButtonStyle(
+                backgroundColor: WidgetStateProperty.resolveWith<Color>(
+                  (states) {
+                    if (states.contains(WidgetState.focused)) {
+                      return Colors.amber[600]!;
+                    }
+                    return Colors.white;
+                  },
+                ),
+                padding: WidgetStateProperty.all(
+                  const EdgeInsets.symmetric(vertical: 14),
+                ),
+                shape: WidgetStateProperty.all(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(24),
+                  ),
                 ),
               ),
               child: const Text(
@@ -165,11 +178,4 @@ class BillSummaryScreen extends ConsumerWidget {
       ),
     );
   }
-}
-
-void main() {
-  runApp(const MaterialApp(
-    home: BillSummaryScreen(),
-    debugShowCheckedModeBanner: false,
-  ));
 }

@@ -59,7 +59,6 @@ class OrderDetailScreen extends StatelessWidget {
                   final dish = order.dish_details[index];
                   final currentStep = _getStepIndex(dish.status);
 
-                  // Build a color mapping for the 4 statuses
                   final Map<String, Color> stepColors = {};
                   for (int i = 0; i < _statusOrder.length; i++) {
                     stepColors[_statusOrder[i]] =

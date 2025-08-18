@@ -74,7 +74,7 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
                     shape: BoxShape.circle,
                   ),
                   child: const Padding(
-                    padding: EdgeInsets.all(6.0), // Inner spacing for the icon
+                    padding: EdgeInsets.all(6.0),
                     child: Icon(
                       Icons.arrow_back_ios_new_rounded,
                       color: Colors.amber,
@@ -83,20 +83,20 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
                   ),
                 ),
 
-              // Category List (Fixed width)
+              // Category List
               if (showCategories)
                 SizedBox(
                   width: 202,
                   child: CategoryList(categories: categories),
                 ),
 
-              // Dish List (Fixed width)
+              // Dish List
               SizedBox(
                 width: showCategories ? 250 : 280,
                 child: DishList(dishes: filteredDishes),
               ),
 
-              // Dish Detail (Takes remaining space)
+              // Dish Detail
               Expanded(
                 child: DishDetail(
                   dish: (focusedDish >= 0 &&

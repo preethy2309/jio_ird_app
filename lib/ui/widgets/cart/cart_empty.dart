@@ -19,14 +19,6 @@ class _EmptyCartScreenState extends State<EmptyCartScreen> {
   final FocusNode _buttonFocusNode = FocusNode();
   bool _isFocused = false;
 
-  @override
-  void initState() {
-    super.initState();
-    // Auto-focus when screen opens
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _buttonFocusNode.requestFocus();
-    });
-  }
 
   @override
   void dispose() {

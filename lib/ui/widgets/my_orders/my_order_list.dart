@@ -27,43 +27,52 @@ class _MyOrderListState extends ConsumerState<MyOrderList> {
       error: (err, _) => Center(child: Text('Error: $err')),
       data: (orders) {
         if (orders.isEmpty) {
-          const EmptyCartScreen(title: "No Orders");
+          return const EmptyCartScreen(title: "No Orders");
         }
 
-        return ListView.builder(
-          padding: const EdgeInsets.symmetric(vertical: 12),
-          itemCount: orders.length,
-          itemBuilder: (context, index) {
-            final order = orders[index];
-            final action = _getOrderAction(order.dish_details);
-
-            return Padding(
-              padding: const EdgeInsets.only(bottom: 12),
-              child: InkWell(
-                onTap: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => OrderDetailScreen(order: order),
-                  ),
-                ),
-                child: Focus(
-                  onFocusChange: (hasFocus) {
-                    setState(() {
-                      focusedIndex = hasFocus ? index : focusedIndex;
-                    });
-                  },
-                  child: _orderTile(
-                    orderNo: order.order_id.toString(),
-                    billDetails: '${order.dish_details.length} Items',
-                    toPay: '₹ ${_calculateTotal(order.dish_details)}',
-                    isActive: focusedIndex == index,
-                    isButton: action.isButton,
-                    buttonText: action.buttonText,
-                  ),
-                ),
-              ),
-            );
+        return Focus(
+          onFocusChange: (hasFocus) {
+            if (!hasFocus) {
+              setState(() {
+                focusedIndex = null;
+              });
+            }
           },
+          child: ListView.builder(
+            padding: const EdgeInsets.symmetric(vertical: 12),
+            itemCount: orders.length,
+            itemBuilder: (context, index) {
+              final order = orders[index];
+              final action = _getOrderAction(order.dish_details);
+
+              return Padding(
+                padding: const EdgeInsets.only(bottom: 12),
+                child: InkWell(
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => OrderDetailScreen(order: order),
+                    ),
+                  ),
+                  child: Focus(
+                    onFocusChange: (hasFocus) {
+                      setState(() {
+                        focusedIndex = hasFocus ? index : focusedIndex;
+                      });
+                    },
+                    child: _orderTile(
+                      orderNo: order.order_id.toString(),
+                      billDetails: '${order.dish_details.length} Items',
+                      toPay: '₹ ${_calculateTotal(order.dish_details)}',
+                      isActive: focusedIndex == index,
+                      isButton: action.isButton,
+                      buttonText: action.buttonText,
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
         );
       },
     );

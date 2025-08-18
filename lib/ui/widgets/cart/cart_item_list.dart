@@ -51,7 +51,6 @@ class _CartItemsListState extends ConsumerState<CartItemsList> {
   Widget build(BuildContext context) {
     final items = ref.watch(itemQuantitiesProvider);
 
-    // Initialize focus nodes if new items added
     while (cartFocusNodes.length < items.length) cartFocusNodes.add(FocusNode());
     while (plusFocusNodes.length < items.length) plusFocusNodes.add(FocusNode());
     while (minusFocusNodes.length < items.length) minusFocusNodes.add(FocusNode());
@@ -76,7 +75,6 @@ class _CartItemsListState extends ConsumerState<CartItemsList> {
           onKeyEvent: (node, event) {
             if (event is! KeyDownEvent) return KeyEventResult.ignored;
 
-            // Navigate with arrow keys
             if (event.logicalKey == LogicalKeyboardKey.arrowLeft) {
               plusNode.requestFocus();
               _ensureVisible(plusNode);
@@ -89,7 +87,6 @@ class _CartItemsListState extends ConsumerState<CartItemsList> {
               return KeyEventResult.handled;
             }
 
-            // Enter / select key
             if (event.logicalKey == LogicalKeyboardKey.enter ||
                 event.logicalKey == LogicalKeyboardKey.select) {
 
@@ -97,13 +94,11 @@ class _CartItemsListState extends ConsumerState<CartItemsList> {
                   .indexWhere((e) => e.dish.id == dish.id);
 
               if (quantity == 0) {
-                // First time: add 1 and move focus to plus
                 ref.read(itemQuantitiesProvider.notifier)
                     .addItem(DishWithQuantity(dish: dish, quantity: 1));
                 plusNode.requestFocus();
                 _ensureVisible(plusNode);
               } else {
-                // Already added: increment/decrement
                 if (plusNode.hasFocus || (!plusNode.hasFocus && !minusNode.hasFocus)) {
                   ref.read(itemQuantitiesProvider.notifier).increment(idx);
                   plusNode.requestFocus();

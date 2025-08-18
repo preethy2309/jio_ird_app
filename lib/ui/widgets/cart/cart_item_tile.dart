@@ -41,7 +41,6 @@ class CartItemTile extends StatelessWidget {
         children: [
           Row(
             children: [
-              // Veg/Non-Veg dot
               Container(
                 padding: const EdgeInsets.all(2),
                 decoration: BoxDecoration(

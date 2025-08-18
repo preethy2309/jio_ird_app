@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:jio_ird/ui/theme/app_colors.dart';
 
 import '../../../data/models/dish_model.dart';
-import '../../../providers/focus_provider.dart';
 import '../veg_indicator.dart';
 
 class DishDetail extends ConsumerWidget {
@@ -52,7 +51,10 @@ class DishDetail extends ConsumerWidget {
                   Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      VegIndicator(color: (dish.dish_type.toLowerCase() == 'veg' ? Colors.green : Colors.red)), // ✅ Using your existing widget
+                      VegIndicator(
+                          color: (dish.dish_type.toLowerCase() == 'veg'
+                              ? Colors.green
+                              : Colors.red)),
                       const SizedBox(width: 6),
                       Text(
                         categoryName,

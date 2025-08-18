@@ -103,23 +103,37 @@ class _TabSwitcherState extends ConsumerState<TabSwitcher> {
         }
         return KeyEventResult.ignored;
       },
-      child: AnimatedContainer(
-        width: 120,
-        duration: const Duration(milliseconds: 200),
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-        decoration: BoxDecoration(
-          color: isSelected ? AppColors.primary : Colors.transparent,
-          borderRadius: BorderRadius.circular(50),
-        ),
-        child: Text(
-          label,
-          style: TextStyle(
-            color: Colors.amber,
-            fontSize: 16,
-            fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-          ),
-          textAlign: TextAlign.center,
-        ),
+      child: Builder(
+        builder: (context) {
+          final hasFocus = Focus.of(context).hasFocus;
+
+          return AnimatedContainer(
+            width: 120,
+            duration: const Duration(milliseconds: 200),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+            decoration: BoxDecoration(
+              color: hasFocus
+                  ? AppColors.primary
+                  : (isSelected ? Colors.white70 : Colors.transparent),
+              borderRadius: BorderRadius.circular(50),
+            ),
+            child: Text(
+              label,
+              style: TextStyle(
+                color: hasFocus
+                    ? Colors.white
+                    : isSelected
+                        ? Colors.black
+                        : Colors.amber,
+                fontSize: 16,
+                fontWeight: (isSelected || hasFocus)
+                    ? FontWeight.bold
+                    : FontWeight.normal,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          );
+        },
       ),
     );
   }

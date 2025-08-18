@@ -118,7 +118,6 @@ class _DishListState extends ConsumerState<DishList> {
               ref.read(focusedDishProvider.notifier).state = index;
 
               if (currentQty == 0) {
-                // Add 1 and move focus to plus button
                 ref
                     .read(itemQuantitiesProvider.notifier)
                     .addItem(DishWithQuantity(dish: dish, quantity: 1));
@@ -127,7 +126,6 @@ class _DishListState extends ConsumerState<DishList> {
                   _ensureVisible(plusNode);
                 });
               } else {
-                // Increment / decrement depending on focus
                 Future.microtask(() {
                   if (plusNode.hasFocus ||
                       (!plusNode.hasFocus && !minusNode.hasFocus)) {
