@@ -1,16 +1,37 @@
+import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../data/models/dish_with_quantity.dart';
 
 class CartNotifier extends StateNotifier<List<DishWithQuantity>> {
-  CartNotifier() : super([]);
+  static const _cartKey = "cart_items";
+
+  CartNotifier() : super([]) {
+    _loadCart();
+  }
+
+  Future<void> _loadCart() async {
+    final prefs = await SharedPreferences.getInstance();
+    final jsonString = prefs.getString(_cartKey);
+    if (jsonString != null) {
+      final List decoded = jsonDecode(jsonString);
+      state = decoded.map((e) => DishWithQuantity.fromJson(e)).toList();
+    }
+  }
+
+  Future<void> _saveCart() async {
+    final prefs = await SharedPreferences.getInstance();
+    final jsonString = jsonEncode(state.map((e) => e.toJson()).toList());
+    await prefs.setString(_cartKey, jsonString);
+  }
 
   void addItem(DishWithQuantity newItem) {
-    // If already exists, increment quantity
     final index = state.indexWhere((item) => item.dish.id == newItem.dish.id);
     if (index != -1) {
       increment(index);
     } else {
       state = [...state, newItem];
+      _saveCart();
     }
   }
 
@@ -22,34 +43,30 @@ class CartNotifier extends StateNotifier<List<DishWithQuantity>> {
       for (int i = 0; i < state.length; i++)
         if (i == index) updatedItem else state[i]
     ];
+    _saveCart();
   }
 
   void decrement(int index) {
     if (index < 0 || index >= state.length) return;
 
     final item = state[index];
-
     if (item.quantity <= 1) {
-      // Remove the item
       state = [
         for (int i = 0; i < state.length; i++)
           if (i != index) state[i]
       ];
     } else {
-      // Update with new quantity
       state = [
         for (int i = 0; i < state.length; i++)
-          if (i == index)
-            item.copyWith(quantity: item.quantity - 1)
-          else
-            state[i]
+          if (i == index) item.copyWith(quantity: item.quantity - 1) else state[i]
       ];
     }
+    _saveCart();
   }
-
 
   void clearCart() {
     state = [];
+    _saveCart();
   }
 }
 
