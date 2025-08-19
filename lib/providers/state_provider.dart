@@ -47,3 +47,9 @@ final showCategoriesProvider = StateProvider<bool>((ref) => true);
 final selectedCartTabProvider = StateProvider<CartTab>((ref) => CartTab.cart);
 
 final orderPlacedProvider = StateProvider<bool>((ref) => false);
+
+// currently selected subcategory (OK pressed)
+final selectedSubCategoryProvider = StateProvider<int>((ref) => -1);
+
+// currently focused subcategory (for D-pad highlight)
+final focusedSubCategoryProvider = StateProvider<int>((ref) => -1);

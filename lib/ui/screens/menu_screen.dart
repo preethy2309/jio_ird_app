@@ -9,6 +9,7 @@ import '../../providers/state_provider.dart';
 import '../widgets/menu/category_list.dart';
 import '../widgets/menu/dish_detail.dart';
 import '../widgets/menu/dish_list.dart';
+import '../widgets/menu/sub_category_list.dart';
 
 class MenuScreen extends ConsumerStatefulWidget {
   const MenuScreen({super.key});
@@ -22,6 +23,7 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
   Widget build(BuildContext context) {
     final vegOnly = ref.watch(vegOnlyProvider);
     final selectedCategory = ref.watch(selectedCategoryProvider);
+    final selectedSubCategory = ref.watch(selectedSubCategoryProvider);
     final focusedDish = ref.watch(focusedDishProvider);
     final mealsAsync = ref.watch(mealsProvider);
     final showCategories = ref.watch(showCategoriesProvider);
@@ -33,8 +35,10 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
         final selectedCat = categories[selectedCategory];
         final subCategories = selectedCat.sub_categories ?? [];
 
-        final allDishes =
-            subCategories.expand((subCat) => subCat.dishes ?? []).toList();
+        final allDishes = (selectedSubCategory >= 0 && selectedSubCategory < subCategories.length)
+            ? (subCategories[selectedSubCategory].dishes ?? [])
+            : subCategories.expand((subCat) => subCat.dishes ?? []).toList();
+
 
         final filteredDishes = vegOnly
             ? allDishes
@@ -48,11 +52,20 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
             if (showCategories) {
               var index = selectedCategory == -1 ? 0 : selectedCategory;
               ref.read(categoryFocusNodeProvider(index)).requestFocus();
+            } else if(subCategories.isNotEmpty){
+              final selectedSubCat = ref.watch(selectedSubCategoryProvider);
+              var index = selectedSubCat == -1 ? 0 : selectedSubCat;
+              ref.read(subCategoryFocusNodeProvider(index)).requestFocus();
             } else if (filteredDishes.isNotEmpty) {
-              var index = ref.watch(focusedDishProvider);
-              ref
-                  .read(dishFocusNodeProvider(index == -1 ? 0 : index))
-                  .requestFocus();
+              final focusedSubCat = ref.read(focusedSubCategoryProvider);
+              final fallback = ref.read(selectedSubCategoryProvider);
+              final index = focusedSubCat != -1
+                  ? focusedSubCat
+                  : (fallback != -1 ? fallback : 0);
+
+              if (index < subCategories.length) {
+                ref.read(subCategoryFocusNodeProvider(index)).requestFocus();
+              }
             }
           });
         }
@@ -63,31 +76,18 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
           icons: const [VegToggle(), CartButton()],
           child: Row(
             children: [
-              // Back arrow
-              if (!showCategories)
-                Container(
-                  margin: const EdgeInsets.only(right: 16),
-                  width: 36,
-                  height: 36,
-                  decoration: const BoxDecoration(
-                    color: Color(0x33FFFFFF),
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Padding(
-                    padding: EdgeInsets.all(6.0),
-                    child: Icon(
-                      Icons.arrow_back_ios_new_rounded,
-                      color: Colors.amber,
-                      size: 20,
-                    ),
-                  ),
-                ),
-
               // Category List
               if (showCategories)
                 SizedBox(
                   width: 202,
                   child: CategoryList(categories: categories),
+                ),
+
+              // SubCategory List (if exists)
+              if (subCategories.isNotEmpty)
+                SizedBox(
+                  width: 200,
+                  child: SubCategoryList(subCategories: subCategories),
                 ),
 
               // Dish List
@@ -99,8 +99,7 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
               // Dish Detail
               Expanded(
                 child: DishDetail(
-                  dish: (focusedDish >= 0 &&
-                          focusedDish < filteredDishes.length)
+                  dish: (focusedDish >= 0 && focusedDish < filteredDishes.length)
                       ? filteredDishes[focusedDish]
                       : (filteredDishes.isNotEmpty ? filteredDishes[0] : null),
                   categoryName: selectedCat.category_name,

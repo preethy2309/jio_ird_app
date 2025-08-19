@@ -34,3 +34,10 @@ final vegToggleFocusNodeProvider = Provider<FocusNode>((ref) {
   ref.onDispose(() => node.dispose());
   return node;
 });
+
+final subCategoryFocusNodeProvider =
+StateProvider.family<FocusNode, int>((ref, index) {
+  final node = FocusNode(debugLabel: 'SubCategory-$index');
+  ref.onDispose(node.dispose);
+  return node;
+});
