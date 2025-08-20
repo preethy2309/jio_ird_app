@@ -91,6 +91,9 @@ class _DishListState extends ConsumerState<DishList> {
               if (selectedDish != focusedDish) {
                 ref.read(selectedDishProvider.notifier).state = -1;
               }
+              if (quantity != 0) {
+                plusNode.requestFocus();
+              }
             }
           },
           onKeyEvent: (node, event) {
@@ -112,10 +115,15 @@ class _DishListState extends ConsumerState<DishList> {
 
             if (event.logicalKey == LogicalKeyboardKey.arrowRight) {
               if (isFocused) {
-                Future.microtask(() {
-                  minusNode.requestFocus();
-                  _ensureVisible(minusNode);
-                });
+                if (minusNode.hasFocus || quantity == 0) {
+                  ref.read(cookingInstructionFocusNodeProvider).requestFocus();
+                  return KeyEventResult.handled;
+                } else {
+                  Future.microtask(() {
+                    minusNode.requestFocus();
+                    _ensureVisible(minusNode);
+                  });
+                }
                 return KeyEventResult.handled;
               }
             }

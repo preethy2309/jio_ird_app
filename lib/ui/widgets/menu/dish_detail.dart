@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../data/models/dish_model.dart';
+import '../../../providers/focus_provider.dart';
 import '../../../providers/state_provider.dart';
 import '../veg_indicator.dart';
 import 'cooking_instruction_dialog.dart';
@@ -86,55 +88,89 @@ class DishDetail extends ConsumerWidget {
             Center(
               child: SizedBox(
                 height: 35,
-                child: ElevatedButton(
-                  onPressed: () {
-                    showDialog(
-                      barrierColor: Colors.black87,
-                      context: context,
-                      builder: (context) {
-                        TextEditingController instructionController =
-                            TextEditingController();
-                        return CookingInstructionDialog(
-                          dishName: "Rawa Idli",
-                          controller: instructionController,
-                          onSave: (text) {
-                            ref.read(mealsProvider.notifier)
-                                .updateDishCookingInstruction(dish!.id, text);
-                            Navigator.of(context).pop();
-                          },
-                          onCancel: () {
-                            Navigator.of(context).pop();
-                          },
-                        );
-                      },
-                    );
-                  },
-                  style: ButtonStyle(
-                    backgroundColor: WidgetStateProperty.resolveWith<Color>(
-                      (states) {
-                        if (states.contains(WidgetState.focused)) {
-                          return Theme.of(context).colorScheme.primary;
+                child: Focus(
+                  onKeyEvent: (node, event) {
+                    if (event is! KeyDownEvent) return KeyEventResult.ignored;
+                    if (event.logicalKey == LogicalKeyboardKey.arrowLeft) {
+                      if (ref.watch(showCategoriesProvider)) {
+                        final lastFocusedCategory =
+                            ref.read(selectedCategoryProvider);
+                        final categoryIndex = (lastFocusedCategory >= 0)
+                            ? lastFocusedCategory
+                            : 0;
+
+                        ref
+                            .read(categoryFocusNodeProvider(categoryIndex))
+                            .requestFocus();
+                      } else {
+                        final lastFocusedDish = ref.read(focusedDishProvider);
+                        int index = 0;
+                        if (lastFocusedDish >= 0) {
+                          index = lastFocusedDish;
                         }
-                        return Colors.white70;
-                      },
-                    ),
-                    foregroundColor:
-                        WidgetStateProperty.all<Color>(Colors.black),
-                    shape: WidgetStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                        ref.read(dishFocusNodeProvider(index)).requestFocus();
+                      }
+                      return KeyEventResult.handled;
+                    }
+                    return KeyEventResult.ignored;
+                  },
+                  child: ElevatedButton(
+                    focusNode: ref.watch(cookingInstructionFocusNodeProvider),
+                    onPressed: () {
+                      showDialog(
+                        barrierColor: Colors.black87,
+                        context: context,
+                        builder: (context) {
+                          TextEditingController instructionController =
+                              TextEditingController();
+                          return CookingInstructionDialog(
+                            dishName: dish!.name,
+                            controller: instructionController,
+                            onSave: (text) {
+                              ref
+                                  .read(mealsProvider.notifier)
+                                  .updateDishCookingInstruction(dish!.id, text);
+                              Navigator.of(context).pop();
+                            },
+                            onCancel: () {
+                              Navigator.of(context).pop();
+                            },
+                          );
+                        },
+                      );
+                    },
+                    style: ButtonStyle(
+                      backgroundColor: WidgetStateProperty.resolveWith<Color>(
+                        (states) {
+                          if (states.contains(WidgetState.focused)) {
+                            return Theme.of(context).colorScheme.primary;
+                          }
+                          return Colors.white70;
+                        },
+                      ),
+                      foregroundColor: WidgetStateProperty.resolveWith<Color>(
+                        (states) {
+                          if (states.contains(WidgetState.focused)) {
+                            return Colors.white70;
+                          }
+                          return Colors.black;
+                        },
+                      ),
+                      shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
                       ),
                     ),
-                  ),
-                  child: Text(
-                    (dish!.cooking_request == null ||
-                            dish!.cooking_request!.isEmpty)
-                        ? "Add Cooking Instructions"
-                        : "Edit Cooking Instructions",
-                    style: const TextStyle(
-                      color: Colors.black,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
+                    child: Text(
+                      (dish!.cooking_request == null ||
+                              dish!.cooking_request!.isEmpty)
+                          ? "Add Cooking Instructions"
+                          : "Edit Cooking Instructions",
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ),
