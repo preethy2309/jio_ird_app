@@ -40,7 +40,6 @@ class OrderDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BaseScreen(
       title: "My Order",
-      description: "Room No. 204",
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 100, vertical: 20),
         child: Column(

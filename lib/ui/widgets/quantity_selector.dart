@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+
+import '../theme/app_colors.dart';
 
 class QuantitySelector extends StatelessWidget {
   final int quantity;
@@ -26,7 +27,7 @@ class QuantitySelector extends StatelessWidget {
           width: 100,
           height: 38,
           decoration: BoxDecoration(
-            color: Colors.grey.shade800,
+            color: AppColors.qtySelectorBg,
             borderRadius: BorderRadius.circular(38),
           ),
         ),
@@ -39,7 +40,6 @@ class QuantitySelector extends StatelessWidget {
                 icon: Icons.add,
                 onTap: onIncrement,
                 focusNode: plusButtonFocusNode,
-                onRight: () => minusButtonFocusNode.requestFocus(),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -56,7 +56,6 @@ class QuantitySelector extends StatelessWidget {
                 icon: Icons.remove,
                 onTap: onDecrement,
                 focusNode: minusButtonFocusNode,
-                onLeft: () => plusButtonFocusNode.requestFocus(),
               ),
             ],
           ),
@@ -70,15 +69,11 @@ class _AnimatedQtyButton extends StatefulWidget {
   final IconData icon;
   final VoidCallback onTap;
   final FocusNode focusNode;
-  final VoidCallback? onLeft;
-  final VoidCallback? onRight;
 
   const _AnimatedQtyButton({
     required this.icon,
     required this.onTap,
     required this.focusNode,
-    this.onLeft,
-    this.onRight,
   });
 
   @override
@@ -110,19 +105,6 @@ class _AnimatedQtyButtonState extends State<_AnimatedQtyButton> {
   Widget build(BuildContext context) {
     return Focus(
       focusNode: widget.focusNode,
-      onKeyEvent: (node, event) {
-        if (event is KeyDownEvent) {
-          if (event.logicalKey == LogicalKeyboardKey.arrowLeft) {
-            widget.onLeft?.call();
-            return KeyEventResult.handled;
-          }
-          if (event.logicalKey == LogicalKeyboardKey.arrowRight) {
-            widget.onRight?.call();
-            return KeyEventResult.handled;
-          }
-        }
-        return KeyEventResult.ignored;
-      },
       child: InkWell(
         onTap: widget.onTap,
         focusColor: Colors.transparent,

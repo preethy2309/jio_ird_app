@@ -4,14 +4,14 @@ import 'package:jio_ird/ui/widgets/menu/menu_top_bar/menu_top_bar.dart';
 
 class BaseScreen extends StatelessWidget {
   final String title;
-  final String description;
+  final String? description;
   final List<Widget>? icons;
   final Widget child;
 
   const BaseScreen({
     super.key,
     required this.title,
-    required this.description,
+    this.description,
     this.icons,
     required this.child,
   });
@@ -34,12 +34,10 @@ class BaseScreen extends StatelessWidget {
               children: [
                 MenuTopBar(
                   title: title,
-                  description: description,
+                  description: description ?? "Room No. 1101", // default text
                   icons: icons,
                 ),
-                const SizedBox(
-                  height: 20,
-                ),
+                const SizedBox(height: 20),
                 Expanded(child: child),
               ],
             ),

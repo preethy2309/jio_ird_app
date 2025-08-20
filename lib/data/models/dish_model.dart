@@ -13,6 +13,8 @@ class Dish {
   final String dish_image;
   final String? file_type;
   final String? file_name;
+  final String? allergies;
+  final String? contains;
   final String? cooking_request;
   @JsonKey(name: 'dish_qty')
   final int? quantity;
@@ -28,6 +30,8 @@ class Dish {
     this.file_name,
     this.cooking_request,
     this.quantity,
+    this.allergies,
+    this.contains,
   });
 
   factory Dish.fromJson(Map<String, dynamic> json) => _$DishFromJson(json);

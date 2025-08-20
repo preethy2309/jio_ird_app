@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:jio_ird/ui/theme/app_colors.dart';
 
 import '../../../../providers/cart_provider.dart';
-import '../../../screens/cart_screen.dart';
 
 class CartButton extends ConsumerStatefulWidget {
   const CartButton({super.key});
@@ -85,6 +84,10 @@ class _CartButtonState extends ConsumerState<CartButton> {
   }
 
   void _goToCart() {
-    Navigator.of(context).pushNamed('/cart');
+    Navigator.of(context).pushNamedAndRemoveUntil(
+      '/cart',
+      (route) =>
+          route.settings.name != '/cart',
+    );
   }
 }

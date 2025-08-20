@@ -33,7 +33,6 @@ class CartScreen extends ConsumerWidget {
 
     return BaseScreen(
       title: "Cart",
-      description: "Room No: 204",
       child: SafeArea(
         child: Column(
           children: [

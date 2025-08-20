@@ -17,6 +17,8 @@ Dish _$DishFromJson(Map<String, dynamic> json) => Dish(
       file_name: json['file_name'] as String?,
       cooking_request: json['cooking_request'] as String?,
       quantity: (json['dish_qty'] as num?)?.toInt(),
+      allergies: json['allergies'] as String?,
+      contains: json['contains'] as String?,
     );
 
 Map<String, dynamic> _$DishToJson(Dish instance) => <String, dynamic>{
@@ -28,6 +30,8 @@ Map<String, dynamic> _$DishToJson(Dish instance) => <String, dynamic>{
       'dish_image': instance.dish_image,
       'file_type': instance.file_type,
       'file_name': instance.file_name,
+      'allergies': instance.allergies,
+      'contains': instance.contains,
       'cooking_request': instance.cooking_request,
       'dish_qty': instance.quantity,
     };

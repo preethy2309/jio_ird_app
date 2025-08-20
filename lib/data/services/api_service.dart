@@ -8,7 +8,7 @@ import '../models/token_response.dart';
 
 part 'api_service.g.dart';
 
-@RestApi(baseUrl: 'https://sit.jhes.cms.jio.com/jiohotels/')
+@RestApi(baseUrl: 'https://devices.cms.jio.com/jiohotels/')
 abstract class ApiService {
   factory ApiService(Dio dio, {String baseUrl}) = _ApiService;
 

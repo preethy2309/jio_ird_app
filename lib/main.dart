@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:jio_ird/ui/screens/cart_screen.dart';
 import 'package:jio_ird/ui/screens/menu_screen.dart';
+import 'package:jio_ird/ui/theme/app_colors.dart';
 
 void main() {
   runApp(const ProviderScope(child: MyApp()));
@@ -12,7 +13,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  MaterialApp(
+    return MaterialApp(
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: AppColors.primary,
+          secondary: Colors.amber,
+          primary: AppColors.primary,
+          brightness: Brightness.dark,
+        ),
+      ),
       debugShowCheckedModeBanner: false,
       initialRoute: '/menu',
       routes: {
@@ -26,4 +35,4 @@ class MyApp extends StatelessWidget {
 // Environment configuration
 enum Environment { dev, prod }
 
-const currentEnv = Environment.dev;
+const currentEnv = Environment.prod;

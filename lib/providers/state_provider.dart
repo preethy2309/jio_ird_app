@@ -8,6 +8,7 @@ import '../data/repositories/food_repository.dart';
 import '../data/repositories/food_repositoty_impl.dart';
 import '../data/services/api_service.dart';
 import '../data/services/local_json_loader.dart';
+import 'api_service_provider.dart';
 
 enum CartTab { cart, orders }
 
@@ -19,8 +20,8 @@ final foodRepositoryProvider = Provider<FoodRepository>((ref) {
 });
 
 final mealsProvider = FutureProvider.autoDispose<List<FoodItem>>((ref) async {
-  final repo = ref.watch(foodRepositoryProvider);
-  return repo.fetchMeals("RDTSBHF00004205", "12345");
+  final api = ref.read(apiServiceProvider);
+  return api.getFoodDetails("RDTSBHF00004205", "12345");
 });
 
 final orderStatusProvider =

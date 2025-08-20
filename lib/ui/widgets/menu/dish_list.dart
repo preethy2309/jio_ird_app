@@ -6,6 +6,7 @@ import 'package:jio_ird/providers/focus_provider.dart';
 import '../../../data/models/dish_with_quantity.dart';
 import '../../../providers/cart_provider.dart';
 import '../../../providers/state_provider.dart';
+import '../../../utils/focus_auto_scroll.dart';
 import '../../theme/app_colors.dart';
 import '../quantity_selector.dart';
 
@@ -59,12 +60,18 @@ class _DishListState extends ConsumerState<DishList> {
     final showCategories = ref.watch(showCategoriesProvider);
 
     return ListView.builder(
-      controller: _scrollController,
+      controller: _scrollController as ScrollController?,
       itemCount: widget.dishes.length,
       itemBuilder: (context, index) {
         final dish = widget.dishes[index];
         final isSelected = index == selectedDish;
         final isFocused = index == focusedDish;
+        final quantity = ref.watch(itemQuantitiesProvider.select((cart) => cart
+            .firstWhere(
+              (item) => item.dish.id == dish.id,
+              orElse: () => DishWithQuantity(dish: dish, quantity: 0),
+            )
+            .quantity));
 
         final dishNode = ref.watch(dishFocusNodeProvider(index));
         final plusNode = plusFocusNodes[index];
@@ -87,19 +94,21 @@ class _DishListState extends ConsumerState<DishList> {
             if (event is! KeyDownEvent) return KeyEventResult.ignored;
 
             if (event.logicalKey == LogicalKeyboardKey.arrowLeft) {
-              if (isSelected) {
-                Future.microtask(() {
-                  plusNode.requestFocus();
-                  _ensureVisible(plusNode);
-                });
-                return KeyEventResult.handled;
-              } else {
-                ref.read(showCategoriesProvider.notifier).state = true;
+              if (isFocused) {
+                if (minusNode.hasFocus) {
+                  Future.microtask(() {
+                    plusNode.requestFocus();
+                    _ensureVisible(plusNode);
+                  });
+                  return KeyEventResult.handled;
+                } else {
+                  ref.read(showCategoriesProvider.notifier).state = true;
+                }
               }
             }
 
             if (event.logicalKey == LogicalKeyboardKey.arrowRight) {
-              if (isSelected) {
+              if (isFocused) {
                 Future.microtask(() {
                   minusNode.requestFocus();
                   _ensureVisible(minusNode);
@@ -174,43 +183,70 @@ class _DishListState extends ConsumerState<DishList> {
                     ),
                   ),
                   const SizedBox(width: 10),
-                  if (selectedDish == index)
-                    QuantitySelector(
-                      quantity: itemQuantities
-                          .firstWhere((e) => e.dish.id == dish.id,
-                              orElse: () =>
-                                  DishWithQuantity(dish: dish, quantity: 0))
-                          .quantity,
-                      onIncrement: () {
-                        final idx = itemQuantities
-                            .indexWhere((e) => e.dish.id == dish.id);
-                        if (idx >= 0) {
-                          ref
-                              .read(itemQuantitiesProvider.notifier)
-                              .increment(idx);
+                  if (isFocused) ...[
+                    if (quantity == 0)
+                      ElevatedButton(
+                        onPressed: () {
+                          ref.read(itemQuantitiesProvider.notifier).addItem(
+                                DishWithQuantity(dish: dish, quantity: 1),
+                              );
                           Future.microtask(() {
                             plusNode.requestFocus();
                             _ensureVisible(plusNode);
                           });
-                        }
-                      },
-                      onDecrement: () {
-                        final idx = itemQuantities
-                            .indexWhere((e) => e.dish.id == dish.id);
-                        if (idx >= 0) {
-                          ref
-                              .read(itemQuantitiesProvider.notifier)
-                              .decrement(idx);
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white70,
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 12, vertical: 6),
+                          textStyle: const TextStyle(fontSize: 14),
+                        ),
+                        child: const Text("Add to Cart"),
+                      )
+                    else
+                      Builder(
+                        builder: (context) {
                           Future.microtask(() {
-                            minusNode.requestFocus();
-                            _ensureVisible(minusNode);
+                            if (!plusNode.hasFocus && isFocused) {
+                              plusNode.requestFocus();
+                              _ensureVisible(plusNode);
+                            }
                           });
-                        }
-                      },
-                      plusButtonFocusNode: plusNode,
-                      minusButtonFocusNode: minusNode,
-                    )
-                  else
+
+                          return QuantitySelector(
+                            quantity: quantity,
+                            onIncrement: () {
+                              final idx = itemQuantities
+                                  .indexWhere((e) => e.dish.id == dish.id);
+                              if (idx >= 0) {
+                                ref
+                                    .read(itemQuantitiesProvider.notifier)
+                                    .increment(idx);
+                                Future.microtask(() {
+                                  plusNode.requestFocus();
+                                  _ensureVisible(plusNode);
+                                });
+                              }
+                            },
+                            onDecrement: () {
+                              final idx = itemQuantities
+                                  .indexWhere((e) => e.dish.id == dish.id);
+                              if (idx >= 0) {
+                                ref
+                                    .read(itemQuantitiesProvider.notifier)
+                                    .decrement(idx);
+                                Future.microtask(() {
+                                  minusNode.requestFocus();
+                                  _ensureVisible(minusNode);
+                                });
+                              }
+                            },
+                            plusButtonFocusNode: plusNode,
+                            minusButtonFocusNode: minusNode,
+                          );
+                        },
+                      ),
+                  ] else
                     Expanded(
                       child: Text(
                         dish.name,
@@ -218,7 +254,7 @@ class _DishListState extends ConsumerState<DishList> {
                           color: Colors.white,
                           fontSize: 16,
                         ),
-                        maxLines: 1,
+                        maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),

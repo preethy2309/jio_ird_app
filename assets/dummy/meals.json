@@ -1,259 +1,179 @@
 [
   {
-    "id": 1,
+    "id": 3420,
     "category_name": "Breakfast",
-    "ird_note": null,
-    "sub_categories": [
+    "dishes": [
       {
-        "id": 101,
-        "category_name": "Indian",
-        "dishes": [
-          {
-            "dish_id": 201,
-            "dish_name": "Paneer Pakoda",
-            "description": "Crispy paneer fritters served with chutney. These delicious golden-brown bites are made by dipping soft paneer cubes into a spiced gram flour batter, then deep-frying them until perfectly crunchy. Served with a tangy green chutney and sometimes accompanied by sweet tamarind chutney, they make the perfect evening snack. Best enjoyed hot with a steaming cup of masala chai. The outer layer gives a satisfying crunch while the paneer inside remains soft and flavorful, making it an all-time favorite for street food lovers. This dish is a must-try for anyone who enjoys Indian snacks that are bursting with flavor and texture.",
-            "dish_type": "non-veg",
-            "dish_price": "150",
-            "dish_image": "https://images.unsplash.com/photo-1598214886806-c87b84b7078b?q=80&w=1025&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-            "file_type": "image/jpeg",
-            "file_name": "paneer_pakoda.jpg",
-            "cooking_request": "",
-            "dish_qty": 1
-          },
-          {
-            "dish_id": 202,
-            "dish_name": "Masala Dosa",
-            "description": "South Indian rice crepe stuffed with spiced potato.",
-            "dish_type": "veg",
-            "dish_price": "120",
-            "dish_image": "https://images.unsplash.com/photo-1598214886806-c87b84b7078b?q=80&w=1025&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-            "file_type": "image/jpeg",
-            "file_name": "masala_dosa.jpg",
-            "cooking_request": "",
-            "dish_qty": 1
-          },
-          {
-            "dish_id": 205,
-            "dish_name": "Chai",
-            "description": "Traditional Indian tea with spices.",
-            "dish_type": "veg",
-            "dish_price": "30",
-            "dish_image": "https://images.unsplash.com/photo-1504674900247-0877df9cc836",
-            "file_type": "image/jpeg",
-            "file_name": "chai.jpg",
-            "cooking_request": "",
-            "dish_qty": 1
-          },
-          {
-            "dish_id": 206,
-            "dish_name": "Idli",
-            "description": "Steamed rice cakes served with sambar and chutney.",
-            "dish_type": "veg",
-            "dish_price": "80",
-            "dish_image": "https://images.unsplash.com/photo-1598214886806-c87b84b7078b?q=80&w=1025&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-            "file_type": "image/jpeg",
-            "file_name": "idli.jpg",
-            "cooking_request": "",
-            "dish_qty": 1
-          },
-          {
-            "dish_id": 2011,
-            "dish_name": "Paneer Pakoda",
-            "description": "Crispy paneer fritters served with chutney.",
-            "dish_type": "veg",
-            "dish_price": "150",
-            "dish_image": "https://images.unsplash.com/photo-1598214886806-c87b84b7078b?q=80&w=1025&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-            "file_type": "image/jpeg",
-            "file_name": "paneer_pakoda.jpg",
-            "cooking_request": "",
-            "dish_qty": 1
-          },
-          {
-            "dish_id": 2022,
-            "dish_name": "Masala Dosa",
-            "description": "South Indian rice crepe stuffed with spiced potato.",
-            "dish_type": "veg",
-            "dish_price": "120",
-            "dish_image": "https://images.unsplash.com/photo-1598214886806-c87b84b7078b?q=80&w=1025&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-            "file_type": "image/jpeg",
-            "file_name": "masala_dosa.jpg",
-            "cooking_request": "",
-            "dish_qty": 1
-          },
-          {
-            "dish_id": 2055,
-            "dish_name": "Chai",
-            "description": "Traditional Indian tea with spices.",
-            "dish_type": "veg",
-            "dish_price": "30",
-            "dish_image": "https://images.unsplash.com/photo-1504674900247-0877df9cc836",
-            "file_type": "image/jpeg",
-            "file_name": "chai.jpg",
-            "cooking_request": "",
-            "dish_qty": 1
-          },
-          {
-            "dish_id": 2066,
-            "dish_name": "Idli",
-            "description": "Steamed rice cakes served with sambar and chutney.",
-            "dish_type": "veg",
-            "dish_price": "80",
-            "dish_image": "https://images.unsplash.com/photo-1598214886806-c87b84b7078b?q=80&w=1025&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-            "file_type": "image/jpeg",
-            "file_name": "idli.jpg",
-            "cooking_request": "",
-            "dish_qty": 1
-          }
-        ]
+        "dish_id": 3762,
+        "dish_name": "Oatmeal with Fruits",
+        "description": "Served with honey and milk (Low Sugar option available)",
+        "allergies": "",
+        "contains": "",
+        "dish_type": "veg",
+        "dish_price": "60",
+        "dish_image": "https://jiohotel.akamaized.net/jiohotel_production/main_htbeXj7BK04IHwlF_20250716_213741?__token__=exp=1755768680~hmac=19f91d7ed072aaf3d1c58285d9cac70aa1610d8b48dd3abbf35a1d7cf7f561fd",
+        "file_type": "image/jpeg",
+        "file_name": "1752701861_1211-min.jpg"
+      },
+      {
+        "dish_id": 3763,
+        "dish_name": "Vegetable Upma / Poha",
+        "description": "Lightly spiced, suitable for diabetics and heart patients",
+        "allergies": "",
+        "contains": "",
+        "dish_type": "veg",
+        "dish_price": "50",
+        "dish_image": "https://jiohotel.akamaized.net/jiohotel_production/main_O7EGihZzD9lctUeS_20250716_213053?__token__=exp=1755768680~hmac=51a7096ddcf472f32473dad46c688cfcf8b991dcb74e37e813fd09df0c8fee7e",
+        "file_type": "image/jpeg",
+        "file_name": "1752701453_1122.jpg"
+      },
+      {
+        "dish_id": 3764,
+        "dish_name": "Boiled or Scrambled Eggs",
+        "description": "With multigrain toast",
+        "allergies": "",
+        "contains": "",
+        "dish_type": "non-veg",
+        "dish_price": "40",
+        "dish_image": "https://jiohotel.akamaized.net/jiohotel_production/main_OZz92p3MBoKeNj5s_20250716_213159?__token__=exp=1755768680~hmac=06fe072fe0061964e7762be3314e5926635861b61549a60ddd8b3478d034a584",
+        "file_type": "image/jpeg",
+        "file_name": "1752701519_1123.jpg"
+      },
+      {
+        "dish_id": 3765,
+        "dish_name": "Fresh Fruit Plate",
+        "description": "Seasonal fruits (sugar-free options available)",
+        "allergies": "",
+        "contains": "",
+        "dish_type": "veg",
+        "dish_price": "55",
+        "dish_image": "https://jiohotel.akamaized.net/jiohotel_production/main_JcP1WyCBA4xUQ2oi_20250716_213318?__token__=exp=1755768680~hmac=504e7a1c2720a60e0171b6675335dcdd5d0578130ec9bc11f7fe0d366d46737a",
+        "file_type": "image/jpeg",
+        "file_name": "1752701598_1124.jpg"
+      },
+      {
+        "dish_id": 3766,
+        "dish_name": "Low-Fat Milk / Soy Milk / Green Tea",
+        "description": "",
+        "allergies": "",
+        "contains": "",
+        "dish_type": "veg",
+        "dish_price": "30",
+        "dish_image": "https://jiohotel.akamaized.net/jiohotel_production/main_4OzSorlsJd3BVYuf_20250716_213602?__token__=exp=1755768680~hmac=5cbd4c9c7a74ce8147467b14a0b3a194ab154f4aaea500ff6dcf955d76430ef4",
+        "file_type": "image/jpeg",
+        "file_name": "1752701762_1125.jpg"
       }
-    ]
+    ],
+    "ird_note": null
   },
   {
-    "id": 2,
-    "category_name": "Lunch",
-    "ird_note": null,
-    "sub_categories": [
+    "id": 3421,
+    "category_name": "Lunch & Dinner",
+    "dishes": [
       {
-        "id": 102,
-        "category_name": "North Indian",
-        "dishes": [
-          {
-            "dish_id": 203,
-            "dish_name": "Butter Chicken",
-            "description": "Creamy tomato gravy with tender chicken pieces.",
-            "dish_type": "non-veg",
-            "dish_price": "250",
-            "dish_image": "https://images.unsplash.com/photo-1598214886806-c87b84b7078b?q=80&w=1025&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-            "file_type": "image/jpeg",
-            "file_name": "butter_chicken.jpg",
-            "cooking_request": "Less spicy",
-            "dish_qty": 1
-          },
-          {
-            "dish_id": 204,
-            "dish_name": "Tandoori Roti",
-            "description": "Whole wheat flatbread cooked in tandoor.",
-            "dish_type": "veg",
-            "dish_price": "20",
-            "dish_image": "https://images.unsplash.com/photo-1589308078054-8328e62abf8f",
-            "file_type": "image/jpeg",
-            "file_name": "tandoori_roti.jpg",
-            "cooking_request": "Well done",
-            "dish_qty": 2
-          }
-        ]
+        "dish_id": 3767,
+        "dish_name": "Vegetarian Thali",
+        "description": "1 Dal, 1 Vegetable, Rice, Chapati, Salad, Curd",
+        "allergies": "",
+        "contains": "",
+        "dish_type": "veg",
+        "dish_price": "120",
+        "dish_image": "https://jiohotel.akamaized.net/jiohotel_production/main_XtSdm9JIF6iY72Vv_20250716_214715?__token__=exp=1755768680~hmac=2b45c8d4f2916c01b1113c57cae25c3c2d0368852a3b9af772b5590602c2a3cb",
+        "file_type": "image/jpeg",
+        "file_name": "1752702435_11111-min (2).jpg"
+      },
+      {
+        "dish_id": 3768,
+        "dish_name": "Non-Vegetarian Meal",
+        "description": "Grilled Chicken/Fish (Low-oil), Dal, Rice/Chapati, Salad",
+        "allergies": "",
+        "contains": "",
+        "dish_type": "non-veg",
+        "dish_price": "150",
+        "dish_image": "https://jiohotel.akamaized.net/jiohotel_production/main_LQaIG5Si4ekzgJrl_20250716_214732?__token__=exp=1755768680~hmac=c49940916341da737a194b17961d46d65fea565069202b91646920af85438264",
+        "file_type": "image/jpeg",
+        "file_name": "1752702452_22222-min (2).jpg"
+      },
+      {
+        "dish_id": 3769,
+        "dish_name": "Khichdi (Moong Dal / Masala / Palak)",
+        "description": "Light and suitable for recovery diets",
+        "allergies": "",
+        "contains": "",
+        "dish_type": "veg",
+        "dish_price": "80",
+        "dish_image": "https://jiohotel.akamaized.net/jiohotel_production/main_V0BMu15Hy3cQd9Dq_20250716_214516?__token__=exp=1755768680~hmac=08bed4de2e1ec9cf01161f60f12b7028ed70f4ab54ac411c941d24aa4d0706a1",
+        "file_type": "image/jpeg",
+        "file_name": "1752702316_33333-min.jpg"
+      },
+      {
+        "dish_id": 3770,
+        "dish_name": "Soup of the Day",
+        "description": "Tomato / Vegetable / Chicken Clear Soup",
+        "allergies": "",
+        "contains": "",
+        "dish_type": "veg",
+        "dish_price": "60",
+        "dish_image": "https://jiohotel.akamaized.net/jiohotel_production/main_jaY7EnVGmXbDFO1r_20250716_214543?__token__=exp=1755768680~hmac=64984d21c39f9c788324babb2b2ee3754982e925b16c9150c9cfbc0b9b23b990",
+        "file_type": "image/jpeg",
+        "file_name": "1752702343_444444.jpg"
       }
-    ]
+    ],
+    "ird_note": null
   },
   {
-    "id": 3,
-    "category_name": "Dinner",
-    "ird_note": null,
-    "sub_categories": [
-      {
-        "id": 103,
-        "category_name": "Chinese",
-        "dishes": [
-          {
-            "dish_id": 207,
-            "dish_name": "Fried Rice",
-            "description": "Stir-fried rice with vegetables and soy sauce.",
-            "dish_type": "veg",
-            "dish_price": "100",
-            "dish_image": "https://images.unsplash.com/photo-1598214886806-c87b84b7078b?q=80&w=1025&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-            "file_type": "image/jpeg",
-            "file_name": "fried_rice.jpg",
-            "cooking_request": "",
-            "dish_qty": 1
-          },
-          {
-            "dish_id": 208,
-            "dish_name": "Spring Rolls",
-            "description": "Crispy rolls filled with vegetables.",
-            "dish_type": "veg",
-            "dish_price": "80",
-            "dish_image": "https://images.unsplash.com/photo-1598214886806-c87b84b7078b?q=80&w=1025&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-            "file_type": "image/jpeg",
-            "file_name": "spring_rolls.jpg",
-            "cooking_request": "",
-            "dish_qty": 1
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "id": 4,
+    "id": 3422,
     "category_name": "Snacks",
-    "ird_note": null,
-    "sub_categories": [
+    "dishes": [
       {
-        "id": 104,
-        "category_name": "Fast Food",
-        "dishes": [
-          {
-            "dish_id": 209,
-            "dish_name": "Burger",
-            "description": "Juicy burger with lettuce, tomato, and cheese.",
-            "dish_type": "non-veg",
-            "dish_price": "120",
-            "dish_image": "https://images.unsplash.com/photo-1598214886806-c87b84b7078b?q=80&w=1025&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-            "file_type": "image/jpeg",
-            "file_name": "burger.jpg",
-            "cooking_request": "",
-            "dish_qty": 1
-          },
-          {
-            "dish_id": 210,
-            "dish_name": "French Fries",
-            "description": "Crispy golden fries served with ketchup.",
-            "dish_type": "veg",
-            "dish_price": "50",
-            "dish_image": "https://images.unsplash.com/photo-1598214886806-c87b84b7078b?q=80&w=1025&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-            "file_type": "image/jpeg",
-            "file_name": "french_fries.jpg",
-            "cooking_request": "",
-            "dish_qty": 1
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "id": 5,
-    "category_name": "Desserts",
-    "ird_note": null,
-    "sub_categories": [
+        "dish_id": 3771,
+        "dish_name": "Steamed Idli with Sambar",
+        "description": "",
+        "allergies": "",
+        "contains": "",
+        "dish_type": "veg",
+        "dish_price": "45",
+        "dish_image": "https://jiohotel.akamaized.net/jiohotel_production/main_K0uUEJcSTNqIC4L8_20250716_215259?__token__=exp=1755768680~hmac=c6c373f0fdbe2fc8502630e3cf5c620586c4f22580ba59de8823f474ea07a36a",
+        "file_type": "image/jpeg",
+        "file_name": "1752702779_9999999.jpg"
+      },
       {
-        "id": 105,
-        "category_name": "Sweets",
-        "dishes": [
-          {
-            "dish_id": 211,
-            "dish_name": "Gulab Jamun",
-            "description": "Soft and syrupy Indian sweet made from milk solids.",
-            "dish_type": "veg",
-            "dish_price": "60",
-            "dish_image": "https://images.unsplash.com/photo-1598214886806-c87b84b7078b?q=80&w=1025&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-            "file_type": "image/jpeg",
-            "file_name": "gulab_jamun.jpg",
-            "cooking_request": "",
-            "dish_qty": 1
-          },
-          {
-            "dish_id": 212,
-            "dish_name": "Rasgulla",
-            "description": "Spongy cheese balls soaked in sugar syrup.",
-            "dish_type": "veg",
-            "dish_price": "50",
-            "dish_image": "https://images.unsplash.com/photo-1598214886806-c87b84b7078b?q=80&w=1025&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-            "file_type": "image/jpeg",
-            "file_name": "rasgulla.jpg",
-            "cooking_request": "",
-            "dish_qty": 1
-          }
-        ]
+        "dish_id": 3772,
+        "dish_name": "Vegetable Sandwich",
+        "description": "Grilled / Cold option available",
+        "allergies": "",
+        "contains": "",
+        "dish_type": "veg",
+        "dish_price": "50",
+        "dish_image": "https://jiohotel.akamaized.net/jiohotel_production/main_2arBz5L6CFXG3giT_20250716_215321?__token__=exp=1755768680~hmac=6082e073ce4076a2dece1c731955f7ba538b7cc68dcd5096b5e115fb017be4bc",
+        "file_type": "image/jpeg",
+        "file_name": "1752702801_888888.jpg"
+      },
+      {
+        "dish_id": 3773,
+        "dish_name": "Fruit Yogurt (Low Fat)",
+        "description": "",
+        "allergies": "",
+        "contains": "",
+        "dish_type": "veg",
+        "dish_price": "35",
+        "dish_image": "https://jiohotel.akamaized.net/jiohotel_production/main_4BDc0SaRw8CuqohN_20250716_215341?__token__=exp=1755768680~hmac=bdbe85044b751a9bb1cf98614f3e590c1e0b10b76e20d99e0ff3df3fe6309cb3",
+        "file_type": "image/jpeg",
+        "file_name": "1752702821_777777.jpg"
+      },
+      {
+        "dish_id": 3774,
+        "dish_name": "Digestive Biscuits",
+        "description": "",
+        "allergies": "",
+        "contains": "",
+        "dish_type": "veg",
+        "dish_price": "20",
+        "dish_image": "https://jiohotel.akamaized.net/jiohotel_production/main_skDPym3VxnYfH9EU_20250716_215359?__token__=exp=1755768680~hmac=d113ae644adf03753b21f9dc6652f68e33f3b46f10bc81b0ff03939c0bffe526",
+        "file_type": "image/jpeg",
+        "file_name": "1752702839_6666666.jpg"
       }
-    ]
+    ],
+    "ird_note": null
   }
 ]

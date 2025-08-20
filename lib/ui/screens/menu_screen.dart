@@ -4,6 +4,8 @@ import 'package:jio_ird/ui/screens/base_screen.dart';
 import 'package:jio_ird/ui/widgets/menu/menu_top_bar/cart_button.dart';
 import 'package:jio_ird/ui/widgets/menu/menu_top_bar/veg_toggle.dart';
 
+import '../../data/models/dish_model.dart';
+import '../../data/models/food_item.dart';
 import '../../providers/focus_provider.dart';
 import '../../providers/state_provider.dart';
 import '../widgets/menu/category_list.dart';
@@ -31,10 +33,7 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
       error: (e, _) => Center(child: Text('Error: $e')),
       data: (categories) {
         final selectedCat = categories[selectedCategory];
-        final subCategories = selectedCat.sub_categories ?? [];
-
-        final allDishes =
-            subCategories.expand((subCat) => subCat.dishes ?? []).toList();
+        final allDishes = extractDishesFromCategory(selectedCat);
 
         final filteredDishes = vegOnly
             ? allDishes
@@ -59,7 +58,6 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
 
         return BaseScreen(
           title: "In Room Dining",
-          description: "Room No. 204",
           icons: const [VegToggle(), CartButton()],
           child: Row(
             children: [
@@ -112,4 +110,21 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
       },
     );
   }
+
+  List<Dish> extractDishesFromCategory(FoodItem category) {
+    List<Dish> dishes = [];
+
+    if (category.dishes != null) {
+      dishes.addAll(category.dishes!);
+    }
+
+    if (category.sub_categories != null) {
+      for (final sub in category.sub_categories!) {
+        dishes.addAll(extractDishesFromCategory(sub));
+      }
+    }
+
+    return dishes;
+  }
+
 }
