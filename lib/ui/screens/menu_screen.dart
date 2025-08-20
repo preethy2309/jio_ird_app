@@ -28,9 +28,10 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
     final categories = ref.watch(mealsProvider);
     final showCategories = ref.watch(showCategoriesProvider);
 
-    //TODO check network connection and also categories empty
     if (categories.isEmpty) {
-      return const Center(child: CircularProgressIndicator());
+      return const BaseScreen(
+          title: "In Room Dining",
+          child: Center(child: CircularProgressIndicator()));
     }
 
     final selectedCat = categories[selectedCategory];
