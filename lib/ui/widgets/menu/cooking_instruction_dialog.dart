@@ -54,15 +54,35 @@ class _CookingInstructionDialogState extends State<CookingInstructionDialog> {
   KeyEventResult _handleTextFieldKey(FocusNode node, KeyEvent event) {
     if (event is! KeyDownEvent) return KeyEventResult.ignored;
 
-    if (event.logicalKey == LogicalKeyboardKey.arrowDown) {
-      FocusScope.of(context).requestFocus(saveButtonFocus);
-      return KeyEventResult.handled;
-    } else if (event.logicalKey == LogicalKeyboardKey.escape) {
-      FocusScope.of(context).unfocus();
-      return KeyEventResult.handled;
+    final key = event.logicalKey;
+
+    switch (key) {
+      case LogicalKeyboardKey.arrowDown:
+        FocusScope.of(context).requestFocus(saveButtonFocus);
+        return KeyEventResult.handled;
+
+      case LogicalKeyboardKey.escape:
+        FocusScope.of(context).unfocus();
+        return KeyEventResult.handled;
+
+      case LogicalKeyboardKey.enter:
+      case LogicalKeyboardKey.select:
+        if (saveButtonFocus.hasFocus) {
+          FocusScope.of(context).unfocus();
+          widget.onSave(widget.controller.text);
+          return KeyEventResult.handled;
+        }
+        if (cancelButtonFocus.hasFocus) {
+          FocusScope.of(context).unfocus();
+          widget.onCancel();
+          return KeyEventResult.handled;
+        }
+        break;
     }
+
     return KeyEventResult.ignored;
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -93,10 +113,9 @@ class _CookingInstructionDialogState extends State<CookingInstructionDialog> {
               const SizedBox(height: 10),
               Expanded(
                 child: Focus(
-                  focusNode: textFieldFocus,
-                  canRequestFocus: true,
                   onKeyEvent: _handleTextFieldKey,
                   child: TextField(
+                    focusNode: textFieldFocus,
                     controller: widget.controller,
                     expands: true,
                     maxLines: null,

@@ -76,12 +76,14 @@ class DishDetail extends ConsumerWidget {
             ),
             Text(
               dish!.description,
+              maxLines: 2,
               style: const TextStyle(color: Colors.white70),
             ),
             const SizedBox(height: 2),
             if (dish!.cooking_request?.isNotEmpty == true)
               Text(
                 'Cooking instruction : ${dish!.cooking_request}',
+                maxLines: 1,
                 style: const TextStyle(color: Colors.white54),
               ),
             const SizedBox(height: 6),
