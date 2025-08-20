@@ -25,89 +25,87 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
     final vegOnly = ref.watch(vegOnlyProvider);
     final selectedCategory = ref.watch(selectedCategoryProvider);
     final focusedDish = ref.watch(focusedDishProvider);
-    final mealsAsync = ref.watch(mealsProvider);
+    final categories = ref.watch(mealsProvider);
     final showCategories = ref.watch(showCategoriesProvider);
 
-    return mealsAsync.when(
-      loading: () => const Center(child: CircularProgressIndicator()),
-      error: (e, _) => Center(child: Text('Error: $e')),
-      data: (categories) {
-        final selectedCat = categories[selectedCategory];
-        final allDishes = extractDishesFromCategory(selectedCat);
+    //TODO check network connection and also categories empty
+    if (categories.isEmpty) {
+      return const Center(child: CircularProgressIndicator());
+    }
 
-        final filteredDishes = vegOnly
-            ? allDishes
-                .where((dish) => dish.dish_type.toLowerCase() == 'veg')
-                .toList()
-            : allDishes;
+    final selectedCat = categories[selectedCategory];
+    final allDishes = extractDishesFromCategory(selectedCat);
 
-        if (categories.isNotEmpty &&
-            !ref.watch(vegToggleFocusNodeProvider).hasFocus) {
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            if (showCategories) {
-              var index = selectedCategory == -1 ? 0 : selectedCategory;
-              ref.read(categoryFocusNodeProvider(index)).requestFocus();
-            } else if (filteredDishes.isNotEmpty) {
-              var index = ref.watch(focusedDishProvider);
-              ref
-                  .read(dishFocusNodeProvider(index == -1 ? 0 : index))
-                  .requestFocus();
-            }
-          });
+    final filteredDishes = vegOnly
+        ? allDishes
+            .where((dish) => dish.dish_type.toLowerCase() == 'veg')
+            .toList()
+        : allDishes;
+
+    if (categories.isNotEmpty &&
+        !ref.watch(vegToggleFocusNodeProvider).hasFocus) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (showCategories) {
+          var index = selectedCategory == -1 ? 0 : selectedCategory;
+          ref.read(categoryFocusNodeProvider(index)).requestFocus();
+        } else if (filteredDishes.isNotEmpty) {
+          var index = ref.watch(focusedDishProvider);
+          ref
+              .read(dishFocusNodeProvider(index == -1 ? 0 : index))
+              .requestFocus();
         }
+      });
+    }
 
-        return BaseScreen(
-          title: "In Room Dining",
-          icons: const [VegToggle(), CartButton()],
-          child: Row(
-            children: [
-              // Back arrow
-              if (!showCategories)
-                Container(
-                  margin: const EdgeInsets.only(right: 16),
-                  width: 36,
-                  height: 36,
-                  decoration: const BoxDecoration(
-                    color: Color(0x33FFFFFF),
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Padding(
-                    padding: EdgeInsets.all(6.0),
-                    child: Icon(
-                      Icons.arrow_back_ios_new_rounded,
-                      color: Colors.amber,
-                      size: 20,
-                    ),
-                  ),
-                ),
-
-              // Category List
-              if (showCategories)
-                SizedBox(
-                  width: 202,
-                  child: CategoryList(categories: categories),
-                ),
-
-              // Dish List
-              SizedBox(
-                width: showCategories ? 250 : 280,
-                child: DishList(dishes: filteredDishes),
+    return BaseScreen(
+      title: "In Room Dining",
+      icons: const [VegToggle(), CartButton()],
+      child: Row(
+        children: [
+          // Back arrow
+          if (!showCategories)
+            Container(
+              margin: const EdgeInsets.only(right: 16),
+              width: 36,
+              height: 36,
+              decoration: const BoxDecoration(
+                color: Color(0x33FFFFFF),
+                shape: BoxShape.circle,
               ),
-
-              // Dish Detail
-              Expanded(
-                child: DishDetail(
-                  dish: (focusedDish >= 0 &&
-                          focusedDish < filteredDishes.length)
-                      ? filteredDishes[focusedDish]
-                      : (filteredDishes.isNotEmpty ? filteredDishes[0] : null),
-                  categoryName: selectedCat.category_name,
+              child: const Padding(
+                padding: EdgeInsets.all(6.0),
+                child: Icon(
+                  Icons.arrow_back_ios_new_rounded,
+                  color: Colors.amber,
+                  size: 20,
                 ),
               ),
-            ],
+            ),
+
+          // Category List
+          if (showCategories)
+            SizedBox(
+              width: 202,
+              child: CategoryList(categories: categories),
+            ),
+
+          // Dish List
+          SizedBox(
+            width: showCategories ? 250 : 280,
+            child: DishList(dishes: filteredDishes),
           ),
-        );
-      },
+
+          // Dish Detail
+          Expanded(
+            child: DishDetail(
+              dish: (focusedDish >= 0 && focusedDish < filteredDishes.length)
+                  ? filteredDishes[focusedDish]
+                  : (filteredDishes.isNotEmpty ? filteredDishes[0] : null),
+              categoryName: selectedCat.category_name,
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -126,5 +124,4 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
 
     return dishes;
   }
-
 }

@@ -27,7 +27,7 @@ class OrderRequest {
 @JsonSerializable()
 class OrderDish {
   final String cooking_request;
-  final String id;
+  final int id;
   final String quantity;
   final String status;
 

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../data/models/dish_model.dart';
+import '../../../providers/state_provider.dart';
 import '../veg_indicator.dart';
 import 'cooking_instruction_dialog.dart';
 
@@ -49,6 +50,7 @@ class DishDetail extends ConsumerWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 VegIndicator(
+                    size: 6,
                     color: (dish!.dish_type.toLowerCase() == 'veg'
                         ? Colors.green
                         : Colors.red)),
@@ -63,7 +65,6 @@ class DishDetail extends ConsumerWidget {
                 ),
               ],
             ),
-            // const SizedBox(height: 6),
             Text(
               dish!.name,
               style: const TextStyle(
@@ -71,19 +72,19 @@ class DishDetail extends ConsumerWidget {
                   color: Colors.white,
                   fontWeight: FontWeight.bold),
             ),
-            // const SizedBox(height: 6),
             Text(
               dish!.description,
               style: const TextStyle(color: Colors.white70),
             ),
+            const SizedBox(height: 2),
+            if (dish!.cooking_request?.isNotEmpty == true)
+              Text(
+                'Cooking instruction : ${dish!.cooking_request}',
+                style: const TextStyle(color: Colors.white54),
+              ),
             const SizedBox(height: 6),
-            // Text(
-            //   '₹${dish!.dish_price}',
-            //   style: const TextStyle(color: Colors.amber),
-            // ),
             Center(
               child: SizedBox(
-                width: 250,
                 height: 35,
                 child: ElevatedButton(
                   onPressed: () {
@@ -96,8 +97,9 @@ class DishDetail extends ConsumerWidget {
                         return CookingInstructionDialog(
                           dishName: "Rawa Idli",
                           controller: instructionController,
-                          onSave: () {
-                            // Save logic
+                          onSave: (text) {
+                            ref.read(mealsProvider.notifier)
+                                .updateDishCookingInstruction(dish!.id, text);
                             Navigator.of(context).pop();
                           },
                           onCancel: () {
@@ -109,17 +111,18 @@ class DishDetail extends ConsumerWidget {
                   },
                   style: ButtonStyle(
                     backgroundColor: WidgetStateProperty.resolveWith<Color>(
-                          (states) {
+                      (states) {
                         if (states.contains(WidgetState.focused)) {
                           return Theme.of(context).colorScheme.primary;
                         }
                         return Colors.white70;
                       },
                     ),
-                    foregroundColor: WidgetStateProperty.all<Color>(Colors.black),
+                    foregroundColor:
+                        WidgetStateProperty.all<Color>(Colors.black),
                     shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(12),
                       ),
                     ),
                   ),

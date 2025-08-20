@@ -27,7 +27,7 @@ Map<String, dynamic> _$OrderRequestToJson(OrderRequest instance) =>
 
 OrderDish _$OrderDishFromJson(Map<String, dynamic> json) => OrderDish(
       cooking_request: json['cooking_request'] as String,
-      id: json['id'] as String,
+      id: json['id'] as int,
       quantity: json['quantity'] as String,
       status: json['status'] as String,
     );

@@ -1,18 +1,17 @@
 import 'package:encrypt/encrypt.dart' as encrypt;
 
-class AuthEncryption {
-  String getIv() => "5b5bc6c117391111";
-  String getKey() => "4db779e269dc587dd171516a86a62913";
+import 'constants.dart';
 
+class AuthEncryption {
   Future<String> getAuthToken() async {
     // Serial number (later replace with PlatformInfo.getDeviceSerialNumber())
-    const result = "RPCSBII00015737";
     var currentTime = DateTime.now().millisecondsSinceEpoch;
 
-    String data = "{\"serial_num\":\"$result\",\"time\":\"$currentTime\"}";
+    String data =
+        "{\"serial_num\":\"$kSerialNumber\",\"time\":\"$currentTime\"}";
 
-    final key = encrypt.Key.fromUtf8(getKey());
-    final iv = encrypt.IV.fromUtf8(getIv());
+    final key = encrypt.Key.fromUtf8(kEncryptionKey);
+    final iv = encrypt.IV.fromUtf8(kEncryptionIV);
 
     final encrypter = encrypt.Encrypter(
       encrypt.AES(key, mode: encrypt.AESMode.cbc, padding: 'PKCS7'),

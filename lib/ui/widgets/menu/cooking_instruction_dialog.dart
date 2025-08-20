@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
-class CookingInstructionDialog extends StatelessWidget {
+class CookingInstructionDialog extends StatefulWidget {
   final String dishName;
   final TextEditingController controller;
-  final VoidCallback onSave;
+  final void Function(String text) onSave;
   final VoidCallback onCancel;
 
   const CookingInstructionDialog({
@@ -15,15 +16,64 @@ class CookingInstructionDialog extends StatelessWidget {
   });
 
   @override
+  State<CookingInstructionDialog> createState() =>
+      _CookingInstructionDialogState();
+}
+
+class _CookingInstructionDialogState extends State<CookingInstructionDialog> {
+  final FocusNode textFieldFocus = FocusNode();
+  final FocusNode cancelButtonFocus = FocusNode();
+  final FocusNode saveButtonFocus = FocusNode();
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      FocusScope.of(context).requestFocus(saveButtonFocus);
+    });
+  }
+
+  @override
+  void dispose() {
+    textFieldFocus.dispose();
+    cancelButtonFocus.dispose();
+    saveButtonFocus.dispose();
+    super.dispose();
+  }
+
+  KeyEventResult _handleButtonKey(FocusNode node, KeyEvent event) {
+    if (event is! KeyDownEvent) return KeyEventResult.ignored;
+
+    if (event.logicalKey == LogicalKeyboardKey.arrowUp) {
+      FocusScope.of(context).requestFocus(textFieldFocus);
+      return KeyEventResult.handled;
+    }
+    return KeyEventResult.ignored;
+  }
+
+  KeyEventResult _handleTextFieldKey(FocusNode node, KeyEvent event) {
+    if (event is! KeyDownEvent) return KeyEventResult.ignored;
+
+    if (event.logicalKey == LogicalKeyboardKey.arrowDown) {
+      FocusScope.of(context).requestFocus(saveButtonFocus);
+      return KeyEventResult.handled;
+    } else if (event.logicalKey == LogicalKeyboardKey.escape) {
+      FocusScope.of(context).unfocus();
+      return KeyEventResult.handled;
+    }
+    return KeyEventResult.ignored;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Dialog(
-      backgroundColor: Colors.grey[850], // 👈 dialog background grey
+      backgroundColor: Colors.grey[850],
       insetPadding: const EdgeInsets.all(20),
       child: Container(
         width: 450,
         height: 300,
         decoration: BoxDecoration(
-          color: Colors.grey[850], // same grey as dialog
+          color: Colors.grey[850],
           borderRadius: BorderRadius.circular(12),
           border: Border.all(color: Colors.white, width: 0.5),
         ),
@@ -32,9 +82,8 @@ class CookingInstructionDialog extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              // Dish Title
               Text(
-                dishName,
+                widget.dishName,
                 style: const TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
@@ -42,86 +91,108 @@ class CookingInstructionDialog extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 10),
-
-              // Text Field expands
               Expanded(
-                child: TextField(
-                  controller: controller,
-                  maxLines: null,
-                  expands: true,
-                  style: const TextStyle(color: Colors.white, fontSize: 12),
-                  textAlignVertical: TextAlignVertical.top,
-                  decoration: InputDecoration(
-                    alignLabelWithHint: true,
-                    hintText: "Add your cooking instruction here",
-                    hintStyle: const TextStyle(color: Colors.white24),
-                    filled: true,
-                    fillColor: Colors.black,
-                    // 👈 text field background black
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: const BorderSide(color: Colors.white24),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: const BorderSide(color: Colors.white),
+                child: Focus(
+                  focusNode: textFieldFocus,
+                  canRequestFocus: true,
+                  onKeyEvent: _handleTextFieldKey,
+                  child: TextField(
+                    controller: widget.controller,
+                    expands: true,
+                    maxLines: null,
+                    style: const TextStyle(color: Colors.white, fontSize: 12),
+                    textAlignVertical: TextAlignVertical.top,
+                    decoration: InputDecoration(
+                      alignLabelWithHint: true,
+                      hintText: "Add your cooking instruction here",
+                      hintStyle: const TextStyle(color: Colors.white24),
+                      filled: true,
+                      fillColor: Colors.black,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: BorderSide(
+                          color: textFieldFocus.hasFocus
+                              ? Colors.amber
+                              : Colors.white24,
+                          width: 1,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide:
+                            const BorderSide(color: Colors.amber, width: 1.5),
+                      ),
+                      contentPadding: const EdgeInsets.all(12),
                     ),
                   ),
                 ),
               ),
-
               const SizedBox(height: 10),
-
-              // Buttons Row
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // Cancel Button
-                  ElevatedButton(
-                    onPressed: () {
-                      FocusScope.of(context).unfocus();
-                      onCancel();
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.grey[800],
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 20,
-                        vertical: 8,
-                      ),
-                    ),
-                    child: const Text(
-                      "Cancel",
-                      style: TextStyle(color: Colors.white),
-                    ),
+                  Focus(
+                    focusNode: cancelButtonFocus,
+                    onKeyEvent: _handleButtonKey,
+                    child: Builder(builder: (context) {
+                      final hasFocus = Focus.of(context).hasFocus;
+                      return ElevatedButton(
+                        onPressed: () {
+                          FocusScope.of(context).unfocus();
+                          widget.onCancel();
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor:
+                              hasFocus ? Colors.amber : Colors.grey[800],
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 20,
+                            vertical: 8,
+                          ),
+                        ),
+                        child: Text(
+                          "Cancel",
+                          style: TextStyle(
+                            color: hasFocus ? Colors.black : Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      );
+                    }),
                   ),
                   const SizedBox(width: 15),
-
-                  // Save Instructions Button
-                  ElevatedButton(
-                    onPressed: () {
-                      FocusScope.of(context).unfocus();
-                      onSave();
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 20,
-                        vertical: 8,
-                      ),
-                    ),
-                    child: const Text(
-                      "Save Instructions",
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                  Focus(
+                    focusNode: saveButtonFocus,
+                    onKeyEvent: _handleButtonKey,
+                    child: Builder(builder: (context) {
+                      final hasFocus = Focus.of(context).hasFocus;
+                      return ElevatedButton(
+                        onPressed: () {
+                          FocusScope.of(context).unfocus();
+                          widget.onSave(widget.controller.text); // send text
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor:
+                              hasFocus ? Colors.amber : Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 20,
+                            vertical: 8,
+                          ),
+                        ),
+                        child: Text(
+                          "Save Instructions",
+                          style: TextStyle(
+                            color: hasFocus ? Colors.black : Colors.black,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      );
+                    }),
                   ),
                 ],
               ),

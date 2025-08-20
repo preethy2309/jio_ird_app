@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../providers/cart_provider.dart';
+import '../../../notifiers/cart_notifier.dart';
 import '../../../providers/state_provider.dart';
 
 class DeliveryInfoPanel extends ConsumerWidget {
@@ -73,6 +73,7 @@ class DeliveryInfoPanel extends ConsumerWidget {
               ),
               onPressed: () {
                 ref.read(orderPlacedProvider.notifier).state = true;
+
               },
               child: Text(
                 "Place order - Rs. ${totalPrice.toStringAsFixed(2)}",

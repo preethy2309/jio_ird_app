@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:jio_ird/ui/widgets/cart/bill_summary.dart';
 import 'package:jio_ird/ui/widgets/cart/cart_empty.dart';
 
-import '../../providers/cart_provider.dart';
+import '../../notifiers/cart_notifier.dart';
 import '../../providers/focus_provider.dart';
 import '../../providers/state_provider.dart';
 import '../widgets/cart/cart_item_list.dart';

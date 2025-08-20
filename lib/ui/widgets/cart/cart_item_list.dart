@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../data/models/dish_with_quantity.dart';
-import '../../../providers/cart_provider.dart';
+import '../../../notifiers/cart_notifier.dart';
 import 'cart_item_tile.dart';
 
 class CartItemsList extends ConsumerStatefulWidget {
