@@ -65,10 +65,10 @@ class OrderDetailScreen extends StatelessWidget {
                   }
 
                   return OrderCard(
-                    dishName: dish.name ?? '',
+                    dishName: dish.name,
                     qty: dish.quantity,
                     price: dish.price,
-                    status: dish.status ?? '',
+                    status: dish.status,
                     autoFocus: index == 0,
                   );
                 },

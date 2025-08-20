@@ -6,7 +6,7 @@ class AuthEncryption {
 
   Future<String> getAuthToken() async {
     // Serial number (later replace with PlatformInfo.getDeviceSerialNumber())
-    final result = "RPCSBII00015737";
+    const result = "RPCSBII00015737";
     var currentTime = DateTime.now().millisecondsSinceEpoch;
 
     String data = "{\"serial_num\":\"$result\",\"time\":\"$currentTime\"}";

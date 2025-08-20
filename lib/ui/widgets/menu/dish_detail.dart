@@ -88,6 +88,7 @@ class DishDetail extends ConsumerWidget {
                 child: ElevatedButton(
                   onPressed: () {
                     showDialog(
+                      barrierColor: Colors.black87,
                       context: context,
                       builder: (context) {
                         TextEditingController instructionController =

@@ -29,9 +29,15 @@ class _CartItemsListState extends ConsumerState<CartItemsList> {
 
   @override
   void dispose() {
-    for (final node in cartFocusNodes) node.dispose();
-    for (final node in plusFocusNodes) node.dispose();
-    for (final node in minusFocusNodes) node.dispose();
+    for (final node in cartFocusNodes) {
+      node.dispose();
+    }
+    for (final node in plusFocusNodes) {
+      node.dispose();
+    }
+    for (final node in minusFocusNodes) {
+      node.dispose();
+    }
     _scrollController.dispose();
     super.dispose();
   }
@@ -51,9 +57,15 @@ class _CartItemsListState extends ConsumerState<CartItemsList> {
   Widget build(BuildContext context) {
     final items = ref.watch(itemQuantitiesProvider);
 
-    while (cartFocusNodes.length < items.length) cartFocusNodes.add(FocusNode());
-    while (plusFocusNodes.length < items.length) plusFocusNodes.add(FocusNode());
-    while (minusFocusNodes.length < items.length) minusFocusNodes.add(FocusNode());
+    while (cartFocusNodes.length < items.length) {
+      cartFocusNodes.add(FocusNode());
+    }
+    while (plusFocusNodes.length < items.length) {
+      plusFocusNodes.add(FocusNode());
+    }
+    while (minusFocusNodes.length < items.length) {
+      minusFocusNodes.add(FocusNode());
+    }
 
     return ListView.builder(
       controller: _scrollController,
@@ -115,7 +127,7 @@ class _CartItemsListState extends ConsumerState<CartItemsList> {
             return KeyEventResult.ignored;
           },
           child: CartItemTile(
-            title: dish.name ?? "Unknown",
+            title: dish.name,
             quantity: quantity,
             price: dish.dish_price,
             type: dish.dish_type,

@@ -32,7 +32,6 @@ class FoodRepositoryImpl implements FoodRepository {
   Future<List<OrderStatusResponse>> getOrderStatus(
       String guestId, String serial) async {
     if (currentEnv == Environment.dev) {
-      print("loading from local");
       return await jsonLoader.loadOrdersFromAssets();
     } else {
       return await apiClient.getOrderStatus(guestId, serial);

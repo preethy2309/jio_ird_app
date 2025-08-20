@@ -6,7 +6,6 @@ import 'package:jio_ird/providers/focus_provider.dart';
 import '../../../data/models/dish_with_quantity.dart';
 import '../../../providers/cart_provider.dart';
 import '../../../providers/state_provider.dart';
-import '../../../utils/focus_auto_scroll.dart';
 import '../../theme/app_colors.dart';
 import '../quantity_selector.dart';
 
@@ -35,8 +34,12 @@ class _DishListState extends ConsumerState<DishList> {
 
   @override
   void dispose() {
-    for (final node in plusFocusNodes) node.dispose();
-    for (final node in minusFocusNodes) node.dispose();
+    for (final node in plusFocusNodes) {
+      node.dispose();
+    }
+    for (final node in minusFocusNodes) {
+      node.dispose();
+    }
     _scrollController.dispose();
     super.dispose();
   }

@@ -17,18 +17,18 @@ class CookingInstructionDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      backgroundColor: Colors.black45, // transparent to show custom container
+      backgroundColor: Colors.grey[850], // 👈 dialog background grey
       insetPadding: const EdgeInsets.all(20),
       child: Container(
-        width: 500,
-        height: 350,
+        width: 450,
+        height: 300,
         decoration: BoxDecoration(
-          color: Colors.black,
+          color: Colors.grey[850], // same grey as dialog
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: Colors.white, width: 1), // white border
+          border: Border.all(color: Colors.white, width: 0.5),
         ),
         child: Padding(
-          padding: const EdgeInsets.all(40.0),
+          padding: const EdgeInsets.all(30.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -41,7 +41,7 @@ class CookingInstructionDialog extends StatelessWidget {
                   color: Colors.white,
                 ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 10),
 
               // Text Field expands
               Expanded(
@@ -49,13 +49,15 @@ class CookingInstructionDialog extends StatelessWidget {
                   controller: controller,
                   maxLines: null,
                   expands: true,
-                  style: const TextStyle(color: Colors.white),
+                  style: const TextStyle(color: Colors.white, fontSize: 12),
+                  textAlignVertical: TextAlignVertical.top,
                   decoration: InputDecoration(
                     alignLabelWithHint: true,
                     hintText: "Add your cooking instruction here",
-                    hintStyle: const TextStyle(color: Colors.white70),
+                    hintStyle: const TextStyle(color: Colors.white24),
                     filled: true,
-                    fillColor: Colors.black12,
+                    fillColor: Colors.black,
+                    // 👈 text field background black
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
                       borderSide: const BorderSide(color: Colors.white24),
@@ -68,7 +70,7 @@ class CookingInstructionDialog extends StatelessWidget {
                 ),
               ),
 
-              const SizedBox(height: 20),
+              const SizedBox(height: 10),
 
               // Buttons Row
               Row(
@@ -76,7 +78,10 @@ class CookingInstructionDialog extends StatelessWidget {
                 children: [
                   // Cancel Button
                   ElevatedButton(
-                    onPressed: onCancel,
+                    onPressed: () {
+                      FocusScope.of(context).unfocus();
+                      onCancel();
+                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.grey[800],
                       shape: RoundedRectangleBorder(
@@ -84,7 +89,7 @@ class CookingInstructionDialog extends StatelessWidget {
                       ),
                       padding: const EdgeInsets.symmetric(
                         horizontal: 20,
-                        vertical: 12,
+                        vertical: 8,
                       ),
                     ),
                     child: const Text(
@@ -96,7 +101,10 @@ class CookingInstructionDialog extends StatelessWidget {
 
                   // Save Instructions Button
                   ElevatedButton(
-                    onPressed: onSave,
+                    onPressed: () {
+                      FocusScope.of(context).unfocus();
+                      onSave();
+                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.white,
                       shape: RoundedRectangleBorder(
@@ -104,7 +112,7 @@ class CookingInstructionDialog extends StatelessWidget {
                       ),
                       padding: const EdgeInsets.symmetric(
                         horizontal: 20,
-                        vertical: 12,
+                        vertical: 8,
                       ),
                     ),
                     child: const Text(

@@ -16,7 +16,7 @@ class DeliveryInfoPanel extends ConsumerWidget {
     final totalPrice = items.fold<double>(
       0,
       (sum, dishWithQty) {
-        final price = double.tryParse(dishWithQty.dish.dish_price ?? '') ?? 0.0;
+        final price = double.tryParse(dishWithQty.dish.dish_price) ?? 0.0;
         return sum + price * dishWithQty.quantity;
       },
     );
