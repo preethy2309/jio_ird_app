@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../notifiers/cart_notifier.dart';
-import '../../../providers/state_provider.dart';
+import '../../../notifiers/order_notifier.dart';
 
 class BillSummaryScreen extends ConsumerWidget {
   const BillSummaryScreen({super.key});
@@ -136,9 +136,7 @@ class BillSummaryScreen extends ConsumerWidget {
             child: ElevatedButton(
               autofocus: true,
               onPressed: () {
-                ref.read(itemQuantitiesProvider.notifier).clearCart();
-                ref.read(orderPlacedProvider.notifier).state = true;
-                //TODO call api and decide based on that
+                ref.read(orderNotifierProvider.notifier).placeOrder(items);
               },
               style: ButtonStyle(
                 backgroundColor: WidgetStateProperty.resolveWith<Color>(
@@ -158,13 +156,37 @@ class BillSummaryScreen extends ConsumerWidget {
                   ),
                 ),
               ),
-              child: const Text(
-                'Place order',
-                style: TextStyle(
-                  color: Colors.deepPurple,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                ),
+              child: Consumer(
+                builder: (context, ref, _) {
+                  final orderState = ref.watch(orderNotifierProvider);
+
+                  return orderState.when(
+                    loading: () => const SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(
+                          strokeWidth: 2, color: Colors.white),
+                    ),
+                    data: (msg) {
+                      if (msg.isNotEmpty) {
+                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text(msg)),
+                          );
+                        });
+                      }
+                      return const Text("Place Order");
+                    },
+                    error: (err, _) {
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(err.toString())),
+                        );
+                      });
+                      return const Text("Retry Order");
+                    },
+                  );
+                },
               ),
             ),
           ),

@@ -20,7 +20,7 @@ final tokenProvider = FutureProvider<String>((ref) async {
   final newToken = await auth.getAuthToken();
 
   // Save with 1hr expiry
-  final expiryTime = DateTime.now().add(const Duration(hours: 1));
+  final expiryTime = DateTime.now().add(const Duration(minutes: 55));
   await storage.saveToken(newToken, expiryTime);
 
   return newToken;

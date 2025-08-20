@@ -1,8 +1,3 @@
-import 'package:json_annotation/json_annotation.dart';
-
-part 'order_request.g.dart';
-
-@JsonSerializable()
 class OrderRequest {
   final List<OrderDish> dish_details;
   final String guest_id;
@@ -18,28 +13,36 @@ class OrderRequest {
     required this.serial_Num,
   });
 
-  factory OrderRequest.fromJson(Map<String, dynamic> json) =>
-      _$OrderRequestFromJson(json);
-
-  Map<String, dynamic> toJson() => _$OrderRequestToJson(this);
+  Map<String, dynamic> toJson() {
+    return {
+      'dish_details': dish_details.map((d) => d.toJson()).toList(),
+      'guest_id': guest_id,
+      'guest_name': guest_name,
+      'room_no': room_no,
+      'serial_Num': serial_Num,
+    };
+  }
 }
 
-@JsonSerializable()
 class OrderDish {
-  final String cooking_request;
-  final int id;
+  final String id;
   final String quantity;
+  final String cooking_request;
   final String status;
 
   OrderDish({
-    required this.cooking_request,
     required this.id,
     required this.quantity,
+    required this.cooking_request,
     required this.status,
   });
 
-  factory OrderDish.fromJson(Map<String, dynamic> json) =>
-      _$OrderDishFromJson(json);
-
-  Map<String, dynamic> toJson() => _$OrderDishToJson(this);
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'quantity': quantity,
+      'cooking_request': cooking_request,
+      'status': status,
+    };
+  }
 }
