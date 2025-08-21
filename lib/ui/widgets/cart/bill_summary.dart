@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:jio_ird/providers/focus_provider.dart';
 
 import '../../../notifiers/cart_notifier.dart';
 import '../../../notifiers/order_notifier.dart';
@@ -134,6 +135,7 @@ class BillSummaryScreen extends ConsumerWidget {
           SizedBox(
             width: 160,
             child: ElevatedButton(
+              focusNode: ref.watch(placeOrderFocusNodeProvider),
               autofocus: true,
               onPressed: () {
                 ref.read(orderNotifierProvider.notifier).placeOrder(items);

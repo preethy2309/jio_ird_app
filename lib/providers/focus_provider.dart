@@ -41,3 +41,10 @@ Provider.autoDispose<FocusNode>((ref) {
   ref.onDispose(node.dispose);
   return node;
 });
+
+final placeOrderFocusNodeProvider =
+Provider.autoDispose<FocusNode>((ref) {
+  final node = FocusNode(debugLabel: "PlaceOrder");
+  ref.onDispose(node.dispose);
+  return node;
+});

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:jio_ird/providers/focus_provider.dart';
+
 import '../../../data/models/dish_with_quantity.dart';
 import '../../../notifiers/cart_notifier.dart';
 import 'cart_item_tile.dart';
@@ -82,14 +84,27 @@ class _CartItemsListState extends ConsumerState<CartItemsList> {
         return Focus(
           focusNode: cartNode,
           onFocusChange: (hasFocus) {
-            if (hasFocus) _ensureVisible(cartNode);
+            if (hasFocus) {
+              plusNode.requestFocus();
+              _ensureVisible(cartNode);
+            }
           },
           onKeyEvent: (node, event) {
             if (event is! KeyDownEvent) return KeyEventResult.ignored;
+            if (event.logicalKey == LogicalKeyboardKey.arrowUp) {
+              if (index == 0 && (plusNode.hasFocus || minusNode.hasFocus)) {
+                ref.watch(cartTabFocusNodeProvider).requestFocus();
+                return KeyEventResult.handled;
+              }
+            }
 
             if (event.logicalKey == LogicalKeyboardKey.arrowLeft) {
-              plusNode.requestFocus();
-              _ensureVisible(plusNode);
+              if (plusNode.hasFocus) {
+                ref.watch(placeOrderFocusNodeProvider).requestFocus();
+              } else {
+                plusNode.requestFocus();
+                _ensureVisible(plusNode);
+              }
               return KeyEventResult.handled;
             }
 
@@ -101,17 +116,19 @@ class _CartItemsListState extends ConsumerState<CartItemsList> {
 
             if (event.logicalKey == LogicalKeyboardKey.enter ||
                 event.logicalKey == LogicalKeyboardKey.select) {
-
-              final idx = ref.read(itemQuantitiesProvider)
+              final idx = ref
+                  .read(itemQuantitiesProvider)
                   .indexWhere((e) => e.dish.id == dish.id);
 
               if (quantity == 0) {
-                ref.read(itemQuantitiesProvider.notifier)
+                ref
+                    .read(itemQuantitiesProvider.notifier)
                     .addItem(DishWithQuantity(dish: dish, quantity: 1));
                 plusNode.requestFocus();
                 _ensureVisible(plusNode);
               } else {
-                if (plusNode.hasFocus || (!plusNode.hasFocus && !minusNode.hasFocus)) {
+                if (plusNode.hasFocus ||
+                    (!plusNode.hasFocus && !minusNode.hasFocus)) {
                   ref.read(itemQuantitiesProvider.notifier).increment(idx);
                   plusNode.requestFocus();
                   _ensureVisible(plusNode);
