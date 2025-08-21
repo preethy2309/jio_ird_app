@@ -6,8 +6,8 @@ part 'order_status_response.g.dart';
 class OrderStatusResponse {
   @JsonKey(fromJson: _toInt)
   final int order_id;
-  final String guest_name;
-  final String guest_id;
+  final String? guest_name;
+  final String? guest_id;
   final String room_no;
   @JsonKey(fromJson: _toString)
   final String display_id;

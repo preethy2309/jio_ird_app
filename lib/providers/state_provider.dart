@@ -17,7 +17,7 @@ final mealsProvider =
 final orderStatusProvider =
     FutureProvider<List<OrderStatusResponse>>((ref) async {
   final api = ref.read(apiServiceProvider);
-  return api.getOrderStatus(kPropertyId, kSerialNumber);
+  return api.getOrderStatus(kSerialNumber);
 });
 
 /// Toggle for showing only Veg items

@@ -80,14 +80,16 @@ class _ApiService implements ApiService {
   }
 
   @override
-  Future<List<OrderStatusResponse>> getOrderStatus(guestId, serialNum) async {
+  Future<List<OrderStatusResponse>> getOrderStatus(String serialNum) async {
     const extra = <String, dynamic>{};
+
     final queryParameters = <String, dynamic>{
-      'guest_id': guestId,
-      'serial_num': serialNum
+      'serial_Num': serialNum,
     };
+
     final headers = <String, dynamic>{};
     final data = <String, dynamic>{};
+
     final result = await _dio.fetch<List<dynamic>>(
       Options(method: 'POST', headers: headers, extra: extra)
           .compose(
@@ -98,6 +100,7 @@ class _ApiService implements ApiService {
           )
           .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl),
     );
+
     var value = result.data!
         .map((dynamic i) =>
             OrderStatusResponse.fromJson(i as Map<String, dynamic>))

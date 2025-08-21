@@ -9,8 +9,8 @@ part of 'order_status_response.dart';
 OrderStatusResponse _$OrderStatusResponseFromJson(Map<String, dynamic> json) =>
     OrderStatusResponse(
       order_id: _toInt(json['order_id']),
-      guest_name: json['guest_name'] as String,
-      guest_id: json['guest_id'] as String,
+      guest_name: json['guest_name'] as String?,
+      guest_id: json['guest_id'] as String?,
       room_no: json['room_no'] as String,
       display_id: _toString(json['display_id']),
       dish_details: (json['dish_details'] as List<dynamic>)
