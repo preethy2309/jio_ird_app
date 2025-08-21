@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:jio_ird/ui/theme/app_colors.dart';
 
 import '../../../../notifiers/cart_notifier.dart';
 
@@ -39,7 +38,7 @@ class _CartButtonState extends ConsumerState<CartButton> {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
               decoration: BoxDecoration(
-                color: cartFocused ? AppColors.primary : Colors.grey[800],
+                color: cartFocused ? Colors.amber : Colors.grey[800],
                 borderRadius: BorderRadius.circular(26),
               ),
               child: const SizedBox(
@@ -86,8 +85,7 @@ class _CartButtonState extends ConsumerState<CartButton> {
   void _goToCart() {
     Navigator.of(context).pushNamedAndRemoveUntil(
       '/cart',
-      (route) =>
-          route.settings.name != '/cart',
+      (route) => route.settings.name != '/cart',
     );
   }
 }

@@ -48,6 +48,20 @@ class _CookingInstructionDialogState extends State<CookingInstructionDialog> {
       FocusScope.of(context).requestFocus(textFieldFocus);
       return KeyEventResult.handled;
     }
+
+    if (event.logicalKey == LogicalKeyboardKey.escape ||
+        event.logicalKey == LogicalKeyboardKey.enter) {
+      if (saveButtonFocus.hasFocus) {
+        FocusScope.of(context).unfocus();
+        widget.onSave(widget.controller.text);
+        return KeyEventResult.handled;
+      }
+      if (cancelButtonFocus.hasFocus) {
+        FocusScope.of(context).unfocus();
+        widget.onCancel();
+        return KeyEventResult.handled;
+      }
+    }
     return KeyEventResult.ignored;
   }
 
@@ -82,7 +96,6 @@ class _CookingInstructionDialogState extends State<CookingInstructionDialog> {
 
     return KeyEventResult.ignored;
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -194,7 +207,7 @@ class _CookingInstructionDialogState extends State<CookingInstructionDialog> {
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor:
-                              hasFocus ? Colors.amber : Colors.white,
+                              hasFocus ? Colors.amber : Colors.grey[800],
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30),
                           ),
@@ -206,7 +219,7 @@ class _CookingInstructionDialogState extends State<CookingInstructionDialog> {
                         child: Text(
                           "Save Instructions",
                           style: TextStyle(
-                            color: hasFocus ? Colors.black : Colors.black,
+                            color: hasFocus ? Colors.black : Colors.white,
                             fontWeight: FontWeight.bold,
                           ),
                         ),

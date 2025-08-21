@@ -126,6 +126,7 @@ class DishDetail extends ConsumerWidget {
                       builder: (context) {
                         TextEditingController instructionController =
                             TextEditingController();
+                        instructionController.text = dish!.cooking_request ?? '';
                         return CookingInstructionDialog(
                           dishName: dish!.name,
                           controller: instructionController,
@@ -146,7 +147,7 @@ class DishDetail extends ConsumerWidget {
                     backgroundColor: WidgetStateProperty.resolveWith<Color>(
                       (states) {
                         if (states.contains(WidgetState.focused)) {
-                          return Theme.of(context).colorScheme.primary;
+                          return Colors.amber;
                         }
                         return Colors.white70;
                       },

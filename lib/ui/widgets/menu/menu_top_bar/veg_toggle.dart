@@ -26,10 +26,8 @@ class _VegToggleState extends ConsumerState<VegToggle> {
       focusNode: focusNode,
       onFocusChange: (hasFocus) {
         setState(() => toggleFocused = hasFocus);
-        if(hasFocus) {
-          ref
-              .read(focusedDishProvider.notifier)
-              .state = -2;
+        if (hasFocus) {
+          ref.read(focusedDishProvider.notifier).state = -2;
         }
       },
       onKeyEvent: (node, event) {
@@ -49,7 +47,7 @@ class _VegToggleState extends ConsumerState<VegToggle> {
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
           decoration: BoxDecoration(
-            color: toggleFocused ? AppColors.primary : Colors.transparent,
+            color: toggleFocused ? Colors.amber : Colors.transparent,
             borderRadius: BorderRadius.circular(26),
           ),
           child: SizedBox(
@@ -64,7 +62,7 @@ class _VegToggleState extends ConsumerState<VegToggle> {
                   width: 46,
                   height: 26,
                   child: Switch(
-                    activeColor: Colors.amber,
+                    activeColor: AppColors.primary,
                     autofocus: true,
                     value: vegOnly,
                     onChanged: (value) =>
