@@ -45,6 +45,7 @@ final dioProvider = Provider<Dio>((ref) {
       onRequest: (options, handler) async {
         final token = await ref.read(tokenProvider.future);
         options.headers['Authorization'] = token;
+        print("Headers: ${options.headers}");
         return handler.next(options);
       },
       onError: (DioException error, handler) async {

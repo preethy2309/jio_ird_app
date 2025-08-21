@@ -64,6 +64,15 @@ class CartNotifier extends StateNotifier<List<DishWithQuantity>> {
     _saveCart();
   }
 
+  void updateCookingInstruction(int dishId, String text) {
+    state = state.map((item) {
+      if (item.dish.id == dishId) {
+        return item.copyWith(cookingRequest: text);
+      }
+      return item;
+    }).toList();
+  }
+
   void clearCart() {
     state = [];
     _saveCart();

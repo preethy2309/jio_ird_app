@@ -10,7 +10,7 @@ OrderRequest createOrderRequestFromDishWithQuantity(
     return OrderDish(
       id: item.dish.id.toString(),
       quantity: item.quantity.toString(),
-      cooking_request: item.dish.cooking_request.toString(),
+      cooking_request: item.cookingRequest.toString(),
       status: "submitted",
     );
   }).toList();
