@@ -52,13 +52,13 @@ class CartScreen extends ConsumerWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Expanded(
-                                    flex: 3,
-                                    child: BillSummaryScreen(),
+                                    flex: 4,
+                                    child: CartItemsList(),
                                   ),
                                   SizedBox(width: 32),
                                   Expanded(
-                                    flex: 4,
-                                    child: CartItemsList(),
+                                    flex: 3,
+                                    child: BillSummaryScreen(),
                                   ),
                                 ],
                               )))

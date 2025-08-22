@@ -19,6 +19,12 @@ class _MyOrderListState extends ConsumerState<MyOrderList> {
   int? focusedIndex;
 
   @override
+  void initState() {
+    super.initState();
+    Future.microtask(() => ref.refresh(orderStatusProvider));
+  }
+
+  @override
   Widget build(BuildContext context) {
     final orderStatusAsync = ref.watch(orderStatusProvider);
 

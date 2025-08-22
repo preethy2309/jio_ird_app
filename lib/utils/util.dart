@@ -11,14 +11,12 @@ OrderRequest createOrderRequestFromDishWithQuantity(
       id: item.dish.id.toString(),
       quantity: item.quantity.toString(),
       cooking_request: item.cookingRequest.toString(),
-      status: "submitted",
+      status: "Submitted",
     );
   }).toList();
 
   return OrderRequest(
     dish_details: orderDishes,
-    guest_id: kPropertyId,
-    guest_name: "Guest",
     room_no: kRoomNo,
     serial_Num: kSerialNumber,
   );

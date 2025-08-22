@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:jio_ird/data/models/dish_with_quantity.dart';
 import 'package:jio_ird/providers/focus_provider.dart';
 
-import '../../../data/models/dish_with_quantity.dart';
 import '../../../notifiers/cart_notifier.dart';
+import '../../../providers/state_provider.dart';
+import '../menu/cooking_instruction_dialog.dart';
 import 'cart_item_tile.dart';
 
 class CartItemsList extends ConsumerStatefulWidget {
@@ -20,6 +22,7 @@ class _CartItemsListState extends ConsumerState<CartItemsList> {
   late List<FocusNode> cartFocusNodes;
   late List<FocusNode> plusFocusNodes;
   late List<FocusNode> minusFocusNodes;
+  late List<FocusNode> editFocusNodes;
 
   @override
   void initState() {
@@ -27,6 +30,7 @@ class _CartItemsListState extends ConsumerState<CartItemsList> {
     cartFocusNodes = [];
     plusFocusNodes = [];
     minusFocusNodes = [];
+    editFocusNodes = [];
   }
 
   @override
@@ -40,6 +44,10 @@ class _CartItemsListState extends ConsumerState<CartItemsList> {
     for (final node in minusFocusNodes) {
       node.dispose();
     }
+    for (final node in editFocusNodes) {
+      node.dispose();
+    }
+
     _scrollController.dispose();
     super.dispose();
   }
@@ -68,6 +76,9 @@ class _CartItemsListState extends ConsumerState<CartItemsList> {
     while (minusFocusNodes.length < items.length) {
       minusFocusNodes.add(FocusNode());
     }
+    while (editFocusNodes.length < items.length) {
+      editFocusNodes.add(FocusNode());
+    }
 
     return ListView.builder(
       controller: _scrollController,
@@ -80,6 +91,7 @@ class _CartItemsListState extends ConsumerState<CartItemsList> {
         final cartNode = cartFocusNodes[index];
         final plusNode = plusFocusNodes[index];
         final minusNode = minusFocusNodes[index];
+        final editNode = editFocusNodes[index];
 
         return Focus(
           focusNode: cartNode,
@@ -98,6 +110,22 @@ class _CartItemsListState extends ConsumerState<CartItemsList> {
               }
             }
 
+            if (event.logicalKey == LogicalKeyboardKey.arrowDown) {
+              if (plusNode.hasFocus || minusNode.hasFocus) {
+                editNode.requestFocus();
+                _ensureVisible(editNode);
+                return KeyEventResult.handled;
+              }
+            }
+
+            if (event.logicalKey == LogicalKeyboardKey.arrowUp) {
+              if (editNode.hasFocus) {
+                plusNode.requestFocus();
+                _ensureVisible(plusNode);
+                return KeyEventResult.handled;
+              }
+            }
+
             if (event.logicalKey == LogicalKeyboardKey.arrowLeft) {
               if (plusNode.hasFocus) {
                 ref.watch(placeOrderFocusNodeProvider).requestFocus();
@@ -109,8 +137,12 @@ class _CartItemsListState extends ConsumerState<CartItemsList> {
             }
 
             if (event.logicalKey == LogicalKeyboardKey.arrowRight) {
-              minusNode.requestFocus();
-              _ensureVisible(minusNode);
+              if (minusNode.hasFocus || editNode.hasFocus) {
+                ref.watch(placeOrderFocusNodeProvider).requestFocus();
+              } else {
+                minusNode.requestFocus();
+                _ensureVisible(minusNode);
+              }
               return KeyEventResult.handled;
             }
 
@@ -119,24 +151,25 @@ class _CartItemsListState extends ConsumerState<CartItemsList> {
               final idx = ref
                   .read(itemQuantitiesProvider)
                   .indexWhere((e) => e.dish.id == dish.id);
-
-              if (quantity == 0) {
-                ref
-                    .read(itemQuantitiesProvider.notifier)
-                    .addItem(DishWithQuantity(dish: dish, quantity: 1));
+              if (editNode.hasFocus) {
+                showCookingInstructionDialog(
+                  context,
+                  ref,
+                  dishWithQty,
+                  () {
+                    editNode.requestFocus();
+                    _ensureVisible(editNode);
+                  },
+                );
+              } else if (plusNode.hasFocus ||
+                  (!plusNode.hasFocus && !minusNode.hasFocus)) {
+                ref.read(itemQuantitiesProvider.notifier).increment(idx);
                 plusNode.requestFocus();
                 _ensureVisible(plusNode);
-              } else {
-                if (plusNode.hasFocus ||
-                    (!plusNode.hasFocus && !minusNode.hasFocus)) {
-                  ref.read(itemQuantitiesProvider.notifier).increment(idx);
-                  plusNode.requestFocus();
-                  _ensureVisible(plusNode);
-                } else if (minusNode.hasFocus) {
-                  ref.read(itemQuantitiesProvider.notifier).decrement(idx);
-                  minusNode.requestFocus();
-                  _ensureVisible(minusNode);
-                }
+              } else if (minusNode.hasFocus) {
+                ref.read(itemQuantitiesProvider.notifier).decrement(idx);
+                minusNode.requestFocus();
+                _ensureVisible(minusNode);
               }
               return KeyEventResult.handled;
             }
@@ -148,6 +181,19 @@ class _CartItemsListState extends ConsumerState<CartItemsList> {
             quantity: quantity,
             price: dish.dish_price,
             type: dish.dish_type,
+            cookingInstructions: dishWithQty.cookingRequest ?? '',
+            editFocusNode: editNode,
+            onEditInstruction: () {
+              showCookingInstructionDialog(
+                context,
+                ref,
+                dishWithQty,
+                () {
+                  editNode.requestFocus();
+                  _ensureVisible(editNode);
+                },
+              );
+            },
             onIncrement: () {
               ref.read(itemQuantitiesProvider.notifier).increment(index);
               plusNode.requestFocus();
@@ -165,4 +211,38 @@ class _CartItemsListState extends ConsumerState<CartItemsList> {
       },
     );
   }
+}
+
+void showCookingInstructionDialog(
+  BuildContext context,
+  WidgetRef ref,
+  DishWithQuantity dish,
+  Function() onDialogClose,
+) {
+  showDialog(
+    barrierColor: Colors.black87,
+    context: context,
+    builder: (context) {
+      TextEditingController instructionController = TextEditingController();
+      instructionController.text = dish!.cookingRequest ?? '';
+      return CookingInstructionDialog(
+        dishName: dish.dish.name,
+        controller: instructionController,
+        onSave: (text) {
+          ref
+              .read(itemQuantitiesProvider.notifier)
+              .updateCookingInstruction(dish.dish.id, text);
+          ref
+              .read(mealsProvider.notifier)
+              .updateDishCookingInstruction(dish.dish.id, text);
+          Navigator.of(context).pop();
+          onDialogClose.call();
+        },
+        onCancel: () {
+          Navigator.of(context).pop();
+          onDialogClose.call();
+        },
+      );
+    },
+  );
 }

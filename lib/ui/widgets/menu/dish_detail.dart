@@ -12,8 +12,14 @@ import 'cooking_instruction_dialog.dart';
 class DishDetail extends ConsumerWidget {
   final Dish? dish;
   final String categoryName;
+  final int itemCount;
 
-  const DishDetail({super.key, required this.dish, required this.categoryName});
+  const DishDetail({
+    super.key,
+    required this.dish,
+    required this.categoryName,
+    required this.itemCount,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -23,14 +29,51 @@ class DishDetail extends ConsumerWidget {
 
     final cartItems = ref.watch(itemQuantitiesProvider);
     final isInCart = cartItems.any((item) => item.dish.id == dish!.id);
+    final focusedDish = ref.watch(focusedDishProvider);
+    final isCategory = focusedDish == -1;
+    if (isCategory) {
+      return Container(
+        padding: const EdgeInsets.only(left: 20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (dish!.dish_image.isNotEmpty)
+              Image.network(
+                dish!.dish_image,
+                width: double.infinity,
+                height: 220,
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) {
+                  return Image.asset(
+                    'assets/images/default_dish.png',
+                    width: double.infinity,
+                    height: 220,
+                    fit: BoxFit.cover,
+                  );
+                },
+              ),
+            const SizedBox(height: 8),
+            Text(
+              itemCount > 7 ? "7+" : "$itemCount",
+              style: const TextStyle(
+                  fontSize: 25,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold),
+            ),
+            Text(
+              categoryName,
+              style: const TextStyle(
+                color: Colors.white70,
+                fontSize: 20,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ],
+        ),
+      );
+    }
 
     return Container(
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: Colors.transparent,
-          width: 2,
-        ),
-      ),
       padding: const EdgeInsets.only(left: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -139,7 +182,8 @@ class DishDetail extends ConsumerWidget {
                             dishName: dish!.name,
                             controller: instructionController,
                             onSave: (text) {
-                              ref.read(itemQuantitiesProvider.notifier)
+                              ref
+                                  .read(itemQuantitiesProvider.notifier)
                                   .updateCookingInstruction(dish!.id, text);
                               ref
                                   .read(mealsProvider.notifier)

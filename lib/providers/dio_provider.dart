@@ -11,9 +11,9 @@ final tokenProvider = FutureProvider<String>((ref) async {
   final savedToken = await storage.getToken();
   final expiry = await storage.getExpiry();
 
-  if (savedToken != null && expiry != null && DateTime.now().isBefore(expiry)) {
-    return savedToken;
-  }
+  // if (savedToken != null && expiry != null && DateTime.now().isBefore(expiry)) {
+  //   return savedToken;
+  // }
 
   final auth = AuthEncryption();
   final newToken = await auth.getAuthToken();

@@ -163,68 +163,74 @@ class _CookingInstructionDialogState extends State<CookingInstructionDialog> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Focus(
-                    focusNode: cancelButtonFocus,
-                    onKeyEvent: _handleButtonKey,
-                    child: Builder(builder: (context) {
-                      final hasFocus = Focus.of(context).hasFocus;
-                      return ElevatedButton(
-                        onPressed: () {
-                          FocusScope.of(context).unfocus();
-                          widget.onCancel();
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              hasFocus ? Colors.amber : Colors.grey[800],
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30),
+                  SizedBox(
+                    width: 160,
+                    child: Focus(
+                      focusNode: cancelButtonFocus,
+                      onKeyEvent: _handleButtonKey,
+                      child: Builder(builder: (context) {
+                        final hasFocus = Focus.of(context).hasFocus;
+                        return ElevatedButton(
+                          onPressed: () {
+                            FocusScope.of(context).unfocus();
+                            widget.onCancel();
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor:
+                                hasFocus ? Colors.amber : Colors.grey[800],
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 20,
+                              vertical: 8,
+                            ),
                           ),
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 20,
-                            vertical: 8,
+                          child: Text(
+                            "Cancel",
+                            style: TextStyle(
+                              color: hasFocus ? Colors.black : Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                        ),
-                        child: Text(
-                          "Cancel",
-                          style: TextStyle(
-                            color: hasFocus ? Colors.black : Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      );
-                    }),
+                        );
+                      }),
+                    ),
                   ),
                   const SizedBox(width: 15),
-                  Focus(
-                    focusNode: saveButtonFocus,
-                    onKeyEvent: _handleButtonKey,
-                    child: Builder(builder: (context) {
-                      final hasFocus = Focus.of(context).hasFocus;
-                      return ElevatedButton(
-                        onPressed: () {
-                          FocusScope.of(context).unfocus();
-                          widget.onSave(widget.controller.text); // send text
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              hasFocus ? Colors.amber : Colors.grey[800],
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30),
+                  SizedBox(
+                    width: 160,
+                    child: Focus(
+                      focusNode: saveButtonFocus,
+                      onKeyEvent: _handleButtonKey,
+                      child: Builder(builder: (context) {
+                        final hasFocus = Focus.of(context).hasFocus;
+                        return ElevatedButton(
+                          onPressed: () {
+                            FocusScope.of(context).unfocus();
+                            widget.onSave(widget.controller.text); // send text
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor:
+                                hasFocus ? Colors.amber : Colors.grey[800],
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 20,
+                              vertical: 8,
+                            ),
                           ),
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 20,
-                            vertical: 8,
+                          child: Text(
+                            "Save Instructions",
+                            style: TextStyle(
+                              color: hasFocus ? Colors.black : Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                        ),
-                        child: Text(
-                          "Save Instructions",
-                          style: TextStyle(
-                            color: hasFocus ? Colors.black : Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      );
-                    }),
+                        );
+                      }),
+                    ),
                   ),
                 ],
               ),

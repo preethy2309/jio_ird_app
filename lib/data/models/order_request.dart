@@ -1,14 +1,10 @@
 class OrderRequest {
   final List<OrderDish> dish_details;
-  final String guest_id;
-  final String guest_name;
   final String room_no;
   final String serial_Num;
 
   OrderRequest({
     required this.dish_details,
-    required this.guest_id,
-    required this.guest_name,
     required this.room_no,
     required this.serial_Num,
   });
@@ -16,8 +12,6 @@ class OrderRequest {
   Map<String, dynamic> toJson() {
     return {
       'dish_details': dish_details.map((d) => d.toJson()).toList(),
-      'guest_id': guest_id,
-      'guest_name': guest_name,
       'room_no': room_no,
       'serial_Num': serial_Num,
     };

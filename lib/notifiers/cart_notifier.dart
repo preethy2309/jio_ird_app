@@ -71,6 +71,7 @@ class CartNotifier extends StateNotifier<List<DishWithQuantity>> {
       }
       return item;
     }).toList();
+    _saveCart();
   }
 
   void clearCart() {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:jio_ird/providers/focus_provider.dart';
 
@@ -21,8 +22,8 @@ class BillSummaryScreen extends ConsumerWidget {
     );
     final int itemCount = items.length;
     final double itemTotal = totalPrice;
-    final double gst = itemTotal * 0.12;
-    final double toPay = itemTotal + gst;
+    // final double gst = itemTotal * 0.12;
+    final double toPay = itemTotal;
 
     return Container(
       padding: const EdgeInsets.all(16),
@@ -78,26 +79,26 @@ class BillSummaryScreen extends ConsumerWidget {
           const SizedBox(height: 8),
 
           // GST
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text(
-                'GST',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 16,
-                ),
-              ),
-              Text(
-                '₹ ${gst.toStringAsFixed(2)}',
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 16,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 8),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //   children: [
+          //     const Text(
+          //       'GST',
+          //       style: TextStyle(
+          //         color: Colors.white,
+          //         fontSize: 16,
+          //       ),
+          //     ),
+          //     Text(
+          //       '₹ ${gst.toStringAsFixed(2)}',
+          //       style: const TextStyle(
+          //         color: Colors.white,
+          //         fontSize: 16,
+          //       ),
+          //     ),
+          //   ],
+          // ),
+          // const SizedBox(height: 8),
 
           const Divider(color: Colors.white38),
 
@@ -134,61 +135,73 @@ class BillSummaryScreen extends ConsumerWidget {
           // Place order button
           SizedBox(
             width: 160,
-            child: ElevatedButton(
-              focusNode: ref.watch(placeOrderFocusNodeProvider),
+            child: Focus(
+              focusNode: ref.watch(placeOrderFocusNodeProvider), // ✅ read, not watch
               autofocus: true,
-              onPressed: () {
-                ref.read(orderNotifierProvider.notifier).placeOrder(items);
+              onKeyEvent: (node, event) {
+                if (event is KeyDownEvent &&
+                    event.logicalKey == LogicalKeyboardKey.arrowUp) {
+                  ref.read(cartTabFocusNodeProvider).requestFocus(); // ✅ read
+                  return KeyEventResult.handled;
+                }
+                return KeyEventResult.ignored;
               },
-              style: ButtonStyle(
-                backgroundColor: WidgetStateProperty.resolveWith<Color>(
-                  (states) {
-                    if (states.contains(WidgetState.focused)) {
-                      return Colors.amber[600]!;
-                    }
-                    return Colors.white;
-                  },
-                ),
-                padding: WidgetStateProperty.all(
-                  const EdgeInsets.symmetric(vertical: 14),
-                ),
-                shape: WidgetStateProperty.all(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(24),
+              child: ElevatedButton(
+                onPressed: () {
+                  ref.read(orderNotifierProvider.notifier).placeOrder(items);
+                },
+                style: ButtonStyle(
+                  backgroundColor: WidgetStateProperty.resolveWith<Color>(
+                        (states) {
+                      if (states.contains(WidgetState.focused)) {
+                        return Colors.amber[600]!;
+                      }
+                      return Colors.white;
+                    },
+                  ),
+                  padding: WidgetStateProperty.all(
+                    const EdgeInsets.symmetric(vertical: 14),
+                  ),
+                  shape: WidgetStateProperty.all(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(24),
+                    ),
                   ),
                 ),
-              ),
-              child: Consumer(
-                builder: (context, ref, _) {
-                  final orderState = ref.watch(orderNotifierProvider);
+                child: Consumer(
+                  builder: (context, ref, _) {
+                    final orderState = ref.watch(orderNotifierProvider);
 
-                  return orderState.when(
-                    loading: () => const SizedBox(
-                      width: 20,
-                      height: 20,
-                      child: CircularProgressIndicator(
-                          strokeWidth: 2, color: Colors.white),
-                    ),
-                    data: (msg) {
-                      if (msg.isNotEmpty) {
+                    return orderState.when(
+                      loading: () => const SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: Colors.white,
+                        ),
+                      ),
+                      data: (msg) {
+                        if (msg.isNotEmpty) {
+                          WidgetsBinding.instance.addPostFrameCallback((_) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text(msg)),
+                            );
+                          });
+                        }
+                        return const Text("Place Order");
+                      },
+                      error: (err, _) {
                         WidgetsBinding.instance.addPostFrameCallback((_) {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text(msg)),
+                            SnackBar(content: Text(err.toString())),
                           );
                         });
-                      }
-                      return const Text("Place Order");
-                    },
-                    error: (err, _) {
-                      WidgetsBinding.instance.addPostFrameCallback((_) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text(err.toString())),
-                        );
-                      });
-                      return const Text("Retry Order");
-                    },
-                  );
-                },
+                        return const Text("Retry Order");
+                      },
+                    );
+                  },
+                ),
               ),
             ),
           ),

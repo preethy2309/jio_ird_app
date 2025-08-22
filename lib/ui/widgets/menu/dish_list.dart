@@ -80,196 +80,207 @@ class _DishListState extends ConsumerState<DishList> {
         final plusNode = plusFocusNodes[index];
         final minusNode = minusFocusNodes[index];
 
-        return Focus(
-          focusNode: dishNode,
-          skipTraversal: showCategories || isSelected,
-          canRequestFocus: !showCategories && !isSelected,
-          onFocusChange: (hasFocus) {
-            if (hasFocus) {
-              ref.read(focusedDishProvider.notifier).state = index;
-              _ensureVisible(dishNode);
-              if (selectedDish != focusedDish) {
-                ref.read(selectedDishProvider.notifier).state = -1;
-              }
-              if (quantity != 0) {
-                plusNode.requestFocus();
-              }
+        return WillPopScope(
+          onWillPop: () async {
+            if (isFocused) {
+              ref.read(showCategoriesProvider.notifier).state = true;
+              return false;
             }
+            return true;
           },
-          onKeyEvent: (node, event) {
-            if (event is! KeyDownEvent) return KeyEventResult.ignored;
+          child: Focus(
+            focusNode: dishNode,
+            skipTraversal: showCategories || isSelected,
+            canRequestFocus: !showCategories && !isSelected,
+            onFocusChange: (hasFocus) {
+              if (hasFocus) {
+                ref.read(focusedDishProvider.notifier).state = index;
+                _ensureVisible(dishNode);
+                if (selectedDish != focusedDish) {
+                  ref.read(selectedDishProvider.notifier).state = -1;
+                }
+                if (quantity != 0) {
+                  plusNode.requestFocus();
+                }
+              }
+            },
+            onKeyEvent: (node, event) {
+              if (event is! KeyDownEvent) return KeyEventResult.ignored;
 
-            if (event.logicalKey == LogicalKeyboardKey.arrowLeft) {
-              if (isFocused) {
-                if (minusNode.hasFocus) {
+              if (event.logicalKey == LogicalKeyboardKey.arrowLeft) {
+                if (isFocused) {
+                  if (minusNode.hasFocus) {
+                    Future.microtask(() {
+                      plusNode.requestFocus();
+                      _ensureVisible(plusNode);
+                    });
+                    return KeyEventResult.handled;
+                  } else {
+                    ref.read(showCategoriesProvider.notifier).state = true;
+                  }
+                }
+              }
+
+              if (event.logicalKey == LogicalKeyboardKey.arrowRight) {
+                if (isFocused) {
+                  if (minusNode.hasFocus || quantity == 0) {
+                    ref
+                        .read(cookingInstructionFocusNodeProvider)
+                        .requestFocus();
+                    return KeyEventResult.handled;
+                  } else {
+                    Future.microtask(() {
+                      minusNode.requestFocus();
+                      _ensureVisible(minusNode);
+                    });
+                  }
+                  return KeyEventResult.handled;
+                }
+              }
+
+              if (event.logicalKey == LogicalKeyboardKey.enter ||
+                  event.logicalKey == LogicalKeyboardKey.select) {
+                final idx =
+                    itemQuantities.indexWhere((e) => e.dish.id == dish.id);
+                final currentQty = idx >= 0 ? itemQuantities[idx].quantity : 0;
+
+                ref.read(selectedDishProvider.notifier).state = index;
+                ref.read(focusedDishProvider.notifier).state = index;
+
+                if (currentQty == 0) {
+                  ref
+                      .read(itemQuantitiesProvider.notifier)
+                      .addItem(DishWithQuantity(dish: dish, quantity: 1));
                   Future.microtask(() {
                     plusNode.requestFocus();
                     _ensureVisible(plusNode);
                   });
-                  return KeyEventResult.handled;
-                } else {
-                  ref.read(showCategoriesProvider.notifier).state = true;
-                }
-              }
-            }
-
-            if (event.logicalKey == LogicalKeyboardKey.arrowRight) {
-              if (isFocused) {
-                if (minusNode.hasFocus || quantity == 0) {
-                  ref.read(cookingInstructionFocusNodeProvider).requestFocus();
-                  return KeyEventResult.handled;
                 } else {
                   Future.microtask(() {
-                    minusNode.requestFocus();
-                    _ensureVisible(minusNode);
+                    if (plusNode.hasFocus ||
+                        (!plusNode.hasFocus && !minusNode.hasFocus)) {
+                      ref.read(itemQuantitiesProvider.notifier).increment(idx);
+                      plusNode.requestFocus();
+                      _ensureVisible(plusNode);
+                    } else if (minusNode.hasFocus) {
+                      ref.read(itemQuantitiesProvider.notifier).decrement(idx);
+                      minusNode.requestFocus();
+                      _ensureVisible(minusNode);
+                    }
                   });
                 }
+
                 return KeyEventResult.handled;
               }
-            }
 
-            if (event.logicalKey == LogicalKeyboardKey.enter ||
-                event.logicalKey == LogicalKeyboardKey.select) {
-              final idx =
-                  itemQuantities.indexWhere((e) => e.dish.id == dish.id);
-              final currentQty = idx >= 0 ? itemQuantities[idx].quantity : 0;
-
-              ref.read(selectedDishProvider.notifier).state = index;
-              ref.read(focusedDishProvider.notifier).state = index;
-
-              if (currentQty == 0) {
-                ref
-                    .read(itemQuantitiesProvider.notifier)
-                    .addItem(DishWithQuantity(dish: dish, quantity: 1));
-                Future.microtask(() {
-                  plusNode.requestFocus();
-                  _ensureVisible(plusNode);
-                });
-              } else {
-                Future.microtask(() {
-                  if (plusNode.hasFocus ||
-                      (!plusNode.hasFocus && !minusNode.hasFocus)) {
-                    ref.read(itemQuantitiesProvider.notifier).increment(idx);
-                    plusNode.requestFocus();
-                    _ensureVisible(plusNode);
-                  } else if (minusNode.hasFocus) {
-                    ref.read(itemQuantitiesProvider.notifier).decrement(idx);
-                    minusNode.requestFocus();
-                    _ensureVisible(minusNode);
-                  }
-                });
-              }
-
-              return KeyEventResult.handled;
-            }
-
-            return KeyEventResult.ignored;
-          },
-          child: GestureDetector(
-            child: Container(
-              height: 76,
-              margin: const EdgeInsets.all(2),
-              padding: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                color: isFocused ? AppColors.primary : Colors.transparent,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Row(
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(6),
-                    child: Image.network(
-                      dish.dish_image,
-                      width: 75,
-                      height: 75,
-                      fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) {
-                        return Image.asset(
-                          'assets/images/default_dish.png',
-                          width: 75,
-                          height: 75,
-                          fit: BoxFit.cover,
-                        );
-                      },
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  if (isFocused) ...[
-                    if (quantity == 0)
-                      ElevatedButton(
-                        onPressed: () {
-                          ref.read(itemQuantitiesProvider.notifier).addItem(
-                                DishWithQuantity(dish: dish, quantity: 1),
-                              );
-                          Future.microtask(() {
-                            plusNode.requestFocus();
-                            _ensureVisible(plusNode);
-                          });
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.white70,
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 12, vertical: 6),
-                          textStyle: const TextStyle(fontSize: 14),
-                        ),
-                        child: const Text("Add to Cart"),
-                      )
-                    else
-                      Builder(
-                        builder: (context) {
-                          Future.microtask(() {
-                            if (!plusNode.hasFocus && isFocused) {
-                              plusNode.requestFocus();
-                              _ensureVisible(plusNode);
-                            }
-                          });
-
-                          return QuantitySelector(
-                            quantity: quantity,
-                            onIncrement: () {
-                              final idx = itemQuantities
-                                  .indexWhere((e) => e.dish.id == dish.id);
-                              if (idx >= 0) {
-                                ref
-                                    .read(itemQuantitiesProvider.notifier)
-                                    .increment(idx);
-                                Future.microtask(() {
-                                  plusNode.requestFocus();
-                                  _ensureVisible(plusNode);
-                                });
-                              }
-                            },
-                            onDecrement: () {
-                              final idx = itemQuantities
-                                  .indexWhere((e) => e.dish.id == dish.id);
-                              if (idx >= 0) {
-                                ref
-                                    .read(itemQuantitiesProvider.notifier)
-                                    .decrement(idx);
-                                Future.microtask(() {
-                                  minusNode.requestFocus();
-                                  _ensureVisible(minusNode);
-                                });
-                              }
-                            },
-                            plusButtonFocusNode: plusNode,
-                            minusButtonFocusNode: minusNode,
+              return KeyEventResult.ignored;
+            },
+            child: GestureDetector(
+              child: Container(
+                height: 76,
+                margin: const EdgeInsets.all(2),
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: isFocused ? AppColors.primary : Colors.transparent,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Row(
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(6),
+                      child: Image.network(
+                        dish.dish_image,
+                        width: 75,
+                        height: 75,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) {
+                          return Image.asset(
+                            'assets/images/default_dish.png',
+                            width: 75,
+                            height: 75,
+                            fit: BoxFit.cover,
                           );
                         },
                       ),
-                  ] else
-                    Expanded(
-                      child: Text(
-                        dish.name,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                        ),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
                     ),
-                ],
+                    const SizedBox(width: 10),
+                    if (isFocused) ...[
+                      if (quantity == 0)
+                        ElevatedButton(
+                          onPressed: () {
+                            ref.read(itemQuantitiesProvider.notifier).addItem(
+                                  DishWithQuantity(dish: dish, quantity: 1),
+                                );
+                            Future.microtask(() {
+                              plusNode.requestFocus();
+                              _ensureVisible(plusNode);
+                            });
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white70,
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 12, vertical: 6),
+                            textStyle: const TextStyle(fontSize: 14),
+                          ),
+                          child: const Text("Add to Cart"),
+                        )
+                      else
+                        Builder(
+                          builder: (context) {
+                            Future.microtask(() {
+                              if (!plusNode.hasFocus && isFocused) {
+                                plusNode.requestFocus();
+                                _ensureVisible(plusNode);
+                              }
+                            });
+
+                            return QuantitySelector(
+                              quantity: quantity,
+                              onIncrement: () {
+                                final idx = itemQuantities
+                                    .indexWhere((e) => e.dish.id == dish.id);
+                                if (idx >= 0) {
+                                  ref
+                                      .read(itemQuantitiesProvider.notifier)
+                                      .increment(idx);
+                                  Future.microtask(() {
+                                    plusNode.requestFocus();
+                                    _ensureVisible(plusNode);
+                                  });
+                                }
+                              },
+                              onDecrement: () {
+                                final idx = itemQuantities
+                                    .indexWhere((e) => e.dish.id == dish.id);
+                                if (idx >= 0) {
+                                  ref
+                                      .read(itemQuantitiesProvider.notifier)
+                                      .decrement(idx);
+                                  Future.microtask(() {
+                                    minusNode.requestFocus();
+                                    _ensureVisible(minusNode);
+                                  });
+                                }
+                              },
+                              plusButtonFocusNode: plusNode,
+                              minusButtonFocusNode: minusNode,
+                            );
+                          },
+                        ),
+                    ] else
+                      Expanded(
+                        child: Text(
+                          dish.name,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                          ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                  ],
+                ),
               ),
             ),
           ),

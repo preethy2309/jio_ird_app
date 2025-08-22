@@ -103,6 +103,7 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
                   ? filteredDishes[focusedDish]
                   : (filteredDishes.isNotEmpty ? filteredDishes[0] : null),
               categoryName: selectedCat.category_name,
+              itemCount : allDishes.length
             ),
           ),
         ],
