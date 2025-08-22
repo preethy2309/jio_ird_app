@@ -31,6 +31,7 @@ class DishDetail extends ConsumerWidget {
     final isInCart = cartItems.any((item) => item.dish.id == dish!.id);
     final focusedDish = ref.watch(focusedDishProvider);
     final isCategory = focusedDish == -1;
+    final bool hasPrice = (double.tryParse(dish!.dish_price) ?? 0) > 0;
     if (isCategory) {
       return Container(
         padding: const EdgeInsets.only(left: 20),
@@ -113,11 +114,14 @@ class DishDetail extends ConsumerWidget {
               ),
             ],
           ),
-          Text(
-            '₹${dish!.dish_price}',
-            style: const TextStyle(
-                fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
-          ),
+          if (hasPrice)
+            Text(
+              '₹${dish!.dish_price}',
+              style: const TextStyle(
+                  fontSize: 20,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold),
+            ),
           Text(
             dish!.name,
             style: const TextStyle(

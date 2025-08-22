@@ -128,7 +128,7 @@ class _CartItemsListState extends ConsumerState<CartItemsList> {
 
             if (event.logicalKey == LogicalKeyboardKey.arrowLeft) {
               if (plusNode.hasFocus) {
-                ref.watch(placeOrderFocusNodeProvider).requestFocus();
+                ref.read(placeOrderFocusNodeProvider).requestFocus();
               } else {
                 plusNode.requestFocus();
                 _ensureVisible(plusNode);
@@ -138,7 +138,7 @@ class _CartItemsListState extends ConsumerState<CartItemsList> {
 
             if (event.logicalKey == LogicalKeyboardKey.arrowRight) {
               if (minusNode.hasFocus || editNode.hasFocus) {
-                ref.watch(placeOrderFocusNodeProvider).requestFocus();
+                ref.read(placeOrderFocusNodeProvider).requestFocus();
               } else {
                 minusNode.requestFocus();
                 _ensureVisible(minusNode);

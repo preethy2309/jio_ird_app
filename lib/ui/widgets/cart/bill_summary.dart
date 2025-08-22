@@ -12,6 +12,7 @@ class BillSummaryScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final items = ref.watch(itemQuantitiesProvider);
+    final placeOrderFocusNode = ref.watch(placeOrderFocusNodeProvider);
 
     final totalPrice = items.fold<double>(
       0,
@@ -117,7 +118,7 @@ class BillSummaryScreen extends ConsumerWidget {
           SizedBox(
             width: 160,
             child: Focus(
-              focusNode: ref.read(placeOrderFocusNodeProvider),
+              focusNode: placeOrderFocusNode,
               autofocus: true,
               onKeyEvent: (node, event) {
                 if (event is KeyDownEvent &&
