@@ -6,6 +6,7 @@ import 'package:jio_ird/providers/focus_provider.dart';
 import '../../../data/models/dish_with_quantity.dart';
 import '../../../notifiers/cart_notifier.dart';
 import '../../../providers/state_provider.dart';
+import '../../../utils/helper.dart';
 import '../../theme/app_colors.dart';
 import '../quantity_selector.dart';
 
@@ -30,6 +31,25 @@ class _DishListState extends ConsumerState<DishList> {
 
     plusFocusNodes = List.generate(widget.dishes.length, (_) => FocusNode());
     minusFocusNodes = List.generate(widget.dishes.length, (_) => FocusNode());
+  }
+
+  @override
+  void didUpdateWidget(DishList oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (oldWidget.dishes.length != widget.dishes.length) {
+      for (final node in plusFocusNodes) {
+        node.dispose();
+      }
+      plusFocusNodes =
+          List.generate(widget.dishes.length, (_) => FocusNode());
+
+      for (final node in minusFocusNodes) {
+        node.dispose();
+      }
+      minusFocusNodes =
+          List.generate(widget.dishes.length, (_) => FocusNode());
+    }
   }
 
   @override
@@ -80,13 +100,16 @@ class _DishListState extends ConsumerState<DishList> {
         final plusNode = plusFocusNodes[index];
         final minusNode = minusFocusNodes[index];
 
-        return WillPopScope(
-          onWillPop: () async {
-            if (isFocused) {
-              ref.read(showCategoriesProvider.notifier).state = true;
-              return false;
+        return PopScope(
+          canPop: false,
+          onPopInvoked: (didPop) {
+            if (!didPop && isFocused) {
+              if (hasSubCategories(ref)) {
+                ref.read(showSubCategoriesProvider.notifier).state = true;
+              } else {
+                ref.read(showCategoriesProvider.notifier).state = true;
+              }
             }
-            return true;
           },
           child: Focus(
             focusNode: dishNode,
@@ -116,7 +139,11 @@ class _DishListState extends ConsumerState<DishList> {
                     });
                     return KeyEventResult.handled;
                   } else {
-                    ref.read(showCategoriesProvider.notifier).state = true;
+                    if (hasSubCategories(ref)) {
+                      ref.read(showSubCategoriesProvider.notifier).state = true;
+                    } else {
+                      ref.read(showCategoriesProvider.notifier).state = true;
+                    }
                   }
                 }
               }

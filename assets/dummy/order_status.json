@@ -1,217 +1,306 @@
 [
   {
-    "order_id": 3116,
-    "guest_name": "Sagar Arsule",
-    "display_id": 79148,
-    "guest_id": "70413",
-    "room_no": "2024",
-    "dish_details": [
+    "id": 1,
+    "category_name": "Breakfast",
+    "ird_note": null,
+    "sub_categories": [
       {
-        "name": "Poha",
-        "quantity": "1",
-        "price": "30",
-        "id": 250,
-        "dish_type": "veg",
-        "status": "Submitted",
-        "image": "https://example.com/images/poha.jpg"
+        "id": 1011,
+        "category_name": "Indian",
+        "dishes": [
+          {
+            "dish_id": 2021,
+            "dish_name": "Masala Dosa",
+            "description": "South Indian rice crepe stuffed with spiced potato.",
+            "dish_type": "veg",
+            "dish_price": "120",
+            "dish_image": "https://images.unsplash.com/photo-1598214886806-c87b84b7078b?q=80&w=1025&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            "file_type": "image/jpeg",
+            "file_name": "masala_dosa.jpg",
+            "cooking_request": "",
+            "dish_qty": 1
+          },
+          {
+            "dish_id": 2051,
+            "dish_name": "Chai",
+            "description": "Traditional Indian tea with spices.",
+            "dish_type": "veg",
+            "dish_price": "30",
+            "dish_image": "https://images.unsplash.com/photo-1504674900247-0877df9cc836",
+            "file_type": "image/jpeg",
+            "file_name": "chai.jpg",
+            "cooking_request": "",
+            "dish_qty": 1
+          },
+          {
+            "dish_id": 2061,
+            "dish_name": "Idli",
+            "description": "Steamed rice cakes served with sambar and chutney.",
+            "dish_type": "veg",
+            "dish_price": "80",
+            "dish_image": "https://images.unsplash.com/photo-1598214886806-c87b84b7078b?q=80&w=1025&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            "file_type": "image/jpeg",
+            "file_name": "idli.jpg",
+            "cooking_request": "",
+            "dish_qty": 1
+          },
+          {
+            "dish_id": 20111,
+            "dish_name": "Paneer Pakoda",
+            "description": "Crispy paneer fritters served with chutney.",
+            "dish_type": "veg",
+            "dish_price": "150",
+            "dish_image": "https://images.unsplash.com/photo-1598214886806-c87b84b7078b?q=80&w=1025&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            "file_type": "image/jpeg",
+            "file_name": "paneer_pakoda.jpg",
+            "cooking_request": "",
+            "dish_qty": 1
+          },
+          {
+            "dish_id": 20221,
+            "dish_name": "Masala Dosa",
+            "description": "South Indian rice crepe stuffed with spiced potato.",
+            "dish_type": "veg",
+            "dish_price": "120",
+            "dish_image": "https://images.unsplash.com/photo-1598214886806-c87b84b7078b?q=80&w=1025&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            "file_type": "image/jpeg",
+            "file_name": "masala_dosa.jpg",
+            "cooking_request": "",
+            "dish_qty": 1
+          },
+          {
+            "dish_id": 20551,
+            "dish_name": "Chai",
+            "description": "Traditional Indian tea with spices.",
+            "dish_type": "veg",
+            "dish_price": "30",
+            "dish_image": "https://images.unsplash.com/photo-1504674900247-0877df9cc836",
+            "file_type": "image/jpeg",
+            "file_name": "chai.jpg",
+            "cooking_request": "",
+            "dish_qty": 1
+          },
+          {
+            "dish_id": 20661,
+            "dish_name": "Idli",
+            "description": "Steamed rice cakes served with sambar and chutney.",
+            "dish_type": "veg",
+            "dish_price": "80",
+            "dish_image": "https://images.unsplash.com/photo-1598214886806-c87b84b7078b?q=80&w=1025&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            "file_type": "image/jpeg",
+            "file_name": "idli.jpg",
+            "cooking_request": "",
+            "dish_qty": 1
+          }
+        ]
       },
       {
-        "name": "Paneer Pakoda",
-        "quantity": "1",
-        "price": "230",
-        "id": 251,
-        "dish_type": "veg",
-        "status": "Submitted",
-        "image": "https://example.com/images/paneer_pakoda.jpg"
+        "id": 101,
+        "category_name": "Indian",
+        "dishes": [
+          {
+            "dish_id": 201,
+            "dish_name": "Paneer Pakoda",
+            "description": "Crispy paneer fritters served with chutney. These delicious golden-brown bites are made by dipping soft paneer cubes into a spiced gram flour batter, then deep-frying them until perfectly crunchy. Served with a tangy green chutney and sometimes accompanied by sweet tamarind chutney, they make the perfect evening snack. Best enjoyed hot with a steaming cup of masala chai. The outer layer gives a satisfying crunch while the paneer inside remains soft and flavorful, making it an all-time favorite for street food lovers. This dish is a must-try for anyone who enjoys Indian snacks that are bursting with flavor and texture.",
+            "dish_type": "non-veg",
+            "dish_price": "150",
+            "dish_image": "https://images.unsplash.com/photo-1598214886806-c87b84b7078b?q=80&w=1025&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            "file_type": "image/jpeg",
+            "file_name": "paneer_pakoda.jpg",
+            "cooking_request": "",
+            "dish_qty": 1
+          },
+          {
+            "dish_id": 2066,
+            "dish_name": "Idli",
+            "description": "Steamed rice cakes served with sambar and chutney.",
+            "dish_type": "veg",
+            "dish_price": "80",
+            "dish_image": "https://images.unsplash.com/photo-1598214886806-c87b84b7078b?q=80&w=1025&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            "file_type": "image/jpeg",
+            "file_name": "idli.jpg",
+            "cooking_request": "",
+            "dish_qty": 1
+          }
+        ]
       },
       {
-        "name": "Aloo Paratha",
-        "quantity": "2",
-        "price": "50",
-        "id": 252,
-        "dish_type": "veg",
-        "status": "Submitted",
-        "image": "https://example.com/images/aloo_paratha.jpg"
-      },
-      {
-        "name": "Idli Sambar",
-        "quantity": "1",
-        "price": "40",
-        "id": 253,
-        "dish_type": "veg",
-        "status": "Submitted",
-        "image": "https://example.com/images/idli_sambar.jpg"
-      },
-      {
-        "name": "Tea",
-        "quantity": "1",
-        "price": "20",
-        "id": 254,
-        "dish_type": "veg",
-        "status": "Submitted",
-        "image": "https://example.com/images/tea.jpg"
+        "id": 1012,
+        "category_name": "Indian",
+        "dishes": [
+          {
+            "dish_id": 20552,
+            "dish_name": "Chai",
+            "description": "Traditional Indian tea with spices.",
+            "dish_type": "veg",
+            "dish_price": "30",
+            "dish_image": "https://images.unsplash.com/photo-1504674900247-0877df9cc836",
+            "file_type": "image/jpeg",
+            "file_name": "chai.jpg",
+            "cooking_request": "",
+            "dish_qty": 1
+          },
+          {
+            "dish_id": 20662,
+            "dish_name": "Idli",
+            "description": "Steamed rice cakes served with sambar and chutney.",
+            "dish_type": "veg",
+            "dish_price": "80",
+            "dish_image": "https://images.unsplash.com/photo-1598214886806-c87b84b7078b?q=80&w=1025&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            "file_type": "image/jpeg",
+            "file_name": "idli.jpg",
+            "cooking_request": "",
+            "dish_qty": 1
+          }
+        ]
       }
     ]
   },
   {
-    "order_id": 3117,
-    "guest_name": "Anita Sharma",
-    "display_id": 79149,
-    "guest_id": "70414",
-    "room_no": "305",
-    "dish_details": [
+    "id": 2,
+    "category_name": "Lunch",
+    "ird_note": null,
+    "sub_categories": [
       {
-        "name": "Chicken Biryani",
-        "quantity": "2",
-        "price": "450",
-        "id": 300,
-        "dish_type": "non-veg",
-        "status": "Preparing",
-        "image": "https://example.com/images/chicken_biryani.jpg"
-      },
-      {
-        "name": "Cold Coffee",
-        "quantity": "1",
-        "price": "120",
-        "id": 301,
-        "dish_type": "veg",
-        "status": "Preparing",
-        "image": "https://example.com/images/cold_coffee.jpg"
-      },
-      {
-        "name": "Garlic Naan",
-        "quantity": "3",
-        "price": "40",
-        "id": 302,
-        "dish_type": "veg",
-        "status": "Preparing",
-        "image": "https://example.com/images/garlic_naan.jpg"
-      },
-      {
-        "name": "Butter Chicken",
-        "quantity": "1",
-        "price": "350",
-        "id": 303,
-        "dish_type": "non-veg",
-        "status": "Preparing",
-        "image": "https://example.com/images/butter_chicken.jpg"
-      },
-      {
-        "name": "Gulab Jamun",
-        "quantity": "2",
-        "price": "80",
-        "id": 304,
-        "dish_type": "veg",
-        "status": "Preparing",
-        "image": "https://example.com/images/gulab_jamun.jpg"
+        "id": 102,
+        "category_name": "North Indian",
+        "dishes": [
+          {
+            "dish_id": 203,
+            "dish_name": "Butter Chicken",
+            "description": "Creamy tomato gravy with tender chicken pieces.",
+            "dish_type": "non-veg",
+            "dish_price": "250",
+            "dish_image": "https://images.unsplash.com/photo-1598214886806-c87b84b7078b?q=80&w=1025&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            "file_type": "image/jpeg",
+            "file_name": "butter_chicken.jpg",
+            "cooking_request": "Less spicy",
+            "dish_qty": 1
+          },
+          {
+            "dish_id": 204,
+            "dish_name": "Tandoori Roti",
+            "description": "Whole wheat flatbread cooked in tandoor.",
+            "dish_type": "veg",
+            "dish_price": "20",
+            "dish_image": "https://images.unsplash.com/photo-1589308078054-8328e62abf8f",
+            "file_type": "image/jpeg",
+            "file_name": "tandoori_roti.jpg",
+            "cooking_request": "Well done",
+            "dish_qty": 2
+          }
+        ]
       }
     ]
   },
   {
-    "order_id": 3118,
-    "guest_name": "Rahul Verma",
-    "display_id": 79150,
-    "guest_id": "70415",
-    "room_no": "1101",
-    "dish_details": [
+    "id": 3,
+    "category_name": "Dinner",
+    "ird_note": null,
+    "sub_categories": [
       {
-        "name": "Masala Dosa",
-        "quantity": "1",
-        "price": "90",
-        "id": 400,
-        "dish_type": "veg",
-        "status": "Served",
-        "image": "https://example.com/images/masala_dosa.jpg"
-      },
-      {
-        "name": "Filter Coffee",
-        "quantity": "2",
-        "price": "80",
-        "id": 401,
-        "dish_type": "veg",
-        "status": "Served",
-        "image": "https://example.com/images/filter_coffee.jpg"
+        "id": 103,
+        "category_name": "Chinese",
+        "dishes": [
+          {
+            "dish_id": 207,
+            "dish_name": "Fried Rice",
+            "description": "Stir-fried rice with vegetables and soy sauce.",
+            "dish_type": "veg",
+            "dish_price": "100",
+            "dish_image": "https://images.unsplash.com/photo-1598214886806-c87b84b7078b?q=80&w=1025&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            "file_type": "image/jpeg",
+            "file_name": "fried_rice.jpg",
+            "cooking_request": "",
+            "dish_qty": 1
+          },
+          {
+            "dish_id": 208,
+            "dish_name": "Spring Rolls",
+            "description": "Crispy rolls filled with vegetables.",
+            "dish_type": "veg",
+            "dish_price": "80",
+            "dish_image": "https://images.unsplash.com/photo-1598214886806-c87b84b7078b?q=80&w=1025&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            "file_type": "image/jpeg",
+            "file_name": "spring_rolls.jpg",
+            "cooking_request": "",
+            "dish_qty": 1
+          }
+        ]
       }
     ]
   },
   {
-    "order_id": 3119,
-    "guest_name": "Priya Nair",
-    "display_id": 79151,
-    "guest_id": "70416",
-    "room_no": "507",
-    "dish_details": [
+    "id": 4,
+    "category_name": "Snacks",
+    "ird_note": null,
+    "sub_categories": [
       {
-        "name": "Veg Sandwich",
-        "quantity": "1",
-        "price": "60",
-        "id": 500,
-        "dish_type": "veg",
-        "status": "Cancelled",
-        "image": "https://example.com/images/veg_sandwich.jpg"
-      },
-      {
-        "name": "French Fries",
-        "quantity": "1",
-        "price": "70",
-        "id": 501,
-        "dish_type": "veg",
-        "status": "Cancelled",
-        "image": "https://example.com/images/french_fries.jpg"
+        "id": 104,
+        "category_name": "Fast Food",
+        "dishes": [
+          {
+            "dish_id": 209,
+            "dish_name": "Burger",
+            "description": "Juicy burger with lettuce, tomato, and cheese.",
+            "dish_type": "non-veg",
+            "dish_price": "120",
+            "dish_image": "https://images.unsplash.com/photo-1598214886806-c87b84b7078b?q=80&w=1025&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            "file_type": "image/jpeg",
+            "file_name": "burger.jpg",
+            "cooking_request": "",
+            "dish_qty": 1
+          },
+          {
+            "dish_id": 210,
+            "dish_name": "French Fries",
+            "description": "Crispy golden fries served with ketchup.",
+            "dish_type": "veg",
+            "dish_price": "50",
+            "dish_image": "https://images.unsplash.com/photo-1598214886806-c87b84b7078b?q=80&w=1025&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            "file_type": "image/jpeg",
+            "file_name": "french_fries.jpg",
+            "cooking_request": "",
+            "dish_qty": 1
+          }
+        ]
       }
     ]
   },
   {
-    "order_id": 3120,
-    "guest_name": "Manish Gupta",
-    "display_id": 79152,
-    "guest_id": "70417",
-    "room_no": "804",
-    "dish_details": [
+    "id": 5,
+    "category_name": "Desserts",
+    "ird_note": null,
+    "sub_categories": [
       {
-        "name": "Grilled Fish",
-        "quantity": "1",
-        "price": "550",
-        "id": 600,
-        "dish_type": "non-veg",
-        "status": "Submitted",
-        "image": "https://example.com/images/grilled_fish.jpg"
-      },
-      {
-        "name": "Green Salad",
-        "quantity": "1",
-        "price": "90",
-        "id": 601,
-        "dish_type": "veg",
-        "status": "Submitted",
-        "image": "https://example.com/images/green_salad.jpg"
-      },
-      {
-        "name": "Tomato Soup",
-        "quantity": "1",
-        "price": "120",
-        "id": 602,
-        "dish_type": "veg",
-        "status": "Submitted",
-        "image": "https://example.com/images/tomato_soup.jpg"
-      },
-      {
-        "name": "Pasta Alfredo",
-        "quantity": "1",
-        "price": "300",
-        "id": 603,
-        "dish_type": "veg",
-        "status": "Submitted",
-        "image": "https://example.com/images/pasta_alfredo.jpg"
-      },
-      {
-        "name": "Ice Cream",
-        "quantity": "2",
-        "price": "150",
-        "id": 604,
-        "dish_type": "veg",
-        "status": "Submitted",
-        "image": "https://example.com/images/ice_cream.jpg"
+        "id": 105,
+        "category_name": "Sweets",
+        "dishes": [
+          {
+            "dish_id": 211,
+            "dish_name": "Gulab Jamun",
+            "description": "Soft and syrupy Indian sweet made from milk solids.",
+            "dish_type": "veg",
+            "dish_price": "60",
+            "dish_image": "https://images.unsplash.com/photo-1598214886806-c87b84b7078b?q=80&w=1025&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            "file_type": "image/jpeg",
+            "file_name": "gulab_jamun.jpg",
+            "cooking_request": "",
+            "dish_qty": 1
+          },
+          {
+            "dish_id": 212,
+            "dish_name": "Rasgulla",
+            "description": "Spongy cheese balls soaked in sugar syrup.",
+            "dish_type": "veg",
+            "dish_price": "50",
+            "dish_image": "https://images.unsplash.com/photo-1598214886806-c87b84b7078b?q=80&w=1025&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            "file_type": "image/jpeg",
+            "file_name": "rasgulla.jpg",
+            "cooking_request": "",
+            "dish_qty": 1
+          }
+        ]
       }
     ]
   }

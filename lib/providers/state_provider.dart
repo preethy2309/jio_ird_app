@@ -26,6 +26,10 @@ final vegOnlyProvider = StateProvider<bool>((ref) => false);
 /// Currently selected category index
 final selectedCategoryProvider = StateProvider<int>((ref) => 0);
 
+final selectedSubCategoryProvider = StateProvider<int>((ref) => -1);
+
+final focusedSubCategoryProvider = StateProvider<int>((ref) => -1);
+
 /// Currently selected dish index (inside the selected category)
 final selectedDishProvider = StateProvider<int>((ref) => -1);
 
@@ -34,6 +38,9 @@ final focusedDishProvider = StateProvider<int>((ref) => -1);
 
 /// Toggle for showing/hiding categories
 final showCategoriesProvider = StateProvider<bool>((ref) => true);
+
+/// Toggle for showing/hiding sub categories
+final showSubCategoriesProvider = StateProvider<bool>((ref) => true);
 
 final selectedCartTabProvider = StateProvider<CartTab>((ref) => CartTab.cart);
 

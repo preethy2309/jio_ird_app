@@ -1,26 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:jio_ird/ui/theme/app_colors.dart';
 
 import '../../../../data/models/food_item.dart';
 import '../../../../providers/focus_provider.dart';
 import '../../../../providers/state_provider.dart';
+import '../../../utils/helper.dart';
+import 'category_tile.dart';
 
 class CategoryList extends ConsumerStatefulWidget {
   final List<FoodItem> categories;
 
-  const CategoryList({
-    super.key,
-    required this.categories,
-  });
+  const CategoryList({super.key, required this.categories});
 
   @override
   ConsumerState<CategoryList> createState() => _CategoryListState();
 }
 
 class _CategoryListState extends ConsumerState<CategoryList> {
-  int focusedIndex = -1; // Track which index is currently focused
+  int focusedIndex = -1;
 
   @override
   Widget build(BuildContext context) {
@@ -29,9 +26,7 @@ class _CategoryListState extends ConsumerState<CategoryList> {
     return Focus(
       onFocusChange: (hasFocus) {
         if (!hasFocus) {
-          setState(() {
-            focusedIndex = -1;
-          });
+          setState(() => focusedIndex = -1);
         }
       },
       child: ListView.builder(
@@ -42,54 +37,39 @@ class _CategoryListState extends ConsumerState<CategoryList> {
 
           final focusNode = ref.watch(categoryFocusNodeProvider(index));
 
-          return Focus(
+          return CategoryTile(
+            title: widget.categories[index].category_name,
+            index: index,
+            isSelected: isSelected,
+            isFocused: isFocused,
             focusNode: focusNode,
+            isLastIndex: index == widget.categories.length - 1,
+            onSelect: () {
+              ref.read(selectedCategoryProvider.notifier).state = index;
+              ref.read(selectedDishProvider.notifier).state = -1;
+              ref.read(showCategoriesProvider.notifier).state = false;
+              if (hasSubCategories(ref)) {
+                ref.read(focusedDishProvider.notifier).state = -1;
+                ref.read(selectedSubCategoryProvider.notifier).state = 0;
+                ref.read(focusedSubCategoryProvider.notifier).state = 0;
+              } else {
+                ref.read(focusedDishProvider.notifier).state = 0;
+                ref.read(focusedSubCategoryProvider.notifier).state = 0;
+              }
+            },
             onFocusChange: (hasFocus) {
               setState(() {
                 focusedIndex = hasFocus ? index : focusedIndex;
               });
               if (hasFocus) {
                 ref.read(selectedCategoryProvider.notifier).state = index;
+                ref.read(focusedSubCategoryProvider.notifier).state = -1;
+                ref.read(selectedSubCategoryProvider.notifier).state = -1;
                 ref.read(selectedDishProvider.notifier).state = -1;
                 ref.read(focusedDishProvider.notifier).state = -1;
               }
             },
-            onKeyEvent: (node, event) {
-              if (event is KeyDownEvent &&
-                  (event.logicalKey == LogicalKeyboardKey.arrowRight ||
-                      event.logicalKey == LogicalKeyboardKey.enter ||
-                      event.logicalKey == LogicalKeyboardKey.select)) {
-                ref.read(selectedCategoryProvider.notifier).state = index;
-                ref.read(showCategoriesProvider.notifier).state = false;
-                ref.read(focusedDishProvider.notifier).state = 0;
-                return KeyEventResult.handled;
-              }
-              return KeyEventResult.ignored;
-            },
-            child: Container(
-              alignment: Alignment.centerLeft,
-              height: 36,
-              margin: const EdgeInsets.all(2),
-              padding: const EdgeInsets.symmetric(horizontal: 12),
-              decoration: BoxDecoration(
-                color: isFocused
-                    ? Colors.amber
-                    : isSelected
-                    ? Colors.white70
-                    : AppColors.primary,
-                borderRadius: BorderRadius.circular(14),
-              ),
-              child: Text(
-                widget.categories[index].category_name,
-                style: TextStyle(
-                  color: isFocused || isSelected
-                      ? AppColors.primary
-                      : Colors.amber,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
+            onLeft: () {},
           );
         },
       ),

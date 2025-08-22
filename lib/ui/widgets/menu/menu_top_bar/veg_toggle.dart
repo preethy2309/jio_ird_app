@@ -39,6 +39,10 @@ class _VegToggleState extends ConsumerState<VegToggle> {
             ref.read(vegOnlyProvider.notifier).state = !vegOnly;
             return KeyEventResult.handled;
           }
+
+          if (key == LogicalKeyboardKey.arrowLeft) {
+            return KeyEventResult.handled;
+          }
         }
         return KeyEventResult.ignored;
       },

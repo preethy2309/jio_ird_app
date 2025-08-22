@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:jio_ird/notifiers/cart_notifier.dart';
+import 'package:jio_ird/utils/helper.dart';
 
 import '../../../data/models/dish_model.dart';
 import '../../../providers/focus_provider.dart';
@@ -30,7 +31,9 @@ class DishDetail extends ConsumerWidget {
     final cartItems = ref.watch(itemQuantitiesProvider);
     final isInCart = cartItems.any((item) => item.dish.id == dish!.id);
     final focusedDish = ref.watch(focusedDishProvider);
-    final isCategory = focusedDish == -1;
+    final isCategory = focusedDish == -1 ||
+        ref.read(showSubCategoriesProvider) ||
+        ref.read(showCategoriesProvider);
     final bool hasPrice = (double.tryParse(dish!.dish_price) ?? 0) > 0;
     if (isCategory) {
       return Container(
@@ -159,6 +162,17 @@ class DishDetail extends ConsumerWidget {
                         ref
                             .read(categoryFocusNodeProvider(categoryIndex))
                             .requestFocus();
+                      } else if (hasSubCategories(ref) &&
+                          ref.watch(showSubCategoriesProvider)) {
+                        final lastFocusedCategory =
+                            ref.read(selectedSubCategoryProvider);
+                        final categoryIndex = (lastFocusedCategory >= 0)
+                            ? lastFocusedCategory
+                            : 0;
+
+                        ref
+                            .read(subCategoryFocusNodeProvider(categoryIndex))
+                            .requestFocus();
                       } else {
                         final lastFocusedDish = ref.read(focusedDishProvider);
                         int index = 0;
@@ -167,6 +181,10 @@ class DishDetail extends ConsumerWidget {
                         }
                         ref.read(dishFocusNodeProvider(index)).requestFocus();
                       }
+                      return KeyEventResult.handled;
+                    }
+
+                    if (event.logicalKey == LogicalKeyboardKey.arrowDown) {
                       return KeyEventResult.handled;
                     }
                     return KeyEventResult.ignored;
