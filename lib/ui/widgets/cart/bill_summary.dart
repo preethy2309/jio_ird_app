@@ -20,9 +20,9 @@ class BillSummaryScreen extends ConsumerWidget {
         return sum + price * dishWithQty.quantity;
       },
     );
+
     final int itemCount = items.length;
     final double itemTotal = totalPrice;
-    // final double gst = itemTotal * 0.12;
     final double toPay = itemTotal;
 
     return Container(
@@ -54,94 +54,75 @@ class BillSummaryScreen extends ConsumerWidget {
               ),
             ],
           ),
-          const SizedBox(height: 16),
 
-          // Item total
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text(
-                'Item Total',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 16,
-                ),
-              ),
-              Text(
-                '₹ $itemTotal',
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 16,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 8),
+          if (itemTotal > 0) ...[
+            const SizedBox(height: 16),
 
-          // GST
-          // Row(
-          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //   children: [
-          //     const Text(
-          //       'GST',
-          //       style: TextStyle(
-          //         color: Colors.white,
-          //         fontSize: 16,
-          //       ),
-          //     ),
-          //     Text(
-          //       '₹ ${gst.toStringAsFixed(2)}',
-          //       style: const TextStyle(
-          //         color: Colors.white,
-          //         fontSize: 16,
-          //       ),
-          //     ),
-          //   ],
-          // ),
-          // const SizedBox(height: 8),
-
-          const Divider(color: Colors.white38),
-
-          // To Pay
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 12.0),
-            child: Row(
+            // Item total
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const Text(
-                  'To Pay',
+                  'Item Total',
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
                   ),
                 ),
                 Text(
-                  '₹ ${toPay.toStringAsFixed(2)}',
+                  '₹ $itemTotal',
                   style: const TextStyle(
                     color: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
                   ),
                 ),
               ],
             ),
-          ),
+            const SizedBox(height: 8),
 
-          const Divider(color: Colors.white38),
+            const Divider(color: Colors.white38),
 
-          const SizedBox(height: 8),
+            // To Pay
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 12.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    'To Pay',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(
+                    '₹ ${toPay.toStringAsFixed(2)}',
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            const Divider(color: Colors.white38),
+          ],
+
+          const SizedBox(height: 12),
 
           // Place order button
           SizedBox(
             width: 160,
             child: Focus(
-              focusNode: ref.watch(placeOrderFocusNodeProvider), // ✅ read, not watch
+              focusNode: ref.read(placeOrderFocusNodeProvider),
               autofocus: true,
               onKeyEvent: (node, event) {
                 if (event is KeyDownEvent &&
                     event.logicalKey == LogicalKeyboardKey.arrowUp) {
-                  ref.read(cartTabFocusNodeProvider).requestFocus(); // ✅ read
+                  ref.read(cartTabFocusNodeProvider).requestFocus();
                   return KeyEventResult.handled;
                 }
                 return KeyEventResult.ignored;
@@ -152,7 +133,7 @@ class BillSummaryScreen extends ConsumerWidget {
                 },
                 style: ButtonStyle(
                   backgroundColor: WidgetStateProperty.resolveWith<Color>(
-                        (states) {
+                    (states) {
                       if (states.contains(WidgetState.focused)) {
                         return Colors.amber[600]!;
                       }
@@ -207,10 +188,13 @@ class BillSummaryScreen extends ConsumerWidget {
           ),
 
           const SizedBox(height: 8),
-          const Text(
-            'This order will be included in Bill',
-            style: TextStyle(color: Colors.white54, fontSize: 12),
-          ),
+
+          if (itemTotal > 0) ...[
+            const Text(
+              'This order will be included in Bill',
+              style: TextStyle(color: Colors.white54, fontSize: 12),
+            ),
+          ],
         ],
       ),
     );
