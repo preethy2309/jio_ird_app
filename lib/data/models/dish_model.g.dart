@@ -12,7 +12,7 @@ Dish _$DishFromJson(Map<String, dynamic> json) => Dish(
       description: json['description'] as String,
       dish_type: json['dish_type'] as String,
       dish_price: json['dish_price'] as String,
-      dish_image: json['dish_image'] as String,
+      dish_image: json['dish_image'] as String?,
       file_type: json['file_type'] as String?,
       file_name: json['file_name'] as String?,
       cooking_request: json['cooking_request'] as String?,

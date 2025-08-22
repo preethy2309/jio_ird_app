@@ -32,7 +32,7 @@ class DishDetail extends ConsumerWidget {
     final isInCart = cartItems.any((item) => item.dish.id == dish!.id);
     final focusedDish = ref.watch(focusedDishProvider);
     final isCategory = focusedDish == -1 ||
-        ref.read(showSubCategoriesProvider) ||
+        (hasSubCategories(ref) && ref.read(showSubCategoriesProvider)) ||
         ref.read(showCategoriesProvider);
     final bool hasPrice = (double.tryParse(dish!.dish_price) ?? 0) > 0;
     if (isCategory) {
@@ -41,9 +41,9 @@ class DishDetail extends ConsumerWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (dish!.dish_image.isNotEmpty)
+            if (dish?.dish_image?.isNotEmpty ?? false)
               Image.network(
-                dish!.dish_image,
+                dish!.dish_image!,
                 width: double.infinity,
                 height: 220,
                 fit: BoxFit.cover,
@@ -55,6 +55,13 @@ class DishDetail extends ConsumerWidget {
                     fit: BoxFit.cover,
                   );
                 },
+              )
+            else
+              Image.asset(
+                'assets/images/default_dish.png',
+                width: double.infinity,
+                height: 220,
+                fit: BoxFit.cover,
               ),
             const SizedBox(height: 8),
             Text(
@@ -82,22 +89,28 @@ class DishDetail extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (dish!.dish_image.isNotEmpty)
-            Image.network(
-              dish!.dish_image,
-              width: double.infinity,
-              height: 220,
-              fit: BoxFit.cover,
-              errorBuilder: (context, error, stackTrace) {
-                return Image.asset(
+          (dish?.dish_image != null && dish!.dish_image!.isNotEmpty)
+              ? Image.network(
+                  dish!.dish_image!,
+                  width: double.infinity,
+                  height: 220,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Image.asset(
+                      'assets/images/default_dish.png',
+                      width: double.infinity,
+                      height: 220,
+                      fit: BoxFit.cover,
+                    );
+                  },
+                )
+              : Image.asset(
                   'assets/images/default_dish.png',
                   width: double.infinity,
                   height: 220,
                   fit: BoxFit.cover,
-                );
-              },
-            ),
-          const SizedBox(height: 8),
+                ),
+          const SizedBox(height: 4),
           Row(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -106,7 +119,7 @@ class DishDetail extends ConsumerWidget {
                   color: (dish!.dish_type.toLowerCase() == 'veg'
                       ? Colors.green
                       : Colors.red)),
-              const SizedBox(width: 6),
+              const SizedBox(width: 4),
               Text(
                 categoryName,
                 style: const TextStyle(
@@ -117,6 +130,7 @@ class DishDetail extends ConsumerWidget {
               ),
             ],
           ),
+          const SizedBox(width: 4),
           if (hasPrice)
             Text(
               '₹${dish!.dish_price}',
@@ -133,18 +147,16 @@ class DishDetail extends ConsumerWidget {
           Text(
             dish!.description,
             maxLines: 2,
-            style: const TextStyle(color: Colors.white70),
+            style: const TextStyle(color: Colors.white70, height: 1.0),
           ),
-          const SizedBox(height: 2),
-          if (isInCart)
+          if (isInCart) ...[
             if (dish!.cooking_request?.isNotEmpty == true)
               Text(
                 'Cooking instruction : ${dish!.cooking_request}',
                 maxLines: 1,
                 style: const TextStyle(color: Colors.white54),
               ),
-          const SizedBox(height: 6),
-          if (isInCart)
+            const SizedBox(height: 2),
             Center(
               child: SizedBox(
                 height: 35,
@@ -152,7 +164,7 @@ class DishDetail extends ConsumerWidget {
                   onKeyEvent: (node, event) {
                     if (event is! KeyDownEvent) return KeyEventResult.ignored;
                     if (event.logicalKey == LogicalKeyboardKey.arrowLeft) {
-                      if (ref.watch(showCategoriesProvider)) {
+                      if (ref.read(showCategoriesProvider)) {
                         final lastFocusedCategory =
                             ref.read(selectedCategoryProvider);
                         final categoryIndex = (lastFocusedCategory >= 0)
@@ -163,7 +175,7 @@ class DishDetail extends ConsumerWidget {
                             .read(categoryFocusNodeProvider(categoryIndex))
                             .requestFocus();
                       } else if (hasSubCategories(ref) &&
-                          ref.watch(showSubCategoriesProvider)) {
+                          ref.read(showSubCategoriesProvider)) {
                         final lastFocusedCategory =
                             ref.read(selectedSubCategoryProvider);
                         final categoryIndex = (lastFocusedCategory >= 0)
@@ -256,6 +268,7 @@ class DishDetail extends ConsumerWidget {
                 ),
               ),
             ),
+          ],
         ],
       ),
     );

@@ -49,7 +49,7 @@ class _CookingInstructionDialogState extends State<CookingInstructionDialog> {
       return KeyEventResult.handled;
     }
 
-    if (event.logicalKey == LogicalKeyboardKey.escape ||
+    if (event.logicalKey == LogicalKeyboardKey.select ||
         event.logicalKey == LogicalKeyboardKey.enter) {
       if (saveButtonFocus.hasFocus) {
         FocusScope.of(context).unfocus();
@@ -59,6 +59,13 @@ class _CookingInstructionDialogState extends State<CookingInstructionDialog> {
       if (cancelButtonFocus.hasFocus) {
         FocusScope.of(context).unfocus();
         widget.onCancel();
+        return KeyEventResult.handled;
+      }
+    }
+
+    if (event.logicalKey == LogicalKeyboardKey.escape) {
+      if (saveButtonFocus.hasFocus || cancelButtonFocus.hasFocus) {
+        FocusScope.of(context).unfocus();
         return KeyEventResult.handled;
       }
     }

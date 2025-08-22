@@ -24,6 +24,12 @@ class MenuScreen extends ConsumerStatefulWidget {
 
 class _MenuScreenState extends ConsumerState<MenuScreen> {
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final vegOnly = ref.watch(vegOnlyProvider);
     final selectedCategory = ref.watch(selectedCategoryProvider);
@@ -100,23 +106,35 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
           // --- CASE 1: Category + Dish List + Dish Detail ---
           if (showCategories && !hasSubCategories(ref)) ...[
             SizedBox(
-              width: 220,
+              width: 202,
               child: CategoryList(categories: categories),
             ),
             const SizedBox(width: 16),
-            SizedBox(
-              width: 280,
-              child: DishList(dishes: filteredDishes),
-            ),
-            Expanded(
-              child: DishDetail(
-                dish: (focusedDish >= 0 && focusedDish < filteredDishes.length)
-                    ? filteredDishes[focusedDish]
-                    : (filteredDishes.isNotEmpty ? filteredDishes[0] : null),
-                categoryName: selectedCat.category_name,
-                itemCount: allDishes.length,
+            if (filteredDishes.isEmpty)
+              const Expanded(
+                child: Center(
+                  child: Text(
+                    "No dishes available",
+                    style: TextStyle(color: Colors.white70, fontSize: 16),
+                  ),
+                ),
+              )
+            else ...[
+              SizedBox(
+                width: 280,
+                child: DishList(dishes: filteredDishes),
               ),
-            ),
+              Expanded(
+                child: DishDetail(
+                  dish:
+                      (focusedDish >= 0 && focusedDish < filteredDishes.length)
+                          ? filteredDishes[focusedDish]
+                          : filteredDishes.first,
+                  categoryName: selectedCat.category_name ?? '',
+                  itemCount: filteredDishes.length,
+                ),
+              ),
+            ],
           ]
 
           // --- CASE 2: Category + SubCategory + Dish Detail ---
@@ -124,7 +142,7 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
               hasSubCategories(ref) &&
               showSubCategories) ...[
             SizedBox(
-              width: 220,
+              width: 202,
               child: CategoryList(categories: categories),
             ),
             const SizedBox(width: 16),
@@ -133,56 +151,92 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
               child: SubCategoriesWithImage(
                   subCategories: selectedCat.sub_categories!),
             ),
-            Expanded(
-              child: DishDetail(
-                dish: (focusedDish >= 0 && focusedDish < filteredDishes.length)
-                    ? filteredDishes[focusedDish]
-                    : (filteredDishes.isNotEmpty ? filteredDishes[0] : null),
-                categoryName: selectedCat.category_name,
-                itemCount: allDishes.length,
+            if (filteredDishes.isEmpty)
+              const Expanded(
+                child: Center(
+                  child: Text(
+                    "No dishes available",
+                    style: TextStyle(color: Colors.white70, fontSize: 16),
+                  ),
+                ),
+              )
+            else
+              Expanded(
+                child: DishDetail(
+                  dish:
+                      (focusedDish >= 0 && focusedDish < filteredDishes.length)
+                          ? filteredDishes[focusedDish]
+                          : filteredDishes.first,
+                  categoryName: selectedCat.category_name ?? '',
+                  itemCount: filteredDishes.length,
+                ),
               ),
-            ),
           ]
 
           // --- CASE 3: SubCategory + Dish List + Dish Detail ---
           else if (hasSubCategories(ref) && showSubCategories) ...[
             SizedBox(
-              width: 180,
+              width: 202,
               child:
                   SubCategoryList(subCategories: selectedCat.sub_categories!),
             ),
             const SizedBox(width: 16),
-            SizedBox(
-              width: 280,
-              child: DishList(dishes: filteredDishes),
-            ),
-            Expanded(
-              child: DishDetail(
-                dish: (focusedDish >= 0 && focusedDish < filteredDishes.length)
-                    ? filteredDishes[focusedDish]
-                    : (filteredDishes.isNotEmpty ? filteredDishes[0] : null),
-                categoryName: selectedCat
-                    .sub_categories![focusedSubCategory].category_name,
-                itemCount: allDishes.length,
+            if (filteredDishes.isEmpty)
+              const Expanded(
+                child: Center(
+                  child: Text(
+                    "No dishes available",
+                    style: TextStyle(color: Colors.white70, fontSize: 16),
+                  ),
+                ),
+              )
+            else ...[
+              SizedBox(
+                width: 280,
+                child: DishList(dishes: filteredDishes),
               ),
-            ),
+              Expanded(
+                child: DishDetail(
+                  dish:
+                      (focusedDish >= 0 && focusedDish < filteredDishes.length)
+                          ? filteredDishes[focusedDish]
+                          : filteredDishes.first,
+                  categoryName: selectedCat
+                          .sub_categories![focusedSubCategory].category_name ??
+                      '',
+                  itemCount: filteredDishes.length,
+                ),
+              ),
+            ],
           ]
 
           // --- CASE 4: Only Dish List + Dish Detail ---
           else ...[
-            SizedBox(
-              width: 280,
-              child: DishList(dishes: filteredDishes),
-            ),
-            Expanded(
-              child: DishDetail(
-                dish: (focusedDish >= 0 && focusedDish < filteredDishes.length)
-                    ? filteredDishes[focusedDish]
-                    : (filteredDishes.isNotEmpty ? filteredDishes[0] : null),
-                categoryName: selectedCat.category_name,
-                itemCount: allDishes.length,
+            if (filteredDishes.isEmpty)
+              const Expanded(
+                child: Center(
+                  child: Text(
+                    "No dishes available",
+                    style: TextStyle(color: Colors.white70, fontSize: 16),
+                  ),
+                ),
+              )
+            else ...[
+              SizedBox(
+                width: 280,
+                child: DishList(dishes: filteredDishes),
               ),
-            ),
+              Expanded(
+                child: DishDetail(
+                  dish:
+                      (focusedDish >= 0 && focusedDish < filteredDishes.length)
+                          ? filteredDishes[focusedDish]
+                          : filteredDishes.first,
+                  categoryName: selectedCat.category_name ?? '',
+                  itemCount: filteredDishes.length,
+                ),
+              ),
+            ],
           ],
         ],
       ),

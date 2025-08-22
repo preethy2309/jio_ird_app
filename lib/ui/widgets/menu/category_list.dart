@@ -22,6 +22,7 @@ class _CategoryListState extends ConsumerState<CategoryList> {
   @override
   Widget build(BuildContext context) {
     final selectedCategory = ref.watch(selectedCategoryProvider);
+    final noDishes = ref.watch(noDishesProvider);
 
     return Focus(
       onFocusChange: (hasFocus) {
@@ -38,23 +39,25 @@ class _CategoryListState extends ConsumerState<CategoryList> {
           final focusNode = ref.watch(categoryFocusNodeProvider(index));
 
           return CategoryTile(
-            title: widget.categories[index].category_name,
+            title: widget.categories[index].category_name ?? '',
             index: index,
             isSelected: isSelected,
             isFocused: isFocused,
             focusNode: focusNode,
             isLastIndex: index == widget.categories.length - 1,
             onSelect: () {
-              ref.read(selectedCategoryProvider.notifier).state = index;
-              ref.read(selectedDishProvider.notifier).state = -1;
-              ref.read(showCategoriesProvider.notifier).state = false;
-              if (hasSubCategories(ref)) {
-                ref.read(focusedDishProvider.notifier).state = -1;
-                ref.read(selectedSubCategoryProvider.notifier).state = 0;
-                ref.read(focusedSubCategoryProvider.notifier).state = 0;
-              } else {
-                ref.read(focusedDishProvider.notifier).state = 0;
-                ref.read(focusedSubCategoryProvider.notifier).state = 0;
+              if (!noDishes) {
+                ref.read(selectedCategoryProvider.notifier).state = index;
+                ref.read(showCategoriesProvider.notifier).state = false;
+                if (hasSubCategories(ref)) {
+                  ref.read(selectedSubCategoryProvider.notifier).state = -1;
+                  ref.read(focusedSubCategoryProvider.notifier).state = 0;
+                  ref.read(focusedDishProvider.notifier).state = -1;
+                  ref.read(selectedDishProvider.notifier).state = -1;
+                } else {
+                  ref.read(selectedDishProvider.notifier).state = -1;
+                  ref.read(focusedDishProvider.notifier).state = 0;
+                }
               }
             },
             onFocusChange: (hasFocus) {

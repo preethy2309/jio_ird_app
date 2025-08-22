@@ -41,14 +41,12 @@ class _DishListState extends ConsumerState<DishList> {
       for (final node in plusFocusNodes) {
         node.dispose();
       }
-      plusFocusNodes =
-          List.generate(widget.dishes.length, (_) => FocusNode());
+      plusFocusNodes = List.generate(widget.dishes.length, (_) => FocusNode());
 
       for (final node in minusFocusNodes) {
         node.dispose();
       }
-      minusFocusNodes =
-          List.generate(widget.dishes.length, (_) => FocusNode());
+      minusFocusNodes = List.generate(widget.dishes.length, (_) => FocusNode());
     }
   }
 
@@ -106,6 +104,7 @@ class _DishListState extends ConsumerState<DishList> {
             if (!didPop && isFocused) {
               if (hasSubCategories(ref)) {
                 ref.read(showSubCategoriesProvider.notifier).state = true;
+                ref.read(focusedDishProvider.notifier).state = -1;
               } else {
                 ref.read(showCategoriesProvider.notifier).state = true;
               }
@@ -141,6 +140,7 @@ class _DishListState extends ConsumerState<DishList> {
                   } else {
                     if (hasSubCategories(ref)) {
                       ref.read(showSubCategoriesProvider.notifier).state = true;
+                      ref.read(focusedDishProvider.notifier).state = -1;
                     } else {
                       ref.read(showCategoriesProvider.notifier).state = true;
                     }
@@ -171,9 +171,6 @@ class _DishListState extends ConsumerState<DishList> {
                     itemQuantities.indexWhere((e) => e.dish.id == dish.id);
                 final currentQty = idx >= 0 ? itemQuantities[idx].quantity : 0;
 
-                ref.read(selectedDishProvider.notifier).state = index;
-                ref.read(focusedDishProvider.notifier).state = index;
-
                 if (currentQty == 0) {
                   ref
                       .read(itemQuantitiesProvider.notifier)
@@ -196,7 +193,6 @@ class _DishListState extends ConsumerState<DishList> {
                     }
                   });
                 }
-
                 return KeyEventResult.handled;
               }
 
@@ -215,20 +211,28 @@ class _DishListState extends ConsumerState<DishList> {
                   children: [
                     ClipRRect(
                       borderRadius: BorderRadius.circular(6),
-                      child: Image.network(
-                        dish.dish_image,
-                        width: 75,
-                        height: 75,
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) {
-                          return Image.asset(
-                            'assets/images/default_dish.png',
-                            width: 75,
-                            height: 75,
-                            fit: BoxFit.cover,
-                          );
-                        },
-                      ),
+                      child: (dish.dish_image != null &&
+                              dish.dish_image!.isNotEmpty)
+                          ? Image.network(
+                              dish.dish_image!,
+                              width: 75,
+                              height: 75,
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) {
+                                return Image.asset(
+                                  'assets/images/default_dish.png',
+                                  width: 75,
+                                  height: 75,
+                                  fit: BoxFit.cover,
+                                );
+                              },
+                            )
+                          : Image.asset(
+                              'assets/images/default_dish.png',
+                              width: 75,
+                              height: 75,
+                              fit: BoxFit.cover,
+                            ),
                     ),
                     const SizedBox(width: 10),
                     if (isFocused) ...[

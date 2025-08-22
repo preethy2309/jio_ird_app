@@ -10,7 +10,7 @@ class Dish {
   final String description;
   final String dish_type;
   final String dish_price;
-  final String dish_image;
+  final String? dish_image;
   final String? file_type;
   final String? file_name;
   final String? allergies;
@@ -25,7 +25,7 @@ class Dish {
     required this.description,
     required this.dish_type,
     required this.dish_price,
-    required this.dish_image,
+    this.dish_image,
     this.file_type,
     this.file_name,
     this.cooking_request,

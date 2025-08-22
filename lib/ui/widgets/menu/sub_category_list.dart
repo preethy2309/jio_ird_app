@@ -16,12 +16,12 @@ class SubCategoryList extends ConsumerStatefulWidget {
 }
 
 class _SubCategoryListState extends ConsumerState<SubCategoryList> {
-
   @override
   Widget build(BuildContext context) {
     final selectedSub = ref.watch(selectedSubCategoryProvider);
     final focusedIndex = ref.watch(focusedSubCategoryProvider);
     final showCategories = ref.watch(showCategoriesProvider);
+    final noDishes = ref.watch(noDishesProvider);
 
     return PopScope(
       canPop: false,
@@ -48,16 +48,19 @@ class _SubCategoryListState extends ConsumerState<SubCategoryList> {
             final focusNode = ref.watch(subCategoryFocusNodeProvider(index));
 
             return CategoryTile(
-              title: widget.subCategories[index].category_name,
+              title: widget.subCategories[index].category_name ?? '',
               index: index,
               isSelected: isSelected,
               isFocused: isFocused,
               focusNode: focusNode,
               isLastIndex: index == widget.subCategories.length - 1,
               onSelect: () {
-                ref.read(selectedSubCategoryProvider.notifier).state = index;
-                ref.read(focusedDishProvider.notifier).state = -1;
-                ref.read(showSubCategoriesProvider.notifier).state = false;
+                if (!noDishes) {
+                  ref.read(selectedSubCategoryProvider.notifier).state = index;
+                  ref.read(showSubCategoriesProvider.notifier).state = false;
+                  ref.read(focusedDishProvider.notifier).state = -1;
+                  ref.read(focusedDishProvider.notifier).state = 0;
+                }
               },
               onFocusChange: (hasFocus) {
                 ref.read(focusedSubCategoryProvider.notifier).state = index;

@@ -25,8 +25,7 @@ class _SubCategoriesWithImageState
 
   @override
   Widget build(BuildContext context) {
-    final selectedSub = ref.watch(selectedSubCategoryProvider);
-
+    final noDishes = ref.watch(noDishesProvider);
     return ListView.builder(
       controller: _scrollController as ScrollController?,
       itemCount: widget.subCategories.length,
@@ -68,10 +67,13 @@ class _SubCategoriesWithImageState
               if ((event.logicalKey == LogicalKeyboardKey.arrowRight ||
                   event.logicalKey == LogicalKeyboardKey.enter ||
                   event.logicalKey == LogicalKeyboardKey.select)) {
-                ref.read(selectedSubCategoryProvider.notifier).state = index;
-                ref.read(focusedDishProvider.notifier).state = -1;
-                ref.read(showSubCategoriesProvider.notifier).state = false;
-                return KeyEventResult.handled;
+                if (!noDishes) {
+                  ref.read(selectedSubCategoryProvider.notifier).state = index;
+                  ref.read(showSubCategoriesProvider.notifier).state = false;
+                  ref.read(focusedDishProvider.notifier).state = -1;
+                  ref.read(focusedDishProvider.notifier).state = 0;
+                  return KeyEventResult.handled;
+                }
               }
               return KeyEventResult.ignored;
             },
@@ -88,25 +90,32 @@ class _SubCategoriesWithImageState
                   children: [
                     ClipRRect(
                       borderRadius: BorderRadius.circular(6),
-                      child: Image.network(
-                        subCategory.dishes![0].dish_image,
-                        width: 75,
-                        height: 75,
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) {
-                          return Image.asset(
-                            'assets/images/default_dish.png',
-                            width: 75,
-                            height: 75,
-                            fit: BoxFit.cover,
-                          );
-                        },
-                      ),
+                      child: (subCategory.dishes?.isNotEmpty ?? false)
+                          ? Image.network(
+                              subCategory.dishes![0].dish_image ?? '',
+                              width: 75,
+                              height: 75,
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) {
+                                return Image.asset(
+                                  'assets/images/default_dish.png',
+                                  width: 75,
+                                  height: 75,
+                                  fit: BoxFit.cover,
+                                );
+                              },
+                            )
+                          : Image.asset(
+                              'assets/images/default_dish.png',
+                              width: 75,
+                              height: 75,
+                              fit: BoxFit.cover,
+                            ),
                     ),
                     const SizedBox(width: 10),
                     Expanded(
                       child: Text(
-                        subCategory.category_name,
+                        subCategory.category_name ?? '',
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 16,
