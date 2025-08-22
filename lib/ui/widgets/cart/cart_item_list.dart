@@ -137,9 +137,14 @@ class _CartItemsListState extends ConsumerState<CartItemsList> {
             }
 
             if (event.logicalKey == LogicalKeyboardKey.arrowRight) {
-              if (minusNode.hasFocus || editNode.hasFocus) {
-                ref.read(placeOrderFocusNodeProvider).requestFocus();
-              } else {
+              if (minusNode.hasFocus) {
+                editNode.requestFocus();
+                _ensureVisible(editNode);
+              }
+              if (editNode.hasFocus) {
+                final placeOrderNode = ref.read(placeOrderFocusNodeProvider);
+                placeOrderNode.requestFocus();
+              } else if (plusNode.hasFocus) {
                 minusNode.requestFocus();
                 _ensureVisible(minusNode);
               }

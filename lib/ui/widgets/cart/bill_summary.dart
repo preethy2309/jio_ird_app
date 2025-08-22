@@ -118,8 +118,7 @@ class BillSummaryScreen extends ConsumerWidget {
           SizedBox(
             width: 160,
             child: Focus(
-              focusNode: placeOrderFocusNode,
-              autofocus: true,
+              canRequestFocus: true,
               onKeyEvent: (node, event) {
                 if (event is KeyDownEvent &&
                     event.logicalKey == LogicalKeyboardKey.arrowUp) {
@@ -129,6 +128,7 @@ class BillSummaryScreen extends ConsumerWidget {
                 return KeyEventResult.ignored;
               },
               child: ElevatedButton(
+                focusNode: placeOrderFocusNode,
                 onPressed: () {
                   ref.read(orderNotifierProvider.notifier).placeOrder(items);
                 },
