@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../providers/focus_provider.dart';
 import '../../../providers/state_provider.dart';
-import '../../theme/app_colors.dart';
 
 class TabSwitcher extends ConsumerStatefulWidget {
   const TabSwitcher({super.key});
@@ -113,7 +112,7 @@ class _TabSwitcherState extends ConsumerState<TabSwitcher> {
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
             decoration: BoxDecoration(
               color: hasFocus
-                  ? AppColors.primary
+                  ? Theme.of(context).colorScheme.secondary
                   : (isSelected ? Colors.white70 : Colors.transparent),
               borderRadius: BorderRadius.circular(50),
             ),
@@ -124,7 +123,7 @@ class _TabSwitcherState extends ConsumerState<TabSwitcher> {
                     ? Colors.white
                     : isSelected
                         ? Colors.black
-                        : Colors.amber,
+                        : Theme.of(context).colorScheme.primary,
                 fontSize: 16,
                 fontWeight: (isSelected || hasFocus)
                     ? FontWeight.bold

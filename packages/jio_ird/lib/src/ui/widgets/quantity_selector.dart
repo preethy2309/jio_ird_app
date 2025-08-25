@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../theme/app_colors.dart';
-
 class QuantitySelector extends StatelessWidget {
   final int quantity;
   final VoidCallback onIncrement;
@@ -27,7 +25,7 @@ class QuantitySelector extends StatelessWidget {
           width: 100,
           height: 38,
           decoration: BoxDecoration(
-            color: AppColors.qtySelectorBg,
+            color: Theme.of(context).colorScheme.secondary.withOpacity(0.6),
             borderRadius: BorderRadius.circular(38),
           ),
         ),

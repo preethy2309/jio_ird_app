@@ -1,10 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:jio_ird/src/providers/external_providers.dart';
 
 import '../data/models/dish_model.dart';
 import '../data/models/food_item.dart';
 import '../data/models/order_status_response.dart';
 import '../notifiers/meal_notifier.dart';
-import '../utils/constants.dart';
 import 'api_service_provider.dart';
 
 enum CartTab { cart, orders }
@@ -12,13 +12,16 @@ enum CartTab { cart, orders }
 final mealsProvider =
     StateNotifierProvider<MealsNotifier, List<FoodItem>>((ref) {
   final api = ref.read(apiServiceProvider);
-  return MealsNotifier(api);
+  return MealsNotifier(api, ref.read(serialNumberProvider),
+      ref.read(guestDetailsProvider).propertyId);
 });
 
 final orderStatusProvider =
     FutureProvider<List<OrderStatusResponse>>((ref) async {
   final api = ref.read(apiServiceProvider);
-  return api.getOrderStatus(kSerialNumber);
+  return api.getOrderStatus(
+    ref.read(serialNumberProvider),
+  );
 });
 
 /// Toggle for showing only Veg items

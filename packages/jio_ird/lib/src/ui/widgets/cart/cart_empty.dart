@@ -71,7 +71,7 @@ class _EmptyCartScreenState extends State<EmptyCartScreen> {
                       event.logicalKey == LogicalKeyboardKey.select)) {
                 Navigator.of(context).pushNamedAndRemoveUntil(
                   '/menu',
-                  (route) => false, // removes everything from stack
+                  (route) => false,
                 );
                 return KeyEventResult.handled;
               }
@@ -80,7 +80,7 @@ class _EmptyCartScreenState extends State<EmptyCartScreen> {
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 150),
               decoration: BoxDecoration(
-                color: _isFocused ? Colors.amber : Colors.white,
+                color: _isFocused ? Theme.of(context).colorScheme.primary : Colors.white,
                 borderRadius: BorderRadius.circular(30),
               ),
               child: ElevatedButton(

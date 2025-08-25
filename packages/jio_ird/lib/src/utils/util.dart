@@ -1,10 +1,10 @@
-
 import '../data/models/dish_with_quantity.dart';
 import '../data/models/order_request.dart';
-import 'constants.dart';
 
 OrderRequest createOrderRequestFromDishWithQuantity(
   List<DishWithQuantity> items,
+  String serialNum,
+  String roomNo,
 ) {
   List<OrderDish> orderDishes = items.map((item) {
     return OrderDish(
@@ -17,7 +17,7 @@ OrderRequest createOrderRequestFromDishWithQuantity(
 
   return OrderRequest(
     dish_details: orderDishes,
-    room_no: kRoomNo,
-    serial_Num: kSerialNumber,
+    room_no: roomNo,
+    serial_Num: serialNum,
   );
 }

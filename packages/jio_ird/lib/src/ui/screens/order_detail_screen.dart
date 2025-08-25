@@ -61,7 +61,7 @@ class OrderDetailScreen extends StatelessWidget {
                   final Map<String, Color> stepColors = {};
                   for (int i = 0; i < _statusOrder.length; i++) {
                     stepColors[_statusOrder[i]] =
-                        (i <= currentStep) ? Colors.amber : Colors.grey;
+                        (i <= currentStep) ? Theme.of(context).primaryColor : Colors.grey;
                   }
 
                   return OrderCard(

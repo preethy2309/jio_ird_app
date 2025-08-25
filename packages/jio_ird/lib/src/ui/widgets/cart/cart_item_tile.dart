@@ -164,7 +164,9 @@ class CartItemTile extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 12, vertical: 6),
                       decoration: BoxDecoration(
-                        color: hasFocus ? Colors.amber : Colors.grey.shade700,
+                        color: hasFocus
+                            ? Theme.of(context).primaryColor
+                            : Colors.grey.shade700,
                         borderRadius: BorderRadius.circular(6),
                       ),
                       child: Text(

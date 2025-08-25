@@ -35,10 +35,10 @@ class _OrderPlacedState extends State<OrderPlaced> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const CircleAvatar(
+          CircleAvatar(
             radius: 30,
-            backgroundColor: Colors.amber,
-            child: Icon(Icons.check, size: 30, color: Colors.black),
+            backgroundColor: Theme.of(context).primaryColor,
+            child: const Icon(Icons.check, size: 30, color: Colors.black),
           ),
           const SizedBox(height: 16),
           const Text(
@@ -58,12 +58,17 @@ class _OrderPlacedState extends State<OrderPlaced> {
           ElevatedButton(
             focusNode: _trackOrderButtonFocusNode,
             style: ButtonStyle(
-              backgroundColor:
-              WidgetStateProperty.resolveWith<Color>((states) {
+              backgroundColor: WidgetStateProperty.resolveWith<Color>((states) {
                 if (states.contains(WidgetState.focused)) {
-                  return Colors.amber;
+                  return Theme.of(context).primaryColor;
                 }
                 return Colors.white;
+              }),
+              foregroundColor: WidgetStateProperty.resolveWith<Color>((states) {
+                if (states.contains(WidgetState.focused)) {
+                  return Theme.of(context).colorScheme.onPrimary;
+                }
+                return Theme.of(context).colorScheme.onSecondary;
               }),
               padding: WidgetStateProperty.all(
                 const EdgeInsets.symmetric(horizontal: 24),
@@ -75,9 +80,11 @@ class _OrderPlacedState extends State<OrderPlaced> {
               ),
             ),
             onPressed: widget.onTrackOrder,
-            child: const Text(
+            child: Text(
               "Track order",
-              style: TextStyle(color: Colors.black),
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onSecondary,
+              ),
             ),
           ),
         ],

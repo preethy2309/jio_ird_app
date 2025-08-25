@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:jio_ird/src/data/models/guest_info.dart';
 import 'package:jio_ird/src/providers/external_providers.dart';
+import 'package:jio_ird/src/ui/widgets/menu/bottom_layout.dart';
 
 import 'focus_theme.dart';
 import 'jio_ird_app.dart';
@@ -14,22 +15,27 @@ class JioIRDScreen extends StatelessWidget {
   final String serialNumber;
   final GuestInfo guestInfo;
   final String menuTitle;
+  final Widget bottomBar;
+  final String baseUrl;
   final Function(String event, dynamic data)? onSocketEvent;
 
   const JioIRDScreen({
     super.key,
     required this.focusTheme,
+    required this.baseUrl,
     required this.accessToken,
     required this.serialNumber,
     required this.guestInfo,
     this.onSocketEvent,
     this.menuTitle = "In Room Dining",
+    this.bottomBar = const BottomLayout(),
   });
 
   @override
   Widget build(BuildContext context) {
     return ProviderScope(
       overrides: [
+        baseUrlProvider.overrideWithValue(baseUrl),
         accessTokenProvider.overrideWithValue(accessToken),
         serialNumberProvider.overrideWithValue(serialNumber),
         guestDetailsProvider.overrideWithValue(guestInfo),
@@ -37,7 +43,7 @@ class JioIRDScreen extends StatelessWidget {
         menuTitleProvider.overrideWithValue(menuTitle),
         focusThemeProvider.overrideWithValue(focusTheme),
       ],
-      child: const JioIRDApp(),
+      child: JioIRDApp(bottomBar: bottomBar,),
     );
   }
 }

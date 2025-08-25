@@ -2,17 +2,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../data/models/food_item.dart';
 import '../data/services/api_service.dart';
-import '../utils/constants.dart';
 
 class MealsNotifier extends StateNotifier<List<FoodItem>> {
-  MealsNotifier(this._api) : super([]) {
-    loadMeals();
+  MealsNotifier(this._api, String serialNumber, String propertyId) : super([]) {
+    loadMeals(serialNumber, propertyId);
   }
 
   final ApiService _api;
 
-  Future<void> loadMeals() async {
-    final meals = await _api.getFoodDetails(kSerialNumber, kPropertyId);
+  Future<void> loadMeals(String serialNumber, String propertyId) async {
+    final meals = await _api.getFoodDetails(serialNumber, propertyId);
     final filteredMeals = meals.where((category) {
       category.sub_categories?.removeWhere(
           (subCat) => (subCat.dishes == null || subCat.dishes!.isEmpty));

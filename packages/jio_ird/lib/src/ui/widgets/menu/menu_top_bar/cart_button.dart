@@ -38,7 +38,7 @@ class _CartButtonState extends ConsumerState<CartButton> {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
               decoration: BoxDecoration(
-                color: cartFocused ? Colors.amber : Colors.grey[800],
+                color: cartFocused ?  Theme.of(context).primaryColor: Colors.grey[800],
                 borderRadius: BorderRadius.circular(26),
               ),
               child: const SizedBox(

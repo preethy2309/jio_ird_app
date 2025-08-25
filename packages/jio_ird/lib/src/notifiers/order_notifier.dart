@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:jio_ird/src/providers/external_providers.dart';
 
 import '../data/models/dish_with_quantity.dart';
 import '../notifiers/cart_notifier.dart';
@@ -14,7 +15,8 @@ class OrderNotifier extends AutoDisposeNotifier<AsyncValue<String>> {
     state = const AsyncValue.loading();
     final api = ref.read(apiServiceProvider);
 
-    final orderRequest = createOrderRequestFromDishWithQuantity(items);
+    final orderRequest = createOrderRequestFromDishWithQuantity(items,
+        ref.read(serialNumberProvider), ref.read(guestDetailsProvider).roomNo);
 
     try {
       final response = await api.createOrder(orderRequest);

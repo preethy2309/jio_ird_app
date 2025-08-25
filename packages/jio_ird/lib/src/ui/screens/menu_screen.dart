@@ -39,47 +39,44 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
     if (categories.isEmpty) {
       return BaseScreen(
         title: menuTitle,
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Column(
-                children: List.generate(
-                  6,
-                  (index) => const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 8),
-                    child: ShimmerLoader(height: 40, width: 180),
-                  ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Column(
+              children: List.generate(
+                6,
+                (index) => const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 8),
+                  child: ShimmerLoader(height: 40, width: 180),
                 ),
               ),
-              const SizedBox(width: 16),
-              Column(
-                children: List.generate(
-                  4,
-                  (index) => const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 12),
-                    child: ShimmerLoader(height: 80, width: 240),
-                  ),
+            ),
+            const SizedBox(width: 16),
+            Column(
+              children: List.generate(
+                5,
+                (index) => const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 2),
+                  child: ShimmerLoader(height: 75, width: 240),
                 ),
               ),
-              const SizedBox(width: 16),
-              const Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    ShimmerLoader(height: 200, width: double.infinity),
-                    SizedBox(height: 16),
-                    ShimmerLoader(height: 20, width: 150),
-                    SizedBox(height: 8),
-                    ShimmerLoader(height: 20, width: 200),
-                    SizedBox(height: 8),
-                    ShimmerLoader(height: 20, width: 120),
-                  ],
-                ),
+            ),
+            const SizedBox(width: 16),
+            const Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ShimmerLoader(height: 200, width: double.infinity),
+                  SizedBox(height: 16),
+                  ShimmerLoader(height: 20, width: 150),
+                  SizedBox(height: 8),
+                  ShimmerLoader(height: 20, width: 200),
+                  SizedBox(height: 8),
+                  ShimmerLoader(height: 20, width: 120),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       );
     }
@@ -119,7 +116,7 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
     }
 
     return BaseScreen(
-      title: "In Room Dining",
+      title: menuTitle,
       icons: const [VegToggle(), CartButton()],
       child: Row(
         children: [
@@ -132,11 +129,11 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
                 color: Color(0x33FFFFFF),
                 shape: BoxShape.circle,
               ),
-              child: const Padding(
-                padding: EdgeInsets.all(6.0),
+              child: Padding(
+                padding: const EdgeInsets.all(6.0),
                 child: Icon(
                   Icons.arrow_back_ios_new_rounded,
-                  color: Colors.amber,
+                  color: Theme.of(context).primaryColor,
                   size: 20,
                 ),
               ),

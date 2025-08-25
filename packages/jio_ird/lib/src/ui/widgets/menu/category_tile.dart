@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../theme/app_colors.dart';
-
 class CategoryTile extends ConsumerWidget {
   final String title;
   final int index;
@@ -44,8 +42,7 @@ class CategoryTile extends ConsumerWidget {
           return KeyEventResult.handled;
         }
 
-        if (event.logicalKey == LogicalKeyboardKey.arrowDown &&
-            isLastIndex) {
+        if (event.logicalKey == LogicalKeyboardKey.arrowDown && isLastIndex) {
           return KeyEventResult.handled;
         }
 
@@ -62,16 +59,18 @@ class CategoryTile extends ConsumerWidget {
         padding: const EdgeInsets.symmetric(horizontal: 12),
         decoration: BoxDecoration(
           color: isFocused
-              ? Colors.amber
+              ? Theme.of(context).colorScheme.primary
               : isSelected
                   ? Colors.white70
-                  : AppColors.primary,
+                  : Theme.of(context).colorScheme.secondary,
           borderRadius: BorderRadius.circular(14),
         ),
         child: Text(
           title,
           style: TextStyle(
-            color: isFocused || isSelected ? AppColors.primary : Colors.amber,
+            color: isFocused || isSelected
+                ? Theme.of(context).colorScheme.onPrimary
+                : Theme.of(context).colorScheme.onSecondary,
             fontSize: 16,
             fontWeight: FontWeight.bold,
           ),

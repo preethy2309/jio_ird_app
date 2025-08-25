@@ -1,29 +1,6 @@
-import 'dart:async';
-
 import 'package:dio/dio.dart';
+import 'package:encrypt/encrypt.dart' as encrypt;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../utils/auth_encryption.dart';
-import 'token_storage_provider.dart';
-
-final tokenProvider = FutureProvider<String>((ref) async {
-  final storage = ref.read(tokenStorageProvider);
-  final savedToken = await storage.getToken();
-  final expiry = await storage.getExpiry();
-
-  // if (savedToken != null && expiry != null && DateTime.now().isBefore(expiry)) {
-  //   return savedToken;
-  // }
-
-  final auth = AuthEncryption();
-  final newToken = await auth.getAuthToken();
-  final expiryTime = DateTime.now().add(const Duration(minutes: 55));
-  await storage.saveToken(newToken, expiryTime);
-
-  return newToken;
-});
-
-Completer<String>? _refreshCompleter;
 
 final dioProvider = Provider<Dio>((ref) {
   final dio = Dio();
@@ -43,7 +20,8 @@ final dioProvider = Provider<Dio>((ref) {
   dio.interceptors.add(
     InterceptorsWrapper(
       onRequest: (options, handler) async {
-        final token = await ref.read(tokenProvider.future);
+        //TODO take from external_provider
+        final token = loadAuthToken();
         options.headers['Authorization'] = token;
         print("Headers: ${options.headers}");
         return handler.next(options);
@@ -51,46 +29,6 @@ final dioProvider = Provider<Dio>((ref) {
       onError: (DioException error, handler) async {
         final requestKey = error.requestOptions.uri.toString();
         retryCounts[requestKey] = (retryCounts[requestKey] ?? 0);
-
-        if (error.response?.statusCode == 401 ||
-            error.response?.data
-                    .toString()
-                    .contains("Token has been expired") ==
-                true) {
-          final storage = ref.read(tokenStorageProvider);
-
-          if (_refreshCompleter == null) {
-            _refreshCompleter = Completer<String>();
-            try {
-              await storage.clearToken();
-              ref.invalidate(tokenProvider);
-
-              final newToken = await ref.read(tokenProvider.future);
-              _refreshCompleter!.complete(newToken);
-            } catch (e) {
-              _refreshCompleter!.completeError(e);
-            } finally {
-              final tmp = _refreshCompleter;
-              _refreshCompleter = null;
-              await tmp?.future;
-            }
-          }
-
-          try {
-            final newToken = await _refreshCompleter!.future;
-            final response = await dio.fetch(
-              error.requestOptions.copyWith(
-                headers: {
-                  ...error.requestOptions.headers,
-                  'Authorization': newToken,
-                },
-              ),
-            );
-            return handler.resolve(response);
-          } catch (e) {
-            return handler.reject(error);
-          }
-        }
 
         if (retryCounts[requestKey]! < 5 &&
             (error.type == DioExceptionType.connectionError ||
@@ -112,3 +50,23 @@ final dioProvider = Provider<Dio>((ref) {
 
   return dio;
 });
+
+loadAuthToken() {
+  const String kEncryptionIV = "5b5bc6c117391111";
+  const String kEncryptionKey = "4db779e269dc587dd171516a86a62913";
+  const String kSerialNum = "RDTSBKF00136359";
+  var currentTime = DateTime.now().millisecondsSinceEpoch;
+
+  String data = "{\"serial_num\":\"$kSerialNum\",\"time\":\"$currentTime\"}";
+
+  final key = encrypt.Key.fromUtf8(kEncryptionKey);
+  final iv = encrypt.IV.fromUtf8(kEncryptionIV);
+
+  final encrypter = encrypt.Encrypter(
+    encrypt.AES(key, mode: encrypt.AESMode.cbc, padding: 'PKCS7'),
+  );
+
+  final encrypted = encrypter.encrypt(data, iv: iv);
+
+  return encrypted.base64;
+}

@@ -151,15 +151,10 @@ class _CookingInstructionDialogState extends State<CookingInstructionDialog> {
                         borderRadius: BorderRadius.circular(8),
                         borderSide: BorderSide(
                           color: textFieldFocus.hasFocus
-                              ? Colors.amber
+                              ? Theme.of(context).colorScheme.primary
                               : Colors.white24,
                           width: 1,
                         ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                        borderSide:
-                            const BorderSide(color: Colors.amber, width: 1.5),
                       ),
                       contentPadding: const EdgeInsets.all(12),
                     ),
@@ -184,7 +179,7 @@ class _CookingInstructionDialogState extends State<CookingInstructionDialog> {
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor:
-                                hasFocus ? Colors.amber : Colors.grey[800],
+                                hasFocus ? Theme.of(context).colorScheme.primary : Colors.grey[800],
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30),
                             ),
@@ -219,7 +214,7 @@ class _CookingInstructionDialogState extends State<CookingInstructionDialog> {
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor:
-                                hasFocus ? Colors.amber : Colors.grey[800],
+                                hasFocus ? Theme.of(context).colorScheme.primary : Colors.grey[800],
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30),
                             ),

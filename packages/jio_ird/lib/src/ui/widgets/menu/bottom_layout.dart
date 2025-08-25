@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../theme/app_colors.dart';
 
 class BottomLayout extends StatelessWidget {
   const BottomLayout({super.key});
@@ -8,7 +7,7 @@ class BottomLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 36,
-      color: AppColors.primary,
+      color: Theme.of(context).colorScheme.onSecondary,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -24,8 +23,11 @@ class BottomLayout extends StatelessWidget {
                 width: 8,
                 height: 16,
               ),
-              const Text('Select',
-                  style: TextStyle(color: AppColors.textAmber, fontSize: 12)),
+              Text('Select',
+                  style: TextStyle(
+                    color: Theme.of(context).primaryColor,
+                    fontSize: 12,
+                  )),
             ],
           ),
           const SizedBox(width: 60),
@@ -45,8 +47,11 @@ class BottomLayout extends StatelessWidget {
                 fit: BoxFit.cover,
               ),
               const SizedBox(width: 8),
-              const Text('Navigate',
-                  style: TextStyle(color: AppColors.textAmber, fontSize: 12)),
+              Text('Navigate',
+                  style: TextStyle(
+                    color: Theme.of(context).primaryColor,
+                    fontSize: 12,
+                  )),
             ],
           ),
           const SizedBox(width: 60),
@@ -54,14 +59,17 @@ class BottomLayout extends StatelessWidget {
             children: [
               Container(
                 decoration: BoxDecoration(
-                  color: AppColors.greenColor,
+                  color: const Color(0xFF3CA210),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: const SizedBox(width: 25, height: 16),
               ),
               const SizedBox(width: 8),
-              const Text('Clear App',
-                  style: TextStyle(color: AppColors.textAmber, fontSize: 12)),
+              Text('Clear App',
+                  style: TextStyle(
+                    color: Theme.of(context).primaryColor,
+                    fontSize: 12,
+                  )),
             ],
           ),
         ],

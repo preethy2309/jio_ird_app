@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../providers/focus_provider.dart';
 import '../../../../providers/state_provider.dart';
-import '../../../theme/app_colors.dart';
 import '../../veg_indicator.dart';
 
 class VegToggle extends ConsumerStatefulWidget {
@@ -51,7 +50,7 @@ class _VegToggleState extends ConsumerState<VegToggle> {
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
           decoration: BoxDecoration(
-            color: toggleFocused ? Colors.amber : Colors.transparent,
+            color: toggleFocused ? Theme.of(context).colorScheme.primary : Colors.transparent,
             borderRadius: BorderRadius.circular(26),
           ),
           child: SizedBox(
@@ -66,7 +65,7 @@ class _VegToggleState extends ConsumerState<VegToggle> {
                   width: 46,
                   height: 26,
                   child: Switch(
-                    activeColor: AppColors.primary,
+                    activeColor: Theme.of(context).colorScheme.secondary,
                     autofocus: true,
                     value: vegOnly,
                     onChanged: (value) =>

@@ -6,7 +6,6 @@ import '../../../data/models/food_item.dart';
 import '../../../providers/focus_provider.dart';
 import '../../../providers/state_provider.dart';
 import '../../../utils/helper.dart';
-import '../../theme/app_colors.dart';
 
 class SubCategoriesWithImage extends ConsumerStatefulWidget {
   final List<FoodItem> subCategories;
@@ -88,7 +87,9 @@ class _SubCategoriesWithImageState
                 margin: const EdgeInsets.all(2),
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: isFocused ? AppColors.primary : Colors.transparent,
+                  color: isFocused
+                      ? Theme.of(context).colorScheme.secondary
+                      : Colors.transparent,
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Row(

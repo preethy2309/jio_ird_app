@@ -1,5 +1,7 @@
+import 'package:encrypt/encrypt.dart' as encrypt;
 import 'package:flutter/material.dart';
 import 'package:jio_ird/jio_ird.dart';
+import 'package:jio_ird_app/constants.dart';
 
 void main() {
   runApp(const MyDemoApp());
@@ -13,23 +15,43 @@ class MyDemoApp extends StatelessWidget {
     return MaterialApp(
       home: JioIRDScreen(
         focusTheme: const FocusTheme(
-          focusedColor: Colors.orange,
-          unfocusedColor: Colors.black,
-          focusedTextColor: Colors.white,
-          unfocusedTextColor: Colors.grey,
+          focusedColor: Colors.amber,
+          unfocusedColor: Color(0xFF430B42),
+          focusedTextColor: Color(0xFF430B42),
+          unfocusedTextColor: Colors.amber,
         ),
-        accessToken: "XYZ123",
-        serialNumber: "SN1234",
+        baseUrl: kBaseUrl,
+        accessToken: loadAuthToken(),
+        serialNumber: kSerialNumber,
         guestInfo: const GuestInfo(
-            roomNo: "roomNo",
-            propertyId: "propertyId",
-            guestName: "guestName",
-            guestId: "guestId"),
+            roomNo: kRoomNo,
+            propertyId: kPropertyId,
+            guestName: kGuestName,
+            guestId: kGuestId),
         menuTitle: "In-Room Dining",
+        bottomBar: Container(),
         onSocketEvent: (event, data) {
           debugPrint("Socket event: $event $data");
         },
       ),
     );
+  }
+
+  loadAuthToken() {
+    var currentTime = DateTime.now().millisecondsSinceEpoch;
+
+    String data =
+        "{\"serial_num\":\"$kSerialNumber\",\"time\":\"$currentTime\"}";
+
+    final key = encrypt.Key.fromUtf8(kEncryptionKey);
+    final iv = encrypt.IV.fromUtf8(kEncryptionIV);
+
+    final encrypter = encrypt.Encrypter(
+      encrypt.AES(key, mode: encrypt.AESMode.cbc, padding: 'PKCS7'),
+    );
+
+    final encrypted = encrypter.encrypt(data, iv: iv);
+
+    return encrypted.base64;
   }
 }

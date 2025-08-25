@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../data/models/order_status_response.dart';
 import '../../../providers/state_provider.dart';
 import '../../screens/order_detail_screen.dart';
-import '../../theme/app_colors.dart';
 import '../cart/cart_empty.dart';
 import 'order_info.dart';
 
@@ -134,7 +133,9 @@ class _MyOrderListState extends ConsumerState<MyOrderList> {
   }) {
     return Container(
       decoration: BoxDecoration(
-        color: isActive ? AppColors.primary : const Color(0xFF1E1E1E),
+        color: isActive
+            ? Theme.of(context).colorScheme.secondary
+            : const Color(0xFF1E1E1E),
         borderRadius: BorderRadius.circular(16),
       ),
       margin: const EdgeInsets.symmetric(horizontal: 100),

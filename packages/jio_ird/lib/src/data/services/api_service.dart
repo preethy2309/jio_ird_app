@@ -8,7 +8,7 @@ import '../models/token_response.dart';
 
 part 'api_service.g.dart';
 
-@RestApi(baseUrl: 'https://devices.cms.jio.com/jiohotels/')
+@RestApi()
 abstract class ApiService {
   factory ApiService(Dio dio, {String baseUrl}) = _ApiService;
 
@@ -34,6 +34,6 @@ abstract class ApiService {
   /// Get Order Status
   @POST('/v2/order_status')
   Future<List<OrderStatusResponse>> getOrderStatus(
-      @Query('serial_Num') String serialNum,
-      );
+    @Query('serial_Num') String serialNum,
+  );
 }

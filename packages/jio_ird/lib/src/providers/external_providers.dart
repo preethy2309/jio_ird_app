@@ -3,6 +3,7 @@ import 'package:jio_ird/src/data/models/guest_info.dart';
 
 import '../focus_theme.dart';
 
+final baseUrlProvider = Provider<String>((ref) => throw UnimplementedError());
 final accessTokenProvider =
     Provider<String>((ref) => throw UnimplementedError());
 final serialNumberProvider =

@@ -35,6 +35,7 @@ class DishDetail extends ConsumerWidget {
         (hasSubCategories(ref) && ref.read(showSubCategoriesProvider)) ||
         ref.read(showCategoriesProvider);
     final bool hasPrice = (double.tryParse(dish!.dish_price) ?? 0) > 0;
+
     if (isCategory) {
       return Container(
         padding: const EdgeInsets.only(left: 20),
@@ -162,7 +163,7 @@ class DishDetail extends ConsumerWidget {
                 maxLines: 1,
                 style: const TextStyle(color: Colors.white54),
               ),
-            const SizedBox(height: 2),
+            const SizedBox(height: 4),
             Center(
               child: SizedBox(
                 height: 35,
@@ -241,7 +242,7 @@ class DishDetail extends ConsumerWidget {
                       backgroundColor: WidgetStateProperty.resolveWith<Color>(
                         (states) {
                           if (states.contains(WidgetState.focused)) {
-                            return Colors.amber;
+                            return Theme.of(context).colorScheme.primary;
                           }
                           return Colors.white70;
                         },
@@ -249,7 +250,7 @@ class DishDetail extends ConsumerWidget {
                       foregroundColor: WidgetStateProperty.resolveWith<Color>(
                         (states) {
                           if (states.contains(WidgetState.focused)) {
-                            return Colors.white70;
+                            return Theme.of(context).colorScheme.onPrimary;
                           }
                           return Colors.black;
                         },
