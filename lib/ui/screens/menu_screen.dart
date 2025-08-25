@@ -8,6 +8,7 @@ import 'package:jio_ird/utils/helper.dart';
 
 import '../../data/models/dish_model.dart';
 import '../../data/models/food_item.dart';
+import '../../providers/external_providers.dart';
 import '../../providers/focus_provider.dart';
 import '../../providers/state_provider.dart';
 import '../widgets/menu/category_list.dart';
@@ -24,7 +25,6 @@ class MenuScreen extends ConsumerStatefulWidget {
 }
 
 class _MenuScreenState extends ConsumerState<MenuScreen> {
-
   @override
   Widget build(BuildContext context) {
     final vegOnly = ref.watch(vegOnlyProvider);
@@ -34,10 +34,11 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
     final categories = ref.watch(mealsProvider);
     final showCategories = ref.watch(showCategoriesProvider);
     final showSubCategories = ref.watch(showSubCategoriesProvider);
+    final menuTitle = ref.watch(menuTitleProvider);
 
     if (categories.isEmpty) {
       return BaseScreen(
-        title: "In Room Dining",
+        title: menuTitle,
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Row(
@@ -53,7 +54,6 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
                 ),
               ),
               const SizedBox(width: 16),
-
               Column(
                 children: List.generate(
                   4,
@@ -64,7 +64,6 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
                 ),
               ),
               const SizedBox(width: 16),
-
               const Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
