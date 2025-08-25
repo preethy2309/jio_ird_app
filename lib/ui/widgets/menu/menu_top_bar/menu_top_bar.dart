@@ -25,17 +25,18 @@ class MenuTopBar extends StatelessWidget {
             title: title,
             description: description,
           ),
-          if (icons != null && icons!.isNotEmpty) ...[
-            const SizedBox(
-              width: 100,
-            ),
-            for (int i = 0; i < icons!.length; i++) ...[
-              const Spacer(),
-              icons![i],
-            ],
-          ],
           const Spacer(),
-          const ProfileIcon()
+          if (icons != null && icons!.isNotEmpty) ...[
+            Row(
+              children: [
+                for (var icon in icons!) ...[
+                  icon,
+                  const SizedBox(width: 16),
+                ],
+              ],
+            ),
+          ],
+          const ProfileIcon(),
         ],
       ),
     );
