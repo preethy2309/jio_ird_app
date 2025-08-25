@@ -376,6 +376,13 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.5"
+  jio_ird:
+    dependency: "direct main"
+    description:
+      path: "packages/jio_ird"
+      relative: true
+    source: path
+    version: "1.0.0+1"
   js:
     dependency: transitive
     description:

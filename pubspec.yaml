@@ -1,4 +1,4 @@
-name: jio_ird
+name: jio_ird_app
 description: "TV meals module for JioHotel IRD"
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -27,6 +27,8 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  jio_ird:
+    path: packages/jio_ird
   flutter:
     sdk: flutter
   flutter_riverpod: ^2.5.1

@@ -1,38 +1,35 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:jio_ird/ui/screens/cart_screen.dart';
-import 'package:jio_ird/ui/screens/menu_screen.dart';
-import 'package:jio_ird/ui/theme/app_colors.dart';
+import 'package:jio_ird/jio_ird.dart';
 
 void main() {
-  runApp(const ProviderScope(child: MyApp()));
+  runApp(const MyDemoApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class MyDemoApp extends StatelessWidget {
+  const MyDemoApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: AppColors.primary,
-          secondary: Colors.amber,
-          primary: AppColors.primary,
-          brightness: Brightness.dark,
+      home: JioIRDScreen(
+        focusTheme: const FocusTheme(
+          focusedColor: Colors.orange,
+          unfocusedColor: Colors.black,
+          focusedTextColor: Colors.white,
+          unfocusedTextColor: Colors.grey,
         ),
+        accessToken: "XYZ123",
+        serialNumber: "SN1234",
+        guestInfo: const GuestInfo(
+            roomNo: "roomNo",
+            propertyId: "propertyId",
+            guestName: "guestName",
+            guestId: "guestId"),
+        menuTitle: "In-Room Dining",
+        onSocketEvent: (event, data) {
+          debugPrint("Socket event: $event $data");
+        },
       ),
-      debugShowCheckedModeBanner: false,
-      initialRoute: '/menu',
-      routes: {
-        '/menu': (context) => const MenuScreen(),
-        '/cart': (context) => const CartScreen(),
-      },
     );
   }
 }
-
-// Environment configuration
-enum Environment { dev, prod }
-
-const currentEnv = Environment.prod;
