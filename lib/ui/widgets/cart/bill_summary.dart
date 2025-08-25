@@ -167,7 +167,10 @@ class BillSummaryScreen extends ConsumerWidget {
                         if (msg.isNotEmpty) {
                           WidgetsBinding.instance.addPostFrameCallback((_) {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text(msg)),
+                              SnackBar(
+                                content: Text(msg),
+                                behavior: SnackBarBehavior.floating,
+                              ),
                             );
                           });
                         }
@@ -176,7 +179,10 @@ class BillSummaryScreen extends ConsumerWidget {
                       error: (err, _) {
                         WidgetsBinding.instance.addPostFrameCallback((_) {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text(err.toString())),
+                            SnackBar(
+                              content: Text(err.toString()),
+                              behavior: SnackBarBehavior.floating,
+                            ),
                           );
                         });
                         return const Text("Retry Order");

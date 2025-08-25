@@ -13,12 +13,22 @@ class MealsNotifier extends StateNotifier<List<FoodItem>> {
 
   Future<void> loadMeals() async {
     final meals = await _api.getFoodDetails(kSerialNumber, kPropertyId);
-    state = meals;
+    final filteredMeals = meals.where((category) {
+      category.sub_categories?.removeWhere(
+          (subCat) => (subCat.dishes == null || subCat.dishes!.isEmpty));
+
+      final hasValidSubCats = category.sub_categories != null &&
+          category.sub_categories!.isNotEmpty;
+      final hasItems = category.dishes != null && category.dishes!.isNotEmpty;
+
+      return hasValidSubCats || hasItems;
+    }).toList();
+
+    state = filteredMeals;
   }
 
   void updateDishCookingInstruction(int dishId, String newInstruction) {
     state = state.map((category) {
-      // Update recursively for nested subcategories
       FoodItem updateCategory(FoodItem cat) {
         final updatedDishes = cat.dishes?.map((dish) {
           if (dish.id == dishId) {

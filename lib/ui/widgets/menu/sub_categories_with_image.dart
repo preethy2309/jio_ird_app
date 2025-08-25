@@ -26,6 +26,8 @@ class _SubCategoriesWithImageState
   @override
   Widget build(BuildContext context) {
     final noDishes = ref.watch(noDishesProvider);
+    final showCategories = ref.watch(showCategoriesProvider);
+
     return ListView.builder(
       controller: _scrollController as ScrollController?,
       itemCount: widget.subCategories.length,
@@ -33,7 +35,7 @@ class _SubCategoriesWithImageState
         final subCategory = widget.subCategories[index];
         final isFocused = index == focusedIndex;
 
-        final dishNode = ref.watch(dishFocusNodeProvider(index));
+        final focusNode = ref.watch(subCategoryMainFocusNodeProvider(index));
 
         return PopScope(
           canPop: false,
@@ -47,9 +49,12 @@ class _SubCategoriesWithImageState
             }
           },
           child: Focus(
-            focusNode: dishNode,
+            skipTraversal: showCategories,
+            canRequestFocus: !showCategories,
+            focusNode: focusNode,
             onFocusChange: (hasFocus) {
               setState(() => focusedIndex = index);
+              ref.read(focusedSubCategoryProvider.notifier).state = index;
               if (hasFocus) {
                 ref.read(selectedSubCategoryProvider.notifier).state = index;
                 ref.read(selectedDishProvider.notifier).state = -1;
@@ -71,13 +76,13 @@ class _SubCategoriesWithImageState
                   ref.read(selectedSubCategoryProvider.notifier).state = index;
                   ref.read(showSubCategoriesProvider.notifier).state = false;
                   ref.read(focusedDishProvider.notifier).state = -1;
-                  ref.read(focusedDishProvider.notifier).state = 0;
+                  ref.read(selectedDishProvider.notifier).state = 0;
                   return KeyEventResult.handled;
                 }
               }
               return KeyEventResult.ignored;
             },
-            child: GestureDetector(
+            child: InkWell(
               child: Container(
                 height: 76,
                 margin: const EdgeInsets.all(2),

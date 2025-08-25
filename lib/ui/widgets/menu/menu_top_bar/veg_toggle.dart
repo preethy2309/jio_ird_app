@@ -47,7 +47,7 @@ class _VegToggleState extends ConsumerState<VegToggle> {
         }
         return KeyEventResult.ignored;
       },
-      child: GestureDetector(
+      child: InkWell(
         onTap: () => ref.read(vegOnlyProvider.notifier).state = !vegOnly,
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),

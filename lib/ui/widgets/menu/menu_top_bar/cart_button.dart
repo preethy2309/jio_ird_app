@@ -30,7 +30,7 @@ class _CartButtonState extends ConsumerState<CartButton> {
         }
         return KeyEventResult.ignored;
       },
-      child: GestureDetector(
+      child: InkWell(
         onTap: _goToCart,
         child: Stack(
           clipBehavior: Clip.none,

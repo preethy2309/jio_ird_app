@@ -121,7 +121,7 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
               )
             else ...[
               SizedBox(
-                width: 280,
+                width: 240,
                 child: DishList(dishes: filteredDishes),
               ),
               Expanded(
@@ -147,7 +147,7 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
             ),
             const SizedBox(width: 16),
             SizedBox(
-              width: 280,
+              width: 240,
               child: SubCategoriesWithImage(
                   subCategories: selectedCat.sub_categories!),
             ),

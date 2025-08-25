@@ -11,7 +11,7 @@ class ProfileIcon extends ConsumerStatefulWidget {
 class _ProfileIconState extends ConsumerState<ProfileIcon> {
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return InkWell(
       onTap: _goToProfile,
       child: Image.asset(
         'assets/images/hotel_logo.png',

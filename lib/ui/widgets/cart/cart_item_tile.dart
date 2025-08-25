@@ -158,7 +158,7 @@ class CartItemTile extends StatelessWidget {
                 focusNode: editFocusNode,
                 child: Builder(builder: (context) {
                   final hasFocus = Focus.of(context).hasFocus;
-                  return GestureDetector(
+                  return InkWell(
                     onTap: onEditInstruction,
                     child: Container(
                       padding: const EdgeInsets.symmetric(

@@ -198,7 +198,7 @@ class _DishListState extends ConsumerState<DishList> {
 
               return KeyEventResult.ignored;
             },
-            child: GestureDetector(
+            child: InkWell(
               child: Container(
                 height: 76,
                 margin: const EdgeInsets.all(2),

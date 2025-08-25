@@ -59,7 +59,7 @@ class _SubCategoryListState extends ConsumerState<SubCategoryList> {
                   ref.read(selectedSubCategoryProvider.notifier).state = index;
                   ref.read(showSubCategoriesProvider.notifier).state = false;
                   ref.read(focusedDishProvider.notifier).state = -1;
-                  ref.read(focusedDishProvider.notifier).state = 0;
+                  ref.read(selectedDishProvider.notifier).state = -1;
                 }
               },
               onFocusChange: (hasFocus) {

@@ -42,26 +42,32 @@ class DishDetail extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             if (dish?.dish_image?.isNotEmpty ?? false)
-              Image.network(
-                dish!.dish_image!,
-                width: double.infinity,
-                height: 220,
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) {
-                  return Image.asset(
-                    'assets/images/default_dish.png',
-                    width: double.infinity,
-                    height: 220,
-                    fit: BoxFit.cover,
-                  );
-                },
+              ClipRRect(
+                borderRadius: BorderRadius.circular(16.0),
+                child: Image.network(
+                  dish!.dish_image!,
+                  width: double.infinity,
+                  height: 220,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Image.asset(
+                      'assets/images/default_dish.png',
+                      width: double.infinity,
+                      height: 220,
+                      fit: BoxFit.cover,
+                    );
+                  },
+                ),
               )
             else
-              Image.asset(
-                'assets/images/default_dish.png',
-                width: double.infinity,
-                height: 220,
-                fit: BoxFit.cover,
+              ClipRRect(
+                borderRadius: BorderRadius.circular(16.0),
+                child: Image.asset(
+                  'assets/images/default_dish.png',
+                  width: double.infinity,
+                  height: 220,
+                  fit: BoxFit.cover,
+                ),
               ),
             const SizedBox(height: 8),
             Text(

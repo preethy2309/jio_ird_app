@@ -23,6 +23,13 @@ Provider.family.autoDispose<FocusNode, int>((ref, index) {
   return node;
 });
 
+final subCategoryMainFocusNodeProvider =
+Provider.family.autoDispose<FocusNode, int>((ref, index) {
+  final node = FocusNode();
+  ref.onDispose(() => node.dispose());
+  return node;
+});
+
 final cartTabFocusNodeProvider = Provider<FocusNode>((ref) {
   final node = FocusNode();
   ref.onDispose(() => node.dispose());
