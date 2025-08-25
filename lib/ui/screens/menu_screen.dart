@@ -14,6 +14,7 @@ import '../widgets/menu/category_list.dart';
 import '../widgets/menu/dish_detail.dart';
 import '../widgets/menu/dish_list.dart';
 import '../widgets/menu/sub_category_list.dart';
+import '../widgets/shimmer_loader.dart';
 
 class MenuScreen extends ConsumerStatefulWidget {
   const MenuScreen({super.key});
@@ -23,11 +24,6 @@ class MenuScreen extends ConsumerStatefulWidget {
 }
 
 class _MenuScreenState extends ConsumerState<MenuScreen> {
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,9 +36,53 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
     final showSubCategories = ref.watch(showSubCategoriesProvider);
 
     if (categories.isEmpty) {
-      return const BaseScreen(
-          title: "In Room Dining",
-          child: Center(child: CircularProgressIndicator()));
+      return BaseScreen(
+        title: "In Room Dining",
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Column(
+                children: List.generate(
+                  6,
+                  (index) => const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 8),
+                    child: ShimmerLoader(height: 40, width: 180),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 16),
+
+              Column(
+                children: List.generate(
+                  4,
+                  (index) => const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 12),
+                    child: ShimmerLoader(height: 80, width: 240),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 16),
+
+              const Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ShimmerLoader(height: 200, width: double.infinity),
+                    SizedBox(height: 16),
+                    ShimmerLoader(height: 20, width: 150),
+                    SizedBox(height: 8),
+                    ShimmerLoader(height: 20, width: 200),
+                    SizedBox(height: 8),
+                    ShimmerLoader(height: 20, width: 120),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
     }
 
     final selectedCat = categories[selectedCategory];
