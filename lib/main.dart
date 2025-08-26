@@ -13,6 +13,7 @@ class MyDemoApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: JioIRDScreen(
         focusTheme: const FocusTheme(
           focusedColor: Colors.amber,
@@ -29,7 +30,6 @@ class MyDemoApp extends StatelessWidget {
             guestName: kGuestName,
             guestId: kGuestId),
         menuTitle: "In-Room Dining",
-        bottomBar: Container(),
         onSocketEvent: (event, data) {
           debugPrint("Socket event: $event $data");
         },
