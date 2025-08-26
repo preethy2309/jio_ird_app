@@ -4,19 +4,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:jio_ird/src/data/models/guest_info.dart';
 import 'package:jio_ird/src/providers/external_providers.dart';
-import 'package:jio_ird/src/ui/widgets/menu/bottom_layout.dart';
 
 import 'focus_theme.dart';
 import 'jio_ird_app.dart';
 
 class JioIRDScreen extends StatelessWidget {
   final FocusTheme focusTheme;
+  final String baseUrl;
   final String accessToken;
   final String serialNumber;
   final GuestInfo guestInfo;
   final String menuTitle;
   final Widget? bottomBar;
-  final String baseUrl;
   final Function(String event, dynamic data)? onSocketEvent;
 
   const JioIRDScreen({

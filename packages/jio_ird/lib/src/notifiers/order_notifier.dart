@@ -20,7 +20,6 @@ class OrderNotifier extends AutoDisposeNotifier<AsyncValue<String>> {
 
     try {
       final response = await api.createOrder(orderRequest);
-      print("API Response: $response");
 
       if (response['status'] == 200) {
         ref.read(itemQuantitiesProvider.notifier).clearCart();

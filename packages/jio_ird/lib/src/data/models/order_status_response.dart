@@ -59,14 +59,12 @@ class OrderDishDetail {
   Map<String, dynamic> toJson() => _$OrderDishDetailToJson(this);
 }
 
-/// Converts dynamic to int safely
 int _toInt(dynamic value) {
   if (value is int) return value;
   if (value is String) return int.tryParse(value) ?? 0;
   return 0;
 }
 
-/// Converts dynamic to string safely
 String _toString(dynamic value) {
   if (value == null) return '';
   return value.toString();

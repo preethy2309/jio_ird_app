@@ -24,6 +24,5 @@ class _ProfileIconState extends ConsumerState<ProfileIcon> {
 
   void _goToProfile() {
     debugPrint('Profile pressed');
-    // Navigate to profile
   }
 }

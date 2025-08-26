@@ -37,7 +37,6 @@ class Dish {
   factory Dish.fromJson(Map<String, dynamic> json) => _$DishFromJson(json);
   Map<String, dynamic> toJson() => _$DishToJson(this);
 
-  // copyWith function
   Dish copyWith({
     int? id,
     String? name,

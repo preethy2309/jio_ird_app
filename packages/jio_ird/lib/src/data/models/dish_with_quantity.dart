@@ -27,7 +27,7 @@ class DishWithQuantity {
     return DishWithQuantity(
       dish: Dish.fromJson(json['dish']),
       quantity: json['quantity'],
-      cookingRequest: json['cookingRequest'], // 🔹 Deserialize
+      cookingRequest: json['cookingRequest'],
     );
   }
 
@@ -35,7 +35,7 @@ class DishWithQuantity {
     return {
       'dish': dish.toJson(),
       'quantity': quantity,
-      'cookingRequest': cookingRequest, // 🔹 Serialize
+      'cookingRequest': cookingRequest,
     };
   }
 }

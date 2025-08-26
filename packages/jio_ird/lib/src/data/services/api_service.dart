@@ -12,26 +12,22 @@ part 'api_service.g.dart';
 abstract class ApiService {
   factory ApiService(Dio dio, {String baseUrl}) = _ApiService;
 
-  /// Token Generation
   @POST('/v1/generate_secret_token')
   Future<TokenResponse> generateToken(
     @Query('serial_num') String serialNum,
   );
 
-  /// Get Food Details
   @GET('/v2/order/get_ird_details')
   Future<List<FoodItem>> getFoodDetails(
     @Query('serial_num') String serialNum,
     @Query('property_id') String propertyId,
   );
 
-  /// Create Order
   @POST('/v2/create_order')
   Future<Map<String, dynamic>> createOrder(
     @Body() OrderRequest order,
   );
 
-  /// Get Order Status
   @POST('/v2/order_status')
   Future<List<OrderStatusResponse>> getOrderStatus(
     @Query('serial_Num') String serialNum,

@@ -38,7 +38,7 @@ class BaseScreen extends ConsumerWidget {
               children: [
                 MenuTopBar(
                   title: title,
-                  description: description ?? "Room No. 1101", // default text
+                  description: description ?? "",
                   icons: icons,
                 ),
                 const SizedBox(height: 20),

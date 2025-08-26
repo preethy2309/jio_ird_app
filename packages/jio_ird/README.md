@@ -1,39 +1,92 @@
-<!--
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
+# jio_ird
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/guides/libraries/writing-package-pages).
+A Flutter package for integrating **JioHotel IRD (In-Room Dining)** APIs with prebuilt UI screens.  
+This package helps you quickly set up **Menu, Cart, My Orders, and Order Tracking** screens in your
+Flutter TV/OTT applications with D-pad/remote navigation support.
 
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-library-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/developing-packages).
--->
+---
 
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+## ✨ Features
 
-## Features
+- Easy integration of Jio IRD APIs
+- TV/OTT ready with full D-pad navigation
+- Prebuilt screens:
+    - Menu with categories, sub-categories & dishes
+    - Cart with quantity and guest details
+    - My Orders
+    - Track Order
+- Powered by Riverpod & Retrofit
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+---
 
-## Getting started
+## 📦 Getting Started
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+### 1. Add Dependency
+
+In your `pubspec.yaml`, add:
+
+```yaml
+dependencies:
+  jio_ird:
+  path: packages/jio_ird
+```
+
+Run:
+
+```bash
+flutter pub get
+```
+
+---
+
+### 2. Import the Package
+
+```dart
+import 'package:jio_ird/jio_ird.dart';
+```
+
+---
 
 ## Usage
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
+You can directly use the **`JioIrdScreen`** widget to launch the In-Room Dining module.
 
 ```dart
-const like = 'sample';
+import 'package:flutter/material.dart';
+import 'package:jio_ird/jio_ird.dart';
+
+void main() {
+  runApp(const MyDemoApp());
+}
+
+class MyDemoApp extends StatelessWidget {
+  const MyDemoApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: JioIRDScreen(
+        focusTheme: const FocusTheme(
+          focusedColor: Colors.amber,
+          unfocusedColor: Color(0xFF430B42),
+          focusedTextColor: Color(0xFF430B42),
+          unfocusedTextColor: Colors.amber,
+        ),
+        baseUrl: "kBaseUrl",
+        accessToken: "YOUR_ACCESS_TOKEN",
+        serialNumber: "DEVICE_SERIAL_NUMBER",
+        guestInfo: const GuestInfo(
+            roomNo: "YOUR_ROOM_NO",
+            propertyId: "YOUR_PROPERTY_ID",
+            guestName: "YOUR_GUEST_NAME",
+            guestId: "YOUR_GUEST_ID"),
+        menuTitle: "In-Room Dining",//NOT MANDATORY
+        bottomBar: CustomBottomLayout(), //NOT MANDATORY
+        onSocketEvent: (event, data) { //NOT MANDATORY
+          debugPrint("Socket event: $event $data");
+        },
+      ),
+    );
+  }
+}
 ```
-
-## Additional information
-
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.

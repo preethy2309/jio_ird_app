@@ -24,7 +24,6 @@ final orderStatusProvider =
   );
 });
 
-/// Toggle for showing only Veg items
 final vegOnlyProvider = StateProvider<bool>((ref) => false);
 
 /// Currently selected category index
@@ -34,23 +33,18 @@ final selectedSubCategoryProvider = StateProvider<int>((ref) => -1);
 
 final focusedSubCategoryProvider = StateProvider<int>((ref) => -1);
 
-/// Currently selected dish index (inside the selected category)
 final selectedDishProvider = StateProvider<int>((ref) => -1);
 
-/// Currently focused dish index (inside the selected category)
 final focusedDishProvider = StateProvider<int>((ref) => -1);
 
-/// Toggle for showing/hiding categories
 final showCategoriesProvider = StateProvider<bool>((ref) => true);
 
-/// Toggle for showing/hiding sub categories
 final showSubCategoriesProvider = StateProvider<bool>((ref) => true);
 
 final selectedCartTabProvider = StateProvider<CartTab>((ref) => CartTab.cart);
 
 final orderPlacedProvider = StateProvider<bool>((ref) => false);
 
-/// Will be true if there are no filtered dishes
 final noDishesProvider = Provider<bool>((ref) {
   final vegOnly = ref.watch(vegOnlyProvider);
   final selectedCategory = ref.watch(selectedCategoryProvider);
@@ -88,6 +82,5 @@ List<Dish> extractDishesFromCategory(FoodItem category) {
       dishes.addAll(extractDishesFromCategory(sub));
     }
   }
-
   return dishes;
 }

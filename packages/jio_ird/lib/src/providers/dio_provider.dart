@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:encrypt/encrypt.dart' as encrypt;
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final dioProvider = Provider<Dio>((ref) {
@@ -23,7 +24,7 @@ final dioProvider = Provider<Dio>((ref) {
         //TODO take from external_provider
         final token = loadAuthToken();
         options.headers['Authorization'] = token;
-        print("Headers: ${options.headers}");
+        debugPrint("Headers: ${options.headers}");
         return handler.next(options);
       },
       onError: (DioException error, handler) async {
@@ -51,6 +52,7 @@ final dioProvider = Provider<Dio>((ref) {
   return dio;
 });
 
+//TODO should be removed
 loadAuthToken() {
   const String kEncryptionIV = "5b5bc6c117391111";
   const String kEncryptionKey = "4db779e269dc587dd171516a86a62913";

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-/// Auto-dispose FocusNode for category item
 final categoryFocusNodeProvider =
     Provider.family.autoDispose<FocusNode, int>((ref, index) {
   final node = FocusNode();

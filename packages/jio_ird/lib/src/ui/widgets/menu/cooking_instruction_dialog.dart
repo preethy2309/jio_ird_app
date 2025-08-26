@@ -210,7 +210,7 @@ class _CookingInstructionDialogState extends State<CookingInstructionDialog> {
                         return ElevatedButton(
                           onPressed: () {
                             FocusScope.of(context).unfocus();
-                            widget.onSave(widget.controller.text); // send text
+                            widget.onSave(widget.controller.text);
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor:
