@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
-import 'package:encrypt/encrypt.dart' as encrypt;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:jio_ird/src/providers/external_providers.dart';
 
 final dioProvider = Provider<Dio>((ref) {
   final dio = Dio();
@@ -21,8 +21,7 @@ final dioProvider = Provider<Dio>((ref) {
   dio.interceptors.add(
     InterceptorsWrapper(
       onRequest: (options, handler) async {
-        //TODO take from external_provider
-        final token = loadAuthToken();
+        final token = ref.read(accessTokenProvider);
         options.headers['Authorization'] = token;
         debugPrint("Headers: ${options.headers}");
         return handler.next(options);
@@ -51,24 +50,3 @@ final dioProvider = Provider<Dio>((ref) {
 
   return dio;
 });
-
-//TODO should be removed
-loadAuthToken() {
-  const String kEncryptionIV = "5b5bc6c117391111";
-  const String kEncryptionKey = "4db779e269dc587dd171516a86a62913";
-  const String kSerialNum = "RDTSBKF00136359";
-  var currentTime = DateTime.now().millisecondsSinceEpoch;
-
-  String data = "{\"serial_num\":\"$kSerialNum\",\"time\":\"$currentTime\"}";
-
-  final key = encrypt.Key.fromUtf8(kEncryptionKey);
-  final iv = encrypt.IV.fromUtf8(kEncryptionIV);
-
-  final encrypter = encrypt.Encrypter(
-    encrypt.AES(key, mode: encrypt.AESMode.cbc, padding: 'PKCS7'),
-  );
-
-  final encrypted = encrypter.encrypt(data, iv: iv);
-
-  return encrypted.base64;
-}
