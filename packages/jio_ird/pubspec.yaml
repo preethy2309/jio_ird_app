@@ -1,4 +1,4 @@
-name: jio_ird_app
+name: jio_ird
 description: "TV meals module for JioHotel IRD"
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -27,8 +27,6 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
-  jio_ird:
-    path: packages/jio_ird
   flutter:
     sdk: flutter
   flutter_riverpod: ^2.5.1
@@ -40,9 +38,7 @@ dependencies:
   dotted_line: ^3.0.0
   encrypt: ^5.0.3
   shimmer: ^3.0.0
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.6
+  flutter_svg: ^2.0.9
 
 dev_dependencies:
   flutter_test:
@@ -67,6 +63,9 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+  assets:
+    - assets/images/
+
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg

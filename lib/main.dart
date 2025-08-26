@@ -1,38 +1,65 @@
+import 'package:encrypt/encrypt.dart' as encrypt;
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:jio_ird/ui/screens/cart_screen.dart';
-import 'package:jio_ird/ui/screens/menu_screen.dart';
-import 'package:jio_ird/ui/theme/app_colors.dart';
+import 'package:jio_ird/jio_ird.dart';
 
 void main() {
-  runApp(const ProviderScope(child: MyApp()));
+  runApp(const MyDemoApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+const String kEncryptionIV = "5b5bc6c117391111";
+const String kEncryptionKey = "4db779e269dc587dd171516a86a62913";
+const String kSerialNumber = "RDTSBKF00136359";
+const String kRoomNo = "1010-Dipesh";
+const String kPropertyId = "81";
+const String kGuestName = "Dipesh Jain";
+const String kGuestId = "822";
+const String kBaseUrl = "https://devices.cms.jio.com/jiohotels/";
+
+class MyDemoApp extends StatelessWidget {
+  const MyDemoApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: AppColors.primary,
-          secondary: Colors.amber,
-          primary: AppColors.primary,
-          brightness: Brightness.dark,
-        ),
-      ),
       debugShowCheckedModeBanner: false,
-      initialRoute: '/menu',
-      routes: {
-        '/menu': (context) => const MenuScreen(),
-        '/cart': (context) => const CartScreen(),
-      },
+      home: JioIRDScreen(
+        focusTheme: const FocusTheme(
+          focusedColor: Colors.amber,
+          unfocusedColor: Color(0xFF430B42),
+          focusedTextColor: Color(0xFF430B42),
+          unfocusedTextColor: Colors.amber,
+        ),
+        baseUrl: kBaseUrl,
+        accessToken: loadAuthToken(),
+        serialNumber: kSerialNumber,
+        guestInfo: const GuestInfo(
+            roomNo: kRoomNo,
+            propertyId: kPropertyId,
+            guestName: kGuestName,
+            guestId: kGuestId),
+        menuTitle: "In-Room Dining",
+        onSocketEvent: (event, data) {
+          debugPrint("Socket event: $event $data");
+        },
+      ),
     );
   }
+
+  loadAuthToken() {
+    var currentTime = DateTime.now().millisecondsSinceEpoch;
+
+    String data =
+        "{\"serial_num\":\"$kSerialNumber\",\"time\":\"$currentTime\"}";
+
+    final key = encrypt.Key.fromUtf8(kEncryptionKey);
+    final iv = encrypt.IV.fromUtf8(kEncryptionIV);
+
+    final encrypter = encrypt.Encrypter(
+      encrypt.AES(key, mode: encrypt.AESMode.cbc, padding: 'PKCS7'),
+    );
+
+    final encrypted = encrypter.encrypt(data, iv: iv);
+
+    return encrypted.base64;
+  }
 }
-
-// Environment configuration
-enum Environment { dev, prod }
-
-const currentEnv = Environment.prod;
