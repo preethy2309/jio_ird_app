@@ -14,6 +14,7 @@ class BottomLayout extends StatelessWidget {
           Row(
             children: [
               Image.asset(
+                package: 'jio_ird',
                 width: 20,
                 height: 24,
                 'assets/images/ok.png',
@@ -34,6 +35,7 @@ class BottomLayout extends StatelessWidget {
           Row(
             children: [
               Image.asset(
+                package: 'jio_ird',
                 width: 16,
                 height: 16,
                 'assets/images/down_arrow.png',
@@ -41,6 +43,7 @@ class BottomLayout extends StatelessWidget {
               ),
               const SizedBox(width: 4),
               Image.asset(
+                package: 'jio_ird',
                 width: 16,
                 height: 16,
                 'assets/images/up_arrow.png',

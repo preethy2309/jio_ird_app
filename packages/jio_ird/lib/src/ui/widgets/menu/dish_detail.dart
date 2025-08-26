@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:jio_ird/src/ui/widgets/dish_image.dart';
 
 import '../../../data/models/dish_model.dart';
 import '../../../notifiers/cart_notifier.dart';
@@ -42,34 +43,14 @@ class DishDetail extends ConsumerWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (dish?.dish_image?.isNotEmpty ?? false)
-              ClipRRect(
-                borderRadius: BorderRadius.circular(16.0),
-                child: Image.network(
-                  dish!.dish_image!,
-                  width: double.infinity,
-                  height: 220,
-                  fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) {
-                    return Image.asset(
-                      'assets/images/default_dish.png',
-                      width: double.infinity,
-                      height: 220,
-                      fit: BoxFit.cover,
-                    );
-                  },
-                ),
-              )
-            else
-              ClipRRect(
-                borderRadius: BorderRadius.circular(16.0),
-                child: Image.asset(
-                  'assets/images/default_dish.png',
-                  width: double.infinity,
-                  height: 220,
-                  fit: BoxFit.cover,
-                ),
-              ),
+            DishImage(
+              imageUrl: dish?.dish_image,
+              width: double.infinity,
+              height: 220,
+              borderRadius: 16,
+              fallbackWidth: 120,
+              fallbackHeight: 120,
+            ),
             const SizedBox(height: 8),
             Text(
               itemCount > 7 ? "7+" : "$itemCount",
@@ -96,27 +77,14 @@ class DishDetail extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          (dish?.dish_image != null && dish!.dish_image!.isNotEmpty)
-              ? Image.network(
-                  dish!.dish_image!,
-                  width: double.infinity,
-                  height: 220,
-                  fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) {
-                    return Image.asset(
-                      'assets/images/default_dish.png',
-                      width: double.infinity,
-                      height: 220,
-                      fit: BoxFit.cover,
-                    );
-                  },
-                )
-              : Image.asset(
-                  'assets/images/default_dish.png',
-                  width: double.infinity,
-                  height: 220,
-                  fit: BoxFit.cover,
-                ),
+          DishImage(
+            imageUrl: dish?.dish_image,
+            width: double.infinity,
+            height: 220,
+            borderRadius: 16,
+            fallbackWidth: 120,
+            fallbackHeight: 120,
+          ),
           const SizedBox(height: 4),
           Row(
             mainAxisSize: MainAxisSize.min,

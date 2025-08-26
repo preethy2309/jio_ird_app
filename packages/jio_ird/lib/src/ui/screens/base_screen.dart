@@ -27,6 +27,7 @@ class BaseScreen extends ConsumerWidget {
         children: [
           Positioned.fill(
             child: Image.asset(
+              package: 'jio_ird',
               'assets/images/bg.png',
               fit: BoxFit.cover,
             ),

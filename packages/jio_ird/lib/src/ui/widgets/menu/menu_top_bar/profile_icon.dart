@@ -14,6 +14,7 @@ class _ProfileIconState extends ConsumerState<ProfileIcon> {
     return InkWell(
       onTap: _goToProfile,
       child: Image.asset(
+        package: 'jio_ird',
         'assets/images/hotel_logo.png',
         width: 100,
         height: 60,

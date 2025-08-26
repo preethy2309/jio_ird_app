@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../../notifiers/cart_notifier.dart';
 
@@ -38,17 +39,25 @@ class _CartButtonState extends ConsumerState<CartButton> {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
               decoration: BoxDecoration(
-                color: cartFocused ?  Theme.of(context).primaryColor: Colors.grey[800],
+                color: cartFocused
+                    ? Theme.of(context).primaryColor
+                    : Colors.grey[800],
                 borderRadius: BorderRadius.circular(26),
               ),
-              child: const SizedBox(
+              child: SizedBox(
                 height: 26,
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(Icons.shopping_cart, color: Colors.white),
-                    SizedBox(width: 8),
-                    Text(
+                    SvgPicture.asset(
+                      package: 'jio_ird',
+                      'assets/images/ic_cart.svg',
+                      width: 20,
+                      height: 20,
+                      fit: BoxFit.cover,
+                    ),
+                    const SizedBox(width: 8),
+                    const Text(
                       'Go to Cart',
                       style: TextStyle(color: Colors.white),
                     ),

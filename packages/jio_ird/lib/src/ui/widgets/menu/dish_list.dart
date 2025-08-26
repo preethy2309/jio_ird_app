@@ -7,6 +7,7 @@ import '../../../notifiers/cart_notifier.dart';
 import '../../../providers/focus_provider.dart';
 import '../../../providers/state_provider.dart';
 import '../../../utils/helper.dart';
+import '../dish_image.dart';
 import '../quantity_selector.dart';
 
 class DishList extends ConsumerStatefulWidget {
@@ -210,30 +211,13 @@ class _DishListState extends ConsumerState<DishList> {
                 ),
                 child: Row(
                   children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(6),
-                      child: (dish.dish_image != null &&
-                              dish.dish_image!.isNotEmpty)
-                          ? Image.network(
-                              dish.dish_image!,
-                              width: 75,
-                              height: 75,
-                              fit: BoxFit.cover,
-                              errorBuilder: (context, error, stackTrace) {
-                                return Image.asset(
-                                  'assets/images/default_dish.png',
-                                  width: 75,
-                                  height: 75,
-                                  fit: BoxFit.cover,
-                                );
-                              },
-                            )
-                          : Image.asset(
-                              'assets/images/default_dish.png',
-                              width: 75,
-                              height: 75,
-                              fit: BoxFit.cover,
-                            ),
+                    DishImage(
+                      imageUrl: dish.dish_image,
+                      width: 75,
+                      height: 75,
+                      borderRadius: 6,
+                      fallbackWidth: 45,
+                      fallbackHeight: 45,
                     ),
                     const SizedBox(width: 10),
                     if (isFocused) ...[

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:jio_ird/src/ui/widgets/my_order_shimmer.dart';
 
 import '../../../data/models/order_status_response.dart';
 import '../../../providers/state_provider.dart';
@@ -28,7 +29,7 @@ class _MyOrderListState extends ConsumerState<MyOrderList> {
     final orderStatusAsync = ref.watch(orderStatusProvider);
 
     return orderStatusAsync.when(
-      loading: () => const Center(child: CircularProgressIndicator()),
+      loading: () => const MyOrdersShimmer(),
       error: (err, _) => Center(child: Text('Error: $err')),
       data: (orders) {
         if (orders.isEmpty) {

@@ -6,6 +6,7 @@ import '../../../data/models/food_item.dart';
 import '../../../providers/focus_provider.dart';
 import '../../../providers/state_provider.dart';
 import '../../../utils/helper.dart';
+import '../dish_image.dart';
 
 class SubCategoriesWithImage extends ConsumerStatefulWidget {
   final List<FoodItem> subCategories;
@@ -94,29 +95,15 @@ class _SubCategoriesWithImageState
                 ),
                 child: Row(
                   children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(6),
-                      child: (subCategory.dishes?.isNotEmpty ?? false)
-                          ? Image.network(
-                              subCategory.dishes![0].dish_image ?? '',
-                              width: 75,
-                              height: 75,
-                              fit: BoxFit.cover,
-                              errorBuilder: (context, error, stackTrace) {
-                                return Image.asset(
-                                  'assets/images/default_dish.png',
-                                  width: 75,
-                                  height: 75,
-                                  fit: BoxFit.cover,
-                                );
-                              },
-                            )
-                          : Image.asset(
-                              'assets/images/default_dish.png',
-                              width: 75,
-                              height: 75,
-                              fit: BoxFit.cover,
-                            ),
+                    DishImage(
+                      imageUrl: subCategory.dishes?.isNotEmpty == true
+                          ? subCategory.dishes![0].dish_image
+                          : null,
+                      width: 75,
+                      height: 75,
+                      borderRadius: 6,
+                      fallbackWidth: 45,
+                      fallbackHeight: 45,
                     ),
                     const SizedBox(width: 10),
                     Expanded(

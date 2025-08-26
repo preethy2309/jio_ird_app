@@ -31,6 +31,7 @@ class _EmptyCartScreenState extends State<EmptyCartScreen> {
         children: [
           // Image
           Image.asset(
+            package: 'jio_ird',
             "assets/images/cart_empty.png",
             width: 80,
             height: 80,
@@ -80,7 +81,9 @@ class _EmptyCartScreenState extends State<EmptyCartScreen> {
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 150),
               decoration: BoxDecoration(
-                color: _isFocused ? Theme.of(context).colorScheme.primary : Colors.white,
+                color: _isFocused
+                    ? Theme.of(context).colorScheme.primary
+                    : Colors.white,
                 borderRadius: BorderRadius.circular(30),
               ),
               child: ElevatedButton(
@@ -97,7 +100,7 @@ class _EmptyCartScreenState extends State<EmptyCartScreen> {
                 onPressed: () => {
                   Navigator.of(context).pushNamedAndRemoveUntil(
                     '/menu',
-                        (route) => false, // removes everything from stack
+                    (route) => false, // removes everything from stack
                   )
                 },
                 child: const Text(

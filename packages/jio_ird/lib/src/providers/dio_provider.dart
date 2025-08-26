@@ -56,7 +56,7 @@ final dioProvider = Provider<Dio>((ref) {
 loadAuthToken() {
   const String kEncryptionIV = "5b5bc6c117391111";
   const String kEncryptionKey = "4db779e269dc587dd171516a86a62913";
-  const String kSerialNum = "RNOSBFJNX026030";
+  const String kSerialNum = "RDTSBKF00136359";
   var currentTime = DateTime.now().millisecondsSinceEpoch;
 
   String data = "{\"serial_num\":\"$kSerialNum\",\"time\":\"$currentTime\"}";
