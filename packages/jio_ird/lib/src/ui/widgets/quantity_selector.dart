@@ -25,7 +25,10 @@ class QuantitySelector extends StatelessWidget {
           width: 100,
           height: 38,
           decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.secondary.withOpacity(0.6),
+            color: Color.alphaBlend(
+              Colors.white.withOpacity(0.1),
+              Theme.of(context).colorScheme.secondary,
+            ),
             borderRadius: BorderRadius.circular(38),
           ),
         ),

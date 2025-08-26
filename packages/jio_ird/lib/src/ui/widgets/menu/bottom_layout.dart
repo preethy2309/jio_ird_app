@@ -7,7 +7,7 @@ class BottomLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 36,
-      color: Theme.of(context).colorScheme.onSecondary,
+      color: Theme.of(context).colorScheme.secondary,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
