@@ -60,15 +60,9 @@ class _OrderPlacedState extends State<OrderPlaced> {
             style: ButtonStyle(
               backgroundColor: WidgetStateProperty.resolveWith<Color>((states) {
                 if (states.contains(WidgetState.focused)) {
-                  return Theme.of(context).primaryColor;
+                  return Theme.of(context).colorScheme.primary;
                 }
                 return Colors.white;
-              }),
-              foregroundColor: WidgetStateProperty.resolveWith<Color>((states) {
-                if (states.contains(WidgetState.focused)) {
-                  return Theme.of(context).colorScheme.onPrimary;
-                }
-                return Theme.of(context).colorScheme.onSecondary;
               }),
               padding: WidgetStateProperty.all(
                 const EdgeInsets.symmetric(horizontal: 24),
@@ -83,7 +77,7 @@ class _OrderPlacedState extends State<OrderPlaced> {
             child: Text(
               "Track order",
               style: TextStyle(
-                color: Theme.of(context).colorScheme.onSecondary,
+                color: Theme.of(context).colorScheme.onPrimary,
               ),
             ),
           ),

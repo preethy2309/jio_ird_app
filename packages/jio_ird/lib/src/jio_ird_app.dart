@@ -6,9 +6,7 @@ import 'ui/screens/cart_screen.dart';
 import 'ui/screens/menu_screen.dart';
 
 class JioIRDApp extends ConsumerWidget {
-  final Widget bottomBar;
-
-  const JioIRDApp({super.key, required this.bottomBar});
+  const JioIRDApp({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -20,10 +18,11 @@ class JioIRDApp extends ConsumerWidget {
         brightness: Brightness.dark,
         primaryColor: focusTheme.focusedColor,
         colorScheme: ColorScheme.dark(
-            primary: focusTheme.focusedColor,
-            secondary: focusTheme.unfocusedColor,
-            onPrimary: focusTheme.focusedTextColor,
-            onSecondary: focusTheme.unfocusedTextColor),
+          primary: focusTheme.focusedColor,
+          secondary: focusTheme.unfocusedColor,
+          onPrimary: focusTheme.focusedTextColor,
+          onSecondary: focusTheme.unfocusedTextColor,
+        ),
         scaffoldBackgroundColor: focusTheme.unfocusedColor.withOpacity(0.9),
         textTheme: TextTheme(
           bodyMedium: TextStyle(

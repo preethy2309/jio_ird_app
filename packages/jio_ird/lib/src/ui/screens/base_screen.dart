@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../providers/external_providers.dart';
 import '../widgets/menu/bottom_layout.dart';
 import '../widgets/menu/menu_top_bar/menu_top_bar.dart';
 
-class BaseScreen extends StatelessWidget {
+class BaseScreen extends ConsumerWidget {
   final String title;
   final String? description;
   final List<Widget>? icons;
@@ -18,7 +20,8 @@ class BaseScreen extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final bottomBar = ref.watch(bottomBarProvider);
     return Scaffold(
       body: Stack(
         children: [
@@ -46,7 +49,7 @@ class BaseScreen extends StatelessWidget {
         ],
       ),
       backgroundColor: const Color(0x80000000),
-      bottomNavigationBar: const BottomLayout(),
+      bottomNavigationBar: bottomBar ?? const BottomLayout(),
     );
   }
 }

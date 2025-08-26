@@ -83,7 +83,6 @@ class _MyOrderListState extends ConsumerState<MyOrderList> {
     );
   }
 
-  /// Map dish status to a consistent format
   String _mapStatus(String? status) {
     switch (status?.toLowerCase()) {
       case "submitted":
@@ -103,7 +102,6 @@ class _MyOrderListState extends ConsumerState<MyOrderList> {
     }
   }
 
-  /// Decide button/label text and type
   _OrderAction _getOrderAction(List<OrderDishDetail> dishes) {
     final statuses = dishes.map((d) => _mapStatus(d.status)).toList();
     final allServed = statuses.every((s) => s == "Served");

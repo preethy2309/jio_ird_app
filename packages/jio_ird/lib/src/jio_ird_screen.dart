@@ -15,7 +15,7 @@ class JioIRDScreen extends StatelessWidget {
   final String serialNumber;
   final GuestInfo guestInfo;
   final String menuTitle;
-  final Widget bottomBar;
+  final Widget? bottomBar;
   final String baseUrl;
   final Function(String event, dynamic data)? onSocketEvent;
 
@@ -26,9 +26,9 @@ class JioIRDScreen extends StatelessWidget {
     required this.accessToken,
     required this.serialNumber,
     required this.guestInfo,
-    this.onSocketEvent,
     this.menuTitle = "In Room Dining",
-    this.bottomBar = const BottomLayout(),
+    this.bottomBar,
+    this.onSocketEvent,
   });
 
   @override
@@ -42,8 +42,9 @@ class JioIRDScreen extends StatelessWidget {
         socketEventProvider.overrideWithValue(onSocketEvent),
         menuTitleProvider.overrideWithValue(menuTitle),
         focusThemeProvider.overrideWithValue(focusTheme),
+        bottomBarProvider.overrideWithValue(bottomBar)
       ],
-      child: JioIRDApp(bottomBar: bottomBar,),
+      child: const JioIRDApp(),
     );
   }
 }

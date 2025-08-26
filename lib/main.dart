@@ -29,7 +29,6 @@ class MyDemoApp extends StatelessWidget {
             guestName: kGuestName,
             guestId: kGuestId),
         menuTitle: "In-Room Dining",
-        bottomBar: Container(),
         onSocketEvent: (event, data) {
           debugPrint("Socket event: $event $data");
         },
