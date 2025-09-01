@@ -27,3 +27,24 @@ final focusThemeProvider = Provider<FocusTheme>((ref) {
 final bottomBarProvider = Provider<Widget?>((ref) {
   return const BottomLayout();
 });
+
+
+ImageProvider? _resolveImage(String? pathOrUrl) {
+  if (pathOrUrl == null) return null;
+  if (pathOrUrl.startsWith('http')) {
+    return NetworkImage(pathOrUrl);
+  } else {
+    return AssetImage(pathOrUrl);
+  }
+}
+
+final backgroundImageRawProvider = Provider<String?>((ref) => null);
+final hotelLogoRawProvider = Provider<String?>((ref) => null);
+
+final resolvedBackgroundImageProvider = Provider<ImageProvider?>((ref) {
+  return _resolveImage(ref.watch(backgroundImageRawProvider));
+});
+
+final resolvedHotelLogoProvider = Provider<ImageProvider?>((ref) {
+  return _resolveImage(ref.watch(hotelLogoRawProvider));
+});

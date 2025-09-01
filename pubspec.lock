@@ -398,7 +398,7 @@ packages:
       path: "packages/jio_ird"
       relative: true
     source: path
-    version: "1.0.0+1"
+    version: "1.0.1"
   js:
     dependency: transitive
     description:

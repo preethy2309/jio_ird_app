@@ -7,14 +7,12 @@ import '../widgets/menu/menu_top_bar/menu_top_bar.dart';
 
 class BaseScreen extends ConsumerWidget {
   final String title;
-  final String? description;
   final List<Widget>? icons;
   final Widget child;
 
   const BaseScreen({
     super.key,
     required this.title,
-    this.description,
     this.icons,
     required this.child,
   });
@@ -22,15 +20,30 @@ class BaseScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final bottomBar = ref.watch(bottomBarProvider);
+    final guestInfo = ref.watch(guestDetailsProvider);
+    final bgImage = ref.watch(resolvedBackgroundImageProvider);
+
     return Scaffold(
       body: Stack(
         children: [
           Positioned.fill(
-            child: Image.asset(
-              package: 'jio_ird',
-              'assets/images/bg.png',
-              fit: BoxFit.cover,
-            ),
+            child: bgImage != null
+                ? Image(
+                    image: bgImage,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Image.asset(
+                        'assets/images/bg.png',
+                        package: 'jio_ird',
+                        fit: BoxFit.cover,
+                      );
+                    },
+                  )
+                : Image.asset(
+                    'assets/images/bg.png',
+                    package: 'jio_ird',
+                    fit: BoxFit.cover,
+                  ),
           ),
           Padding(
             padding: const EdgeInsets.only(left: 38, right: 32, top: 26),
@@ -39,7 +52,7 @@ class BaseScreen extends ConsumerWidget {
               children: [
                 MenuTopBar(
                   title: title,
-                  description: description ?? "",
+                  description: guestInfo.roomNo ?? "",
                   icons: icons,
                 ),
                 const SizedBox(height: 20),

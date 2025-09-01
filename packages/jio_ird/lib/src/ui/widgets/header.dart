@@ -17,8 +17,8 @@ class Header extends StatelessWidget {
       children: [
         Text(
           title,
-          style: const TextStyle(
-            color: Colors.amber,
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.primary,
             fontSize: 28,
           ),
         ),

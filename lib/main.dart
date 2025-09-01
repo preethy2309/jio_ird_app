@@ -8,9 +8,9 @@ void main() {
 
 const String kEncryptionIV = "5b5bc6c117391111";
 const String kEncryptionKey = "4db779e269dc587dd171516a86a62913";
-const String kSerialNumber = "RDTSBKF00136359";
+const String kSerialNumber = "RNOSBFJNX026030";
 const String kRoomNo = "1010-Dipesh";
-const String kPropertyId = "81";
+const String kPropertyId = "2186";
 const String kGuestName = "Dipesh Jain";
 const String kGuestId = "822";
 const String kBaseUrl = "https://devices.cms.jio.com/jiohotels/";
@@ -41,6 +41,10 @@ class MyDemoApp extends StatelessWidget {
         onSocketEvent: (event, data) {
           debugPrint("Socket event: $event $data");
         },
+        // backgroundImage: "assets/images/bg.jpg",
+        hotelLogo : "assets/images/bg.jpg",
+        backgroundImage: "https://images.unsplash.com/photo-1615715035715-035123255873?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        // hotelLogo: "https://images.unsplash.com/photo-1598214886806-c87b84b7078b?q=80&w=1025&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       ),
     );
   }

@@ -1,3 +1,4 @@
+import 'package:encrypt/encrypt.dart' as encrypt;
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -50,3 +51,24 @@ final dioProvider = Provider<Dio>((ref) {
 
   return dio;
 });
+
+// loadAuthToken() {
+//   const String kEncryptionIV = "5b5bc6c117391111";
+//   const String kEncryptionKey = "4db779e269dc587dd171516a86a62913";
+//   const String kSerialNumber = "RNOSBFJNX026030";
+//   var currentTime = DateTime.now().millisecondsSinceEpoch;
+//
+//   String data =
+//       "{\"serial_num\":\"$kSerialNumber\",\"time\":\"$currentTime\"}";
+//
+//   final key = encrypt.Key.fromUtf8(kEncryptionKey);
+//   final iv = encrypt.IV.fromUtf8(kEncryptionIV);
+//
+//   final encrypter = encrypt.Encrypter(
+//     encrypt.AES(key, mode: encrypt.AESMode.cbc, padding: 'PKCS7'),
+//   );
+//
+//   final encrypted = encrypter.encrypt(data, iv: iv);
+//
+//   return encrypted.base64;
+// }

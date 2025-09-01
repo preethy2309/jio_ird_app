@@ -17,6 +17,8 @@ class JioIRDScreen extends StatelessWidget {
   final String menuTitle;
   final Widget? bottomBar;
   final Function(String event, dynamic data)? onSocketEvent;
+  final String? backgroundImage;
+  final String? hotelLogo;
 
   const JioIRDScreen({
     super.key,
@@ -28,6 +30,8 @@ class JioIRDScreen extends StatelessWidget {
     this.menuTitle = "In Room Dining",
     this.bottomBar,
     this.onSocketEvent,
+    this.backgroundImage,
+    this.hotelLogo,
   });
 
   @override
@@ -41,7 +45,9 @@ class JioIRDScreen extends StatelessWidget {
         socketEventProvider.overrideWithValue(onSocketEvent),
         menuTitleProvider.overrideWithValue(menuTitle),
         focusThemeProvider.overrideWithValue(focusTheme),
-        bottomBarProvider.overrideWithValue(bottomBar)
+        bottomBarProvider.overrideWithValue(bottomBar),
+        backgroundImageRawProvider.overrideWithValue(backgroundImage),
+        hotelLogoRawProvider.overrideWithValue(hotelLogo),
       ],
       child: const JioIRDApp(),
     );
