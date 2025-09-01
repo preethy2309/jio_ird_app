@@ -24,10 +24,10 @@ class MyDemoApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: JioIRDScreen(
         focusTheme: const FocusTheme(
-          focusedColor: Color(0xFF003495),
+          focusedColor: Color(0xFF009523),
           unfocusedColor: Color(0xFFFFFFFF),
           focusedTextColor: Color(0xFFFFFFFF),
-          unfocusedTextColor: Color(0xFF003495),
+          unfocusedTextColor: Color(0xFF009523),
         ),
         baseUrl: kBaseUrl,
         accessToken: loadAuthToken(),
