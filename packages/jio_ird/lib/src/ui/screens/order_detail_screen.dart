@@ -49,6 +49,7 @@ class OrderDetailScreen extends StatelessWidget {
               orderNo: order.order_id.toString(),
               billDetails: "${order.dish_details.length} Items",
               toPay: "₹ ${_calculateTotal(order.dish_details)}",
+              isActive: false,
             ),
             const SizedBox(height: 30),
             Expanded(
@@ -60,8 +61,9 @@ class OrderDetailScreen extends StatelessWidget {
 
                   final Map<String, Color> stepColors = {};
                   for (int i = 0; i < _statusOrder.length; i++) {
-                    stepColors[_statusOrder[i]] =
-                        (i <= currentStep) ? Theme.of(context).primaryColor : Colors.grey;
+                    stepColors[_statusOrder[i]] = (i <= currentStep)
+                        ? Theme.of(context).primaryColor
+                        : Colors.grey;
                   }
 
                   return OrderCard(

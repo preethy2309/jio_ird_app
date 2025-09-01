@@ -112,18 +112,14 @@ class _TabSwitcherState extends ConsumerState<TabSwitcher> {
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
             decoration: BoxDecoration(
               color: hasFocus
-                  ? Theme.of(context).colorScheme.secondary
+                  ? Theme.of(context).colorScheme.onPrimary
                   : (isSelected ? Colors.white70 : Colors.transparent),
               borderRadius: BorderRadius.circular(50),
             ),
             child: Text(
               label,
               style: TextStyle(
-                color: hasFocus
-                    ? Colors.white
-                    : isSelected
-                        ? Colors.black
-                        : Theme.of(context).colorScheme.primary,
+                color: Theme.of(context).colorScheme.primary,
                 fontSize: 16,
                 fontWeight: (isSelected || hasFocus)
                     ? FontWeight.bold

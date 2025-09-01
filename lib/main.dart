@@ -24,10 +24,10 @@ class MyDemoApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: JioIRDScreen(
         focusTheme: const FocusTheme(
-          focusedColor: Colors.amber,
-          unfocusedColor: Color(0xFF430B42),
-          focusedTextColor: Color(0xFF430B42),
-          unfocusedTextColor: Colors.amber,
+          focusedColor: Color(0xFF003495),
+          unfocusedColor: Color(0xFFFFFFFF),
+          focusedTextColor: Color(0xFFFFFFFF),
+          unfocusedTextColor: Color(0xFF003495),
         ),
         baseUrl: kBaseUrl,
         accessToken: loadAuthToken(),
@@ -41,9 +41,10 @@ class MyDemoApp extends StatelessWidget {
         onSocketEvent: (event, data) {
           debugPrint("Socket event: $event $data");
         },
+        // bottomBar: const BottomLayout(),
         // backgroundImage: "assets/images/bg.jpg",
-        hotelLogo : "assets/images/bg.jpg",
-        backgroundImage: "https://images.unsplash.com/photo-1615715035715-035123255873?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        // hotelLogo : "assets/images/bg.jpg",
+        // backgroundImage: "https://images.unsplash.com/photo-1615715035715-035123255873?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
         // hotelLogo: "https://images.unsplash.com/photo-1598214886806-c87b84b7078b?q=80&w=1025&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       ),
     );

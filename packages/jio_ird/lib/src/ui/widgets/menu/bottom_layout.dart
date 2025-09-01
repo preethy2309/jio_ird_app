@@ -5,56 +5,40 @@ class BottomLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Container(
       height: 36,
-      color: Theme.of(context).colorScheme.secondary,
+      color: theme.colorScheme.secondary,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Row(
             children: [
-              Image.asset(
-                package: 'jio_ird',
-                width: 20,
-                height: 24,
-                'assets/images/ok.png',
-                fit: BoxFit.fitWidth,
-              ),
-              const SizedBox(
-                width: 8,
-                height: 16,
-              ),
-              Text('Select',
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.primary.withOpacity(0.5),
+                  borderRadius: BorderRadius.circular(6),
+                ),
+                child: Text(
+                  "OK",
                   style: TextStyle(
-                    color: Theme.of(context).primaryColor,
-                    fontSize: 12,
-                  )),
-            ],
-          ),
-          const SizedBox(width: 60),
-          Row(
-            children: [
-              Image.asset(
-                package: 'jio_ird',
-                width: 16,
-                height: 16,
-                'assets/images/down_arrow.png',
-                fit: BoxFit.cover,
-              ),
-              const SizedBox(width: 4),
-              Image.asset(
-                package: 'jio_ird',
-                width: 16,
-                height: 16,
-                'assets/images/up_arrow.png',
-                fit: BoxFit.cover,
+                    color: theme.colorScheme.primary,
+                    fontSize: 8,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
               const SizedBox(width: 8),
-              Text('Navigate',
-                  style: TextStyle(
-                    color: Theme.of(context).primaryColor,
-                    fontSize: 12,
-                  )),
+              Text(
+                'Select',
+                style: TextStyle(
+                  color: theme.primaryColor,
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ],
           ),
           const SizedBox(width: 60),
@@ -62,17 +46,53 @@ class BottomLayout extends StatelessWidget {
             children: [
               Container(
                 decoration: BoxDecoration(
+                  color: theme.colorScheme.primary.withOpacity(0.5),
+                  borderRadius: BorderRadius.circular(6),
+                ),
+                child: Icon(
+                  Icons.keyboard_arrow_down,
+                  size: 18,
+                  color: theme.colorScheme.primary,
+                ),
+              ),
+              const SizedBox(width: 4),
+              Container(
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.primary.withOpacity(0.5),
+                  borderRadius: BorderRadius.circular(6),
+                ),
+                child: Icon(Icons.keyboard_arrow_up,
+                    size: 18, color: theme.colorScheme.primary),
+              ),
+              const SizedBox(width: 8),
+              Text(
+                'Navigate',
+                style: TextStyle(
+                  color: theme.primaryColor,
+                  fontSize: 12,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(width: 60),
+          Row(
+            children: [
+              Container(
+                width: 25,
+                height: 16,
+                decoration: BoxDecoration(
                   color: const Color(0xFF3CA210),
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: const SizedBox(width: 25, height: 16),
               ),
               const SizedBox(width: 8),
-              Text('Clear App',
-                  style: TextStyle(
-                    color: Theme.of(context).primaryColor,
-                    fontSize: 12,
-                  )),
+              Text(
+                'Clear App',
+                style: TextStyle(
+                  color: theme.primaryColor,
+                  fontSize: 12,
+                ),
+              ),
             ],
           ),
         ],

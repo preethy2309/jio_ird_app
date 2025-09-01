@@ -142,12 +142,20 @@ class _MyOrderListState extends ConsumerState<MyOrderList> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          OrderInfo(orderNo: orderNo, billDetails: billDetails, toPay: toPay),
+          OrderInfo(
+              orderNo: orderNo,
+              billDetails: billDetails,
+              toPay: toPay,
+              isActive: isActive),
           isButton
               ? ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    foregroundColor: Colors.black,
+                    backgroundColor: isActive
+                        ? Theme.of(context).colorScheme.primary
+                        : Colors.white,
+                    foregroundColor: isActive
+                        ? Theme.of(context).colorScheme.secondary
+                        : Colors.black,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
                     ),
@@ -157,7 +165,10 @@ class _MyOrderListState extends ConsumerState<MyOrderList> {
                 )
               : Text(
                   buttonText,
-                  style: const TextStyle(color: Colors.white38),
+                  style: TextStyle(
+                      color: isActive
+                          ? Theme.of(context).colorScheme.secondary
+                          : Colors.white38),
                 ),
         ],
       ),

@@ -19,14 +19,18 @@ class StatusStep extends StatelessWidget {
         Icon(
           icon,
           size: 20,
-          color: active ? const Color(0xFFD4AF6A) : Colors.white38,
+          color: active
+              ? Theme.of(context).colorScheme.primary.withOpacity(0.5)
+              : Colors.white38,
         ),
         const SizedBox(height: 4),
         Text(
           label,
           style: TextStyle(
             fontSize: 12,
-            color: active ? const Color(0xFFD4AF6A) : Colors.white38,
+            color: active
+                ? Theme.of(context).colorScheme.primary.withOpacity(0.5)
+                : Colors.white38,
           ),
         ),
       ],

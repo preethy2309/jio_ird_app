@@ -7,11 +7,15 @@ class OrderInfo extends StatelessWidget {
 
   final String toPay;
 
-  const OrderInfo(
-      {super.key,
-      required this.orderNo,
-      required this.billDetails,
-      required this.toPay});
+  final bool isActive;
+
+  const OrderInfo({
+    super.key,
+    required this.orderNo,
+    required this.billDetails,
+    required this.toPay,
+    required this.isActive,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -20,18 +24,24 @@ class OrderInfo extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
+            Text(
               "Order No",
-              style: TextStyle(color: Colors.grey, fontSize: 14),
+              style: TextStyle(
+                  color: isActive
+                      ? Theme.of(context).colorScheme.primary.withOpacity(0.5)
+                      : Colors.grey,
+                  fontSize: 14),
               textAlign: TextAlign.start,
             ),
             const SizedBox(height: 4),
             Text(
               orderNo,
-              style: const TextStyle(
+              style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 16,
-                color: Colors.white,
+                color: isActive
+                    ? Theme.of(context).colorScheme.primary
+                    : Colors.white,
               ),
               textAlign: TextAlign.start,
             ),
@@ -42,21 +52,31 @@ class OrderInfo extends StatelessWidget {
         Container(
           width: 1,
           height: 40,
-          color: Colors.grey.shade400,
+          color: isActive
+              ? Theme.of(context).colorScheme.primary.withOpacity(0.5)
+              : Colors.grey.shade400,
         ),
         const SizedBox(width: 24),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
+            Text(
               "Bill details",
-              style: TextStyle(color: Colors.grey, fontSize: 14),
+              style: TextStyle(
+                  color: isActive
+                      ? Theme.of(context).colorScheme.primary.withOpacity(0.5)
+                      : Colors.grey,
+                  fontSize: 14),
               textAlign: TextAlign.start,
             ),
             const SizedBox(height: 4),
             Text(
               billDetails,
-              style: const TextStyle(fontSize: 16, color: Colors.white),
+              style: TextStyle(
+                  fontSize: 16,
+                  color: isActive
+                      ? Theme.of(context).colorScheme.primary
+                      : Colors.white),
               textAlign: TextAlign.start,
             ),
           ],
@@ -65,24 +85,32 @@ class OrderInfo extends StatelessWidget {
         Container(
           width: 1,
           height: 40,
-          color: Colors.grey.shade400,
+          color: isActive
+              ? Theme.of(context).colorScheme.primary.withOpacity(0.5)
+              : Colors.grey.shade400,
         ),
         const SizedBox(width: 24),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
+            Text(
               "To Pay",
-              style: TextStyle(color: Colors.grey, fontSize: 14),
+              style: TextStyle(
+                  color: isActive
+                      ? Theme.of(context).colorScheme.primary.withOpacity(0.5)
+                      : Colors.grey,
+                  fontSize: 14),
               textAlign: TextAlign.start,
             ),
             const SizedBox(height: 4),
             Text(
               toPay,
-              style: const TextStyle(
+              style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 16,
-                color: Colors.white,
+                color: isActive
+                    ? Theme.of(context).colorScheme.primary
+                    : Colors.white,
               ),
               textAlign: TextAlign.start,
             ),

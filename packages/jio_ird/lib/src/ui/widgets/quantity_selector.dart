@@ -26,8 +26,8 @@ class QuantitySelector extends StatelessWidget {
           height: 38,
           decoration: BoxDecoration(
             color: Color.alphaBlend(
-              Colors.white.withOpacity(0.1),
-              Theme.of(context).colorScheme.secondary,
+              Colors.white.withOpacity(0.5),
+              Theme.of(context).colorScheme.primary,
             ),
             borderRadius: BorderRadius.circular(38),
           ),
@@ -46,10 +46,17 @@ class QuantitySelector extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 8),
                 child: SizedBox(
                   width: 20, // fixed width
-                  child: Text(
-                    quantity.toString().padLeft(2, ' '), // keeps alignment
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(fontSize: 16, color: Colors.white),
+                  child: AnimatedDefaultTextStyle(
+                    duration: const Duration(milliseconds: 150),
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Theme.of(context).colorScheme.secondary,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    child: Text(
+                      quantity.toString().padLeft(2, ' '),
+                      textAlign: TextAlign.center,
+                    ),
                   ),
                 ),
               ),
@@ -117,12 +124,14 @@ class _AnimatedQtyButtonState extends State<_AnimatedQtyButton> {
           height: _isFocused ? 36 : 28,
           alignment: Alignment.center,
           decoration: BoxDecoration(
-            color: _isFocused ? Colors.amber : Colors.grey,
+            color: _isFocused ? Theme.of(context).primaryColor : Colors.grey,
             shape: BoxShape.circle,
           ),
           child: Icon(
             widget.icon,
-            color: _isFocused ? Colors.white : Colors.black,
+            color: _isFocused
+                ? Theme.of(context).colorScheme.secondary
+                : Colors.black,
             size: _isFocused ? 26 : 18,
           ),
         ),
