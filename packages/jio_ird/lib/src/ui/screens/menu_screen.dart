@@ -46,7 +46,7 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
               children: List.generate(
                 6,
                 (index) => const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 8),
+                  padding: EdgeInsets.symmetric(vertical: 2),
                   child: ShimmerLoader(height: 40, width: 180),
                 ),
               ),

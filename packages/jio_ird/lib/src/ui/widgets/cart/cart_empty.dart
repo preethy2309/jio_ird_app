@@ -103,9 +103,14 @@ class _EmptyCartScreenState extends State<EmptyCartScreen> {
                     (route) => false, // removes everything from stack
                   )
                 },
-                child: const Text(
+                child:  Text(
                   "Go To Menu",
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                  style: TextStyle(
+                      color: _isFocused
+                          ? Theme.of(context).colorScheme.onPrimary
+                          : Colors.black,
+                      fontSize: 16, fontWeight: FontWeight.w500
+                  ),
                 ),
               ),
             ),

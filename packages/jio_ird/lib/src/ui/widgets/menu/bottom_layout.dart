@@ -9,7 +9,13 @@ class BottomLayout extends StatelessWidget {
 
     return Container(
       height: 36,
-      color: theme.colorScheme.secondary,
+      decoration: BoxDecoration(
+        color: theme.colorScheme.secondary,
+        border: Border.all(
+          color: theme.colorScheme.primary.withOpacity(0.5),
+          width: 0.5,
+        ),
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
