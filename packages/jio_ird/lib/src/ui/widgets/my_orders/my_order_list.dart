@@ -39,9 +39,7 @@ class _MyOrderListState extends ConsumerState<MyOrderList> {
         return Focus(
           onFocusChange: (hasFocus) {
             if (!hasFocus) {
-              setState(() {
-                focusedIndex = null;
-              });
+              setState(() => focusedIndex = null);
             }
           },
           child: ListView.builder(
@@ -53,19 +51,20 @@ class _MyOrderListState extends ConsumerState<MyOrderList> {
 
               return Padding(
                 padding: const EdgeInsets.only(bottom: 12),
-                child: InkWell(
-                  onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => OrderDetailScreen(order: order),
+                child: Focus(
+                  canRequestFocus: true,
+                  onFocusChange: (hasFocus) {
+                    if (hasFocus) {
+                      setState(() => focusedIndex = index);
+                    }
+                  },
+                  child: InkWell(
+                    onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => OrderDetailScreen(order: order),
+                      ),
                     ),
-                  ),
-                  child: Focus(
-                    onFocusChange: (hasFocus) {
-                      setState(() {
-                        focusedIndex = hasFocus ? index : focusedIndex;
-                      });
-                    },
                     child: _orderTile(
                       orderNo: order.order_id.toString(),
                       billDetails: '${order.dish_details.length} Items',
