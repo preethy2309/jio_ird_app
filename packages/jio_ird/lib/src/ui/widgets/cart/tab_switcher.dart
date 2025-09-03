@@ -99,6 +99,14 @@ class _TabSwitcherState extends ConsumerState<TabSwitcher> {
             onLeft();
             return KeyEventResult.handled;
           }
+          if (event.logicalKey == LogicalKeyboardKey.arrowUp) {
+            return KeyEventResult.handled;
+          }
+
+          if (label != "Cart" &&
+              (event.logicalKey == LogicalKeyboardKey.arrowRight)) {
+            return KeyEventResult.handled;
+          }
         }
         return KeyEventResult.ignored;
       },
