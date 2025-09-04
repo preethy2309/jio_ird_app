@@ -1,68 +1,92 @@
-import 'package:json_annotation/json_annotation.dart';
-part 'dish_model.g.dart';
-
-@JsonSerializable()
 class Dish {
-  @JsonKey(name: 'dish_id')
   final int id;
-  @JsonKey(name: 'dish_name')
   final String name;
   final String description;
-  final String dish_type;
-  final String dish_price;
-  final String? dish_image;
-  final String? file_type;
-  final String? file_name;
+  final String dishType;
+  final String dishPrice;
+  final String? dishImage;
+  final String? fileType;
+  final String? fileName;
   final String? allergies;
   final String? contains;
-  String? cooking_request;
-  @JsonKey(name: 'dish_qty')
+  String? cookingRequest;
   final int? quantity;
 
   Dish({
     required this.id,
     required this.name,
     required this.description,
-    required this.dish_type,
-    required this.dish_price,
-    this.dish_image,
-    this.file_type,
-    this.file_name,
-    this.cooking_request,
-    this.quantity,
+    required this.dishType,
+    required this.dishPrice,
+    this.dishImage,
+    this.fileType,
+    this.fileName,
     this.allergies,
     this.contains,
+    this.cookingRequest,
+    this.quantity,
   });
 
-  factory Dish.fromJson(Map<String, dynamic> json) => _$DishFromJson(json);
-  Map<String, dynamic> toJson() => _$DishToJson(this);
+  factory Dish.fromJson(Map<String, dynamic> json) {
+    return Dish(
+      id: json['dish_id'] is int ? json['dish_id'] : int.tryParse(json['dish_id'].toString()) ?? 0,
+      name: json['dish_name'] as String? ?? "",
+      description: json['description'] as String? ?? "",
+      dishType: json['dish_type'] as String? ?? "",
+      dishPrice: json['dish_price'] as String? ?? "",
+      dishImage: json['dish_image'] as String?,
+      fileType: json['file_type'] as String?,
+      fileName: json['file_name'] as String?,
+      allergies: json['allergies'] as String?,
+      contains: json['contains'] as String?,
+      cookingRequest: json['cooking_request'] as String?,
+      quantity: json['dish_qty'] is int ? json['dish_qty'] : int.tryParse(json['dish_qty']?.toString() ?? ""),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'dish_id': id,
+      'dish_name': name,
+      'description': description,
+      'dish_type': dishType,
+      'dish_price': dishPrice,
+      'dish_image': dishImage,
+      'file_type': fileType,
+      'file_name': fileName,
+      'allergies': allergies,
+      'contains': contains,
+      'cooking_request': cookingRequest,
+      'dish_qty': quantity,
+    };
+  }
 
   Dish copyWith({
     int? id,
     String? name,
     String? description,
-    String? dish_type,
-    String? dish_price,
-    String? dish_image,
-    String? file_type,
-    String? file_name,
+    String? dishType,
+    String? dishPrice,
+    String? dishImage,
+    String? fileType,
+    String? fileName,
     String? allergies,
     String? contains,
-    String? cooking_request,
+    String? cookingRequest,
     int? quantity,
   }) {
     return Dish(
       id: id ?? this.id,
       name: name ?? this.name,
       description: description ?? this.description,
-      dish_type: dish_type ?? this.dish_type,
-      dish_price: dish_price ?? this.dish_price,
-      dish_image: dish_image ?? this.dish_image,
-      file_type: file_type ?? this.file_type,
-      file_name: file_name ?? this.file_name,
+      dishType: dishType ?? this.dishType,
+      dishPrice: dishPrice ?? this.dishPrice,
+      dishImage: dishImage ?? this.dishImage,
+      fileType: fileType ?? this.fileType,
+      fileName: fileName ?? this.fileName,
       allergies: allergies ?? this.allergies,
       contains: contains ?? this.contains,
-      cooking_request: cooking_request ?? this.cooking_request,
+      cookingRequest: cookingRequest ?? this.cookingRequest,
       quantity: quantity ?? this.quantity,
     );
   }

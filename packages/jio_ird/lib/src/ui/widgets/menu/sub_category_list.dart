@@ -48,7 +48,7 @@ class _SubCategoryListState extends ConsumerState<SubCategoryList> {
             final focusNode = ref.watch(subCategoryFocusNodeProvider(index));
 
             return CategoryTile(
-              title: widget.subCategories[index].category_name ?? '',
+              title: widget.subCategories[index].categoryName ?? '',
               index: index,
               isSelected: isSelected,
               isFocused: isFocused,

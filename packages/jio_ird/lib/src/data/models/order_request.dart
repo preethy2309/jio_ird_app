@@ -1,19 +1,19 @@
 class OrderRequest {
-  final List<OrderDish> dish_details;
-  final String room_no;
-  final String serial_Num;
+  final List<OrderDish> dishDetails;
+  final String roomNo;
+  final String serialNum;
 
   OrderRequest({
-    required this.dish_details,
-    required this.room_no,
-    required this.serial_Num,
+    required this.dishDetails,
+    required this.roomNo,
+    required this.serialNum,
   });
 
   Map<String, dynamic> toJson() {
     return {
-      'dish_details': dish_details.map((d) => d.toJson()).toList(),
-      'room_no': room_no,
-      'serial_Num': serial_Num,
+      'dish_details': dishDetails.map((d) => d.toJson()).toList(),
+      'room_no': roomNo,
+      'serial_Num': serialNum,
     };
   }
 }
@@ -21,13 +21,13 @@ class OrderRequest {
 class OrderDish {
   final String id;
   final String quantity;
-  final String cooking_request;
+  final String cookingRequest;
   final String status;
 
   OrderDish({
     required this.id,
     required this.quantity,
-    required this.cooking_request,
+    required this.cookingRequest,
     required this.status,
   });
 
@@ -35,7 +35,7 @@ class OrderDish {
     return {
       'id': id,
       'quantity': quantity,
-      'cooking_request': cooking_request,
+      'cooking_request': cookingRequest,
       'status': status,
     };
   }

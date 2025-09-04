@@ -45,7 +45,7 @@ class _CategoryListState extends ConsumerState<CategoryList> {
             final focusNode = ref.watch(categoryFocusNodeProvider(index));
 
             return CategoryTile(
-              title: widget.categories[index].category_name ?? '',
+              title: widget.categories[index].categoryName ?? '',
               index: index,
               isSelected: isSelected,
               isFocused: isFocused,

@@ -14,6 +14,6 @@ bool hasSubCategories(WidgetRef ref) {
   }
 
   final selectedCat = categories[selectedCategory];
-  return selectedCat.sub_categories != null &&
-      selectedCat.sub_categories!.isNotEmpty;
+  return selectedCat.subCategories != null &&
+      selectedCat.subCategories!.isNotEmpty;
 }

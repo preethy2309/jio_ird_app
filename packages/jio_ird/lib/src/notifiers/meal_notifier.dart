@@ -18,11 +18,11 @@ class MealsNotifier extends StateNotifier<List<FoodItem>> {
     try {
       final meals = await repo.fetchFoodDetails(serialNum, propertyId);
       final filteredMeals = meals.where((category) {
-        category.sub_categories?.removeWhere(
+        category.subCategories?.removeWhere(
             (subCat) => (subCat.dishes == null || subCat.dishes!.isEmpty));
 
-        final hasValidSubCats = category.sub_categories != null &&
-            category.sub_categories!.isNotEmpty;
+        final hasValidSubCats = category.subCategories != null &&
+            category.subCategories!.isNotEmpty;
         final hasItems = category.dishes != null && category.dishes!.isNotEmpty;
 
         return hasValidSubCats || hasItems;
@@ -39,16 +39,16 @@ class MealsNotifier extends StateNotifier<List<FoodItem>> {
       FoodItem updateCategory(FoodItem cat) {
         final updatedDishes = cat.dishes?.map((dish) {
           if (dish.id == dishId) {
-            return dish.copyWith(cooking_request: newInstruction);
+            return dish.copyWith(cookingRequest: newInstruction);
           }
           return dish;
         }).toList();
 
-        final updatedSub = cat.sub_categories?.map(updateCategory).toList();
+        final updatedSub = cat.subCategories?.map(updateCategory).toList();
 
         return cat.copyWith(
           dishes: updatedDishes,
-          sub_categories: updatedSub,
+          subCategories: updatedSub,
         );
       }
 

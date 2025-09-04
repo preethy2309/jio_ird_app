@@ -46,17 +46,17 @@ class OrderDetailScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             OrderInfo(
-              orderNo: order.order_id.toString(),
-              billDetails: "${order.dish_details.length} Items",
-              toPay: "₹ ${_calculateTotal(order.dish_details)}",
+              orderNo: order.orderId.toString(),
+              billDetails: "${order.dishDetails.length} Items",
+              toPay: "₹ ${_calculateTotal(order.dishDetails)}",
               isActive: false,
             ),
             const SizedBox(height: 30),
             Expanded(
               child: ListView.builder(
-                itemCount: order.dish_details.length,
+                itemCount: order.dishDetails.length,
                 itemBuilder: (context, index) {
-                  final dish = order.dish_details[index];
+                  final dish = order.dishDetails[index];
                   final currentStep = _getStepIndex(dish.status);
 
                   final Map<String, Color> stepColors = {};

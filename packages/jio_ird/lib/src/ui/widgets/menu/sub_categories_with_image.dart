@@ -97,7 +97,7 @@ class _SubCategoriesWithImageState
                   children: [
                     DishImage(
                       imageUrl: subCategory.dishes?.isNotEmpty == true
-                          ? subCategory.dishes![0].dish_image
+                          ? subCategory.dishes![0].dishImage
                           : null,
                       width: 75,
                       height: 75,
@@ -108,7 +108,7 @@ class _SubCategoriesWithImageState
                     const SizedBox(width: 10),
                     Expanded(
                       child: Text(
-                        subCategory.category_name ?? '',
+                        subCategory.categoryName ?? '',
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 16,

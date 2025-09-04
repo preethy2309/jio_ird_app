@@ -184,8 +184,8 @@ class _CartItemsListState extends ConsumerState<CartItemsList> {
           child: CartItemTile(
             title: dish.name,
             quantity: quantity,
-            price: dish.dish_price,
-            type: dish.dish_type,
+            price: dish.dishPrice,
+            type: dish.dishType,
             cookingInstructions: dishWithQty.cookingRequest ?? '',
             editFocusNode: editNode,
             onEditInstruction: () {

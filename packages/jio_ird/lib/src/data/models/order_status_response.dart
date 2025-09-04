@@ -1,46 +1,51 @@
-import 'package:json_annotation/json_annotation.dart';
-
-part 'order_status_response.g.dart';
-
-@JsonSerializable()
 class OrderStatusResponse {
-  @JsonKey(fromJson: _toInt)
-  final int order_id;
-  final String? guest_name;
-  final String? guest_id;
-  final String room_no;
-  @JsonKey(fromJson: _toString)
-  final String display_id;
-  final List<OrderDishDetail> dish_details;
+  final int orderId;
+  final String? guestName;
+  final String? guestId;
+  final String roomNo;
+  final String displayId;
+  final List<OrderDishDetail> dishDetails;
 
   OrderStatusResponse({
-    required this.order_id,
-    required this.guest_name,
-    required this.guest_id,
-    required this.room_no,
-    required this.display_id,
-    required this.dish_details,
+    required this.orderId,
+    required this.guestName,
+    required this.guestId,
+    required this.roomNo,
+    required this.displayId,
+    required this.dishDetails,
   });
 
-  factory OrderStatusResponse.fromJson(Map<String, dynamic> json) =>
-      _$OrderStatusResponseFromJson(json);
-  Map<String, dynamic> toJson() => _$OrderStatusResponseToJson(this);
+  factory OrderStatusResponse.fromJson(Map<String, dynamic> json) {
+    return OrderStatusResponse(
+      orderId: _toInt(json['order_id']),
+      guestName: json['guest_name'] as String?,
+      guestId: json['guest_id'] as String?,
+      roomNo: json['room_no'] as String? ?? "",
+      displayId: _toString(json['display_id']),
+      dishDetails: (json['dish_details'] as List<dynamic>? ?? [])
+          .map((e) => OrderDishDetail.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'order_id': orderId,
+      'guest_name': guestName,
+      'guest_id': guestId,
+      'room_no': roomNo,
+      'display_id': displayId,
+      'dish_details': dishDetails.map((e) => e.toJson()).toList(),
+    };
+  }
 }
 
-@JsonSerializable()
 class OrderDishDetail {
   final String name;
-
-  @JsonKey(fromJson: _toInt)
   final int quantity;
-
-  @JsonKey(fromJson: _toString)
   final String price;
-
-  @JsonKey(fromJson: _toInt)
   final int id;
-
-  final String dish_type;
+  final String dishType;
   final String status;
   final String image;
 
@@ -49,14 +54,34 @@ class OrderDishDetail {
     required this.quantity,
     required this.price,
     required this.id,
-    required this.dish_type,
+    required this.dishType,
     required this.status,
     required this.image,
   });
 
-  factory OrderDishDetail.fromJson(Map<String, dynamic> json) =>
-      _$OrderDishDetailFromJson(json);
-  Map<String, dynamic> toJson() => _$OrderDishDetailToJson(this);
+  factory OrderDishDetail.fromJson(Map<String, dynamic> json) {
+    return OrderDishDetail(
+      name: json['name'] as String? ?? "",
+      quantity: _toInt(json['quantity']),
+      price: _toString(json['price']),
+      id: _toInt(json['id']),
+      dishType: json['dish_type'] as String? ?? "",
+      status: json['status'] as String? ?? "",
+      image: json['image'] as String? ?? "",
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'name': name,
+      'quantity': quantity,
+      'price': price,
+      'id': id,
+      'dish_type': dishType,
+      'status': status,
+      'image': image,
+    };
+  }
 }
 
 int _toInt(dynamic value) {

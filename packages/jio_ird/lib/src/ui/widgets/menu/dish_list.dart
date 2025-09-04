@@ -212,7 +212,7 @@ class _DishListState extends ConsumerState<DishList> {
                 child: Row(
                   children: [
                     DishImage(
-                      imageUrl: dish.dish_image,
+                      imageUrl: dish.dishImage,
                       width: 75,
                       height: 75,
                       borderRadius: 6,

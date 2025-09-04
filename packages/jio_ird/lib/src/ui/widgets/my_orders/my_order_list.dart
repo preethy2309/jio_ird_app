@@ -47,7 +47,7 @@ class _MyOrderListState extends ConsumerState<MyOrderList> {
             itemCount: orders.length,
             itemBuilder: (context, index) {
               final order = orders[index];
-              final action = _getOrderAction(order.dish_details);
+              final action = _getOrderAction(order.dishDetails);
 
               return Padding(
                 padding: const EdgeInsets.only(bottom: 12),
@@ -66,9 +66,9 @@ class _MyOrderListState extends ConsumerState<MyOrderList> {
                       ),
                     ),
                     child: _orderTile(
-                      orderNo: order.order_id.toString(),
-                      billDetails: '${order.dish_details.length} Items',
-                      toPay: '₹ ${_calculateTotal(order.dish_details)}',
+                      orderNo: order.orderId.toString(),
+                      billDetails: '${order.dishDetails.length} Items',
+                      toPay: '₹ ${_calculateTotal(order.dishDetails)}',
                       isActive: focusedIndex == index,
                       isButton: action.isButton,
                       buttonText: action.buttonText,

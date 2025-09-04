@@ -46,16 +46,16 @@ final noDishesProvider = Provider<bool>((ref) {
   if (categories.isEmpty) return true;
 
   final selectedCat = categories[selectedCategory];
-  final allDishes = selectedCat.sub_categories != null &&
-          selectedCat.sub_categories!.isNotEmpty &&
+  final allDishes = selectedCat.subCategories != null &&
+          selectedCat.subCategories!.isNotEmpty &&
           focusedSubCategory >= 0
       ? extractDishesFromCategory(
-          selectedCat.sub_categories![focusedSubCategory])
+          selectedCat.subCategories![focusedSubCategory])
       : extractDishesFromCategory(selectedCat);
 
   final filteredDishes = vegOnly
       ? allDishes
-          .where((dish) => dish.dish_type.toLowerCase() == 'veg')
+          .where((dish) => dish.dishType.toLowerCase() == 'veg')
           .toList()
       : allDishes;
 
@@ -69,8 +69,8 @@ List<Dish> extractDishesFromCategory(FoodItem category) {
     dishes.addAll(category.dishes!);
   }
 
-  if (category.sub_categories != null) {
-    for (final sub in category.sub_categories!) {
+  if (category.subCategories != null) {
+    for (final sub in category.subCategories!) {
       dishes.addAll(extractDishesFromCategory(sub));
     }
   }

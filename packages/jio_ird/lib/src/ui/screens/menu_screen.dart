@@ -83,16 +83,16 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
     }
 
     final selectedCat = categories[selectedCategory];
-    final allDishes = selectedCat.sub_categories != null &&
-            selectedCat.sub_categories!.isNotEmpty &&
+    final allDishes = selectedCat.subCategories != null &&
+            selectedCat.subCategories!.isNotEmpty &&
             focusedSubCategory >= 0
         ? extractDishesFromCategory(
-            selectedCat.sub_categories![focusedSubCategory])
+            selectedCat.subCategories![focusedSubCategory])
         : extractDishesFromCategory(selectedCat);
 
     final filteredDishes = vegOnly
         ? allDishes
-            .where((dish) => dish.dish_type.toLowerCase() == 'veg')
+            .where((dish) => dish.dishType.toLowerCase() == 'veg')
             .toList()
         : allDishes;
 
@@ -167,7 +167,7 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
                       (focusedDish >= 0 && focusedDish < filteredDishes.length)
                           ? filteredDishes[focusedDish]
                           : filteredDishes.first,
-                  categoryName: selectedCat.category_name ?? '',
+                  categoryName: selectedCat.categoryName ?? '',
                   itemCount: filteredDishes.length,
                 ),
               ),
@@ -186,7 +186,7 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
             SizedBox(
               width: 240,
               child: SubCategoriesWithImage(
-                  subCategories: selectedCat.sub_categories!),
+                  subCategories: selectedCat.subCategories!),
             ),
             if (filteredDishes.isEmpty)
               const Expanded(
@@ -204,7 +204,7 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
                       (focusedDish >= 0 && focusedDish < filteredDishes.length)
                           ? filteredDishes[focusedDish]
                           : filteredDishes.first,
-                  categoryName: selectedCat.category_name ?? '',
+                  categoryName: selectedCat.categoryName ?? '',
                   itemCount: filteredDishes.length,
                 ),
               ),
@@ -215,7 +215,7 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
             SizedBox(
               width: 202,
               child:
-                  SubCategoryList(subCategories: selectedCat.sub_categories!),
+                  SubCategoryList(subCategories: selectedCat.subCategories!),
             ),
             const SizedBox(width: 16),
             if (filteredDishes.isEmpty)
@@ -239,7 +239,7 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
                           ? filteredDishes[focusedDish]
                           : filteredDishes.first,
                   categoryName: selectedCat
-                          .sub_categories![focusedSubCategory].category_name ??
+                          .subCategories![focusedSubCategory].categoryName ??
                       '',
                   itemCount: filteredDishes.length,
                 ),
@@ -269,7 +269,7 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
                       (focusedDish >= 0 && focusedDish < filteredDishes.length)
                           ? filteredDishes[focusedDish]
                           : filteredDishes.first,
-                  categoryName: selectedCat.category_name ?? '',
+                  categoryName: selectedCat.categoryName ?? '',
                   itemCount: filteredDishes.length,
                 ),
               ),
@@ -287,8 +287,8 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
       dishes.addAll(category.dishes!);
     }
 
-    if (category.sub_categories != null) {
-      for (final sub in category.sub_categories!) {
+    if (category.subCategories != null) {
+      for (final sub in category.subCategories!) {
         dishes.addAll(extractDishesFromCategory(sub));
       }
     }

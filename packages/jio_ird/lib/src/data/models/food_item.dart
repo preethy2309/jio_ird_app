@@ -1,42 +1,56 @@
-import 'package:json_annotation/json_annotation.dart';
-
 import 'dish_model.dart';
 
-part 'food_item.g.dart';
-
-@JsonSerializable()
 class FoodItem {
   final int? id;
-  final String? category_name;
-  final String? ird_note;
-  final List<FoodItem>? sub_categories;
+  final String? categoryName;
+  final String? irdNote;
+  final List<FoodItem>? subCategories;
   final List<Dish>? dishes;
 
   FoodItem({
     this.id,
-    this.category_name,
-    this.ird_note,
-    this.sub_categories,
+    this.categoryName,
+    this.irdNote,
+    this.subCategories,
     this.dishes,
   });
 
-  factory FoodItem.fromJson(Map<String, dynamic> json) =>
-      _$FoodItemFromJson(json);
+  factory FoodItem.fromJson(Map<String, dynamic> json) {
+    return FoodItem(
+      id: json['id'] as int?,
+      categoryName: json['category_name'] as String?,
+      irdNote: json['ird_note'] as String?,
+      subCategories: (json['sub_categories'] as List<dynamic>?)
+          ?.map((e) => FoodItem.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      dishes: (json['dishes'] as List<dynamic>?)
+          ?.map((e) => Dish.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+  }
 
-  Map<String, dynamic> toJson() => _$FoodItemToJson(this);
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'category_name': categoryName,
+      'ird_note': irdNote,
+      'sub_categories': subCategories?.map((e) => e.toJson()).toList(),
+      'dishes': dishes?.map((e) => e.toJson()).toList(),
+    };
+  }
 
   FoodItem copyWith({
     int? id,
-    String? category_name,
-    String? ird_note,
-    List<FoodItem>? sub_categories,
+    String? categoryName,
+    String? irdNote,
+    List<FoodItem>? subCategories,
     List<Dish>? dishes,
   }) {
     return FoodItem(
       id: id ?? this.id,
-      category_name: category_name ?? this.category_name,
-      ird_note: ird_note ?? this.ird_note,
-      sub_categories: sub_categories ?? this.sub_categories,
+      categoryName: categoryName ?? this.categoryName,
+      irdNote: irdNote ?? this.irdNote,
+      subCategories: subCategories ?? this.subCategories,
       dishes: dishes ?? this.dishes,
     );
   }

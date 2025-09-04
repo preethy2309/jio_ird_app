@@ -36,7 +36,7 @@ class DishDetail extends ConsumerWidget {
     final isCategory = focusedDish == -1 ||
         (hasSubCategories(ref) && ref.read(showSubCategoriesProvider)) ||
         ref.read(showCategoriesProvider);
-    final bool hasPrice = (double.tryParse(dish!.dish_price) ?? 0) > 0;
+    final bool hasPrice = (double.tryParse(dish!.dishPrice) ?? 0) > 0;
 
     if (isCategory) {
       return Container(
@@ -45,7 +45,7 @@ class DishDetail extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             DishImage(
-              imageUrl: dish?.dish_image,
+              imageUrl: dish?.dishImage,
               width: double.infinity,
               height: 220,
               borderRadius: 16,
@@ -79,7 +79,7 @@ class DishDetail extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           DishImage(
-            imageUrl: dish?.dish_image,
+            imageUrl: dish?.dishImage,
             width: double.infinity,
             height: 220,
             borderRadius: 16,
@@ -92,7 +92,7 @@ class DishDetail extends ConsumerWidget {
             children: [
               VegIndicator(
                   size: 6,
-                  color: (dish!.dish_type.toLowerCase() == 'veg'
+                  color: (dish!.dishType.toLowerCase() == 'veg'
                       ? Colors.green
                       : Colors.red)),
               const SizedBox(width: 4),
@@ -109,7 +109,7 @@ class DishDetail extends ConsumerWidget {
           const SizedBox(width: 4),
           if (hasPrice)
             Text(
-              '₹${dish!.dish_price}',
+              '₹${dish!.dishPrice}',
               style: const TextStyle(
                   fontSize: 20,
                   color: Colors.white,
@@ -126,9 +126,9 @@ class DishDetail extends ConsumerWidget {
             style: const TextStyle(color: Colors.white70, height: 1.0),
           ),
           if (isInCart) ...[
-            if (dish!.cooking_request?.isNotEmpty == true)
+            if (dish!.cookingRequest?.isNotEmpty == true)
               Text(
-                'Cooking instruction : ${dish!.cooking_request}',
+                'Cooking instruction : ${dish!.cookingRequest}',
                 maxLines: 1,
                 style: const TextStyle(color: Colors.white54),
               ),
@@ -187,7 +187,7 @@ class DishDetail extends ConsumerWidget {
                           TextEditingController instructionController =
                               TextEditingController();
                           instructionController.text =
-                              dish!.cooking_request ?? '';
+                              dish!.cookingRequest ?? '';
                           return CookingInstructionDialog(
                             dishName: dish!.name,
                             controller: instructionController,
@@ -231,8 +231,8 @@ class DishDetail extends ConsumerWidget {
                       ),
                     ),
                     child: Text(
-                      (dish!.cooking_request == null ||
-                              dish!.cooking_request!.isEmpty)
+                      (dish!.cookingRequest == null ||
+                              dish!.cookingRequest!.isEmpty)
                           ? "Add Cooking Instructions"
                           : "Edit Cooking Instructions",
                       style: const TextStyle(
