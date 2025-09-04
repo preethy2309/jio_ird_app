@@ -30,12 +30,12 @@ class CookingInstructionButton extends ConsumerWidget {
             onPressed: () => _showInstructionDialog(context, ref),
             style: ButtonStyle(
               backgroundColor: WidgetStateProperty.resolveWith<Color>(
-                    (states) => states.contains(WidgetState.focused)
+                (states) => states.contains(WidgetState.focused)
                     ? Theme.of(context).colorScheme.primary
                     : Colors.white70,
               ),
               foregroundColor: WidgetStateProperty.resolveWith<Color>(
-                    (states) => states.contains(WidgetState.focused)
+                (states) => states.contains(WidgetState.focused)
                     ? Theme.of(context).colorScheme.onPrimary
                     : Colors.black,
               ),
@@ -70,13 +70,17 @@ class CookingInstructionButton extends ConsumerWidget {
 
   void _focusBack(WidgetRef ref) {
     if (ref.read(showCategoriesProvider)) {
-      final index = ref.read(selectedCategoryProvider).clamp(0, double.maxFinite.toInt());
+      final index =
+          ref.read(selectedCategoryProvider).clamp(0, double.maxFinite.toInt());
       ref.read(categoryFocusNodeProvider(index)).requestFocus();
     } else if (hasSubCategories(ref) && ref.read(showSubCategoriesProvider)) {
-      final index = ref.read(selectedSubCategoryProvider).clamp(0, double.maxFinite.toInt());
+      final index = ref
+          .read(selectedSubCategoryProvider)
+          .clamp(0, double.maxFinite.toInt());
       ref.read(subCategoryFocusNodeProvider(index)).requestFocus();
     } else {
-      final index = ref.read(focusedDishProvider).clamp(0, double.maxFinite.toInt());
+      final index =
+          ref.read(focusedDishProvider).clamp(0, double.maxFinite.toInt());
       ref.read(dishFocusNodeProvider(index)).requestFocus();
     }
   }
@@ -86,15 +90,19 @@ class CookingInstructionButton extends ConsumerWidget {
     showDialog(
       barrierColor: Colors.black87,
       context: context,
-      builder: (_) => CookingInstructionDialog(
+      builder: (dialogContext) => CookingInstructionDialog(
         dishName: dish.name,
         controller: controller,
         onSave: (text) {
-          ref.read(itemQuantitiesProvider.notifier).updateCookingInstruction(dish.id, text);
-          ref.read(mealsProvider.notifier).updateDishCookingInstruction(dish.id, text);
-          Navigator.of(context).pop();
+          ref
+              .read(itemQuantitiesProvider.notifier)
+              .updateCookingInstruction(dish.id, text);
+          ref
+              .read(mealsProvider.notifier)
+              .updateDishCookingInstruction(dish.id, text);
+          Navigator.of(dialogContext).pop();
         },
-        onCancel: () => Navigator.of(context).pop(),
+        onCancel: () => Navigator.of(dialogContext).pop(),
       ),
     );
   }
