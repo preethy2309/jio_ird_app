@@ -18,7 +18,7 @@ final orderStatusProvider =
 
 final vegOnlyProvider = StateProvider<bool>((ref) => false);
 
-/// Currently selected category index
+/// Currently selected category_list index
 final selectedCategoryProvider = StateProvider<int>((ref) => 0);
 
 final selectedSubCategoryProvider = StateProvider<int>((ref) => -1);

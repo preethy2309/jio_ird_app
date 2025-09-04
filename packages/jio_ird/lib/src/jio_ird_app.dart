@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:jio_ird/src/providers/external_providers.dart';
 
-import 'ui/screens/cart_screen.dart';
-import 'ui/screens/menu_screen.dart';
+import 'ui/screens/cart/cart_screen.dart';
+import 'ui/screens/menu/menu_screen.dart';
 
 class JioIRDApp extends ConsumerWidget {
   const JioIRDApp({super.key});

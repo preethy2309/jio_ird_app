@@ -17,43 +17,63 @@ class MealsNotifier extends StateNotifier<List<FoodItem>> {
   Future<void> loadMeals() async {
     try {
       final meals = await repo.fetchFoodDetails(serialNum, propertyId);
-      final filteredMeals = meals.where((category) {
-        category.subCategories?.removeWhere(
-            (subCat) => (subCat.dishes == null || subCat.dishes!.isEmpty));
-
-        final hasValidSubCats = category.subCategories != null &&
-            category.subCategories!.isNotEmpty;
-        final hasItems = category.dishes != null && category.dishes!.isNotEmpty;
-
-        return hasValidSubCats || hasItems;
-      }).toList();
-
-      state = filteredMeals;
+      state = _filterValidMeals(meals);
     } catch (e) {
       state = [];
     }
   }
 
   void updateDishCookingInstruction(int dishId, String newInstruction) {
-    state = state.map((category) {
-      FoodItem updateCategory(FoodItem cat) {
-        final updatedDishes = cat.dishes?.map((dish) {
-          if (dish.id == dishId) {
-            return dish.copyWith(cookingRequest: newInstruction);
-          }
-          return dish;
-        }).toList();
+    state = [
+      for (final category in state)
+        _updateCategoryWithInstruction(category, dishId, newInstruction),
+    ];
+  }
 
-        final updatedSub = cat.subCategories?.map(updateCategory).toList();
+  List<FoodItem> _filterValidMeals(List<FoodItem> meals) {
+    return [
+      for (final category in meals)
+        if (_hasValidContent(category)) _filterCategory(category),
+    ];
+  }
 
-        return cat.copyWith(
-          dishes: updatedDishes,
-          subCategories: updatedSub,
-        );
+  bool _hasValidContent(FoodItem category) {
+    final hasValidSubCats =
+        category.subCategories?.any((sub) => sub.dishes?.isNotEmpty ?? false) ??
+            false;
+    final hasItems = category.dishes?.isNotEmpty ?? false;
+    return hasValidSubCats || hasItems;
+  }
+
+  FoodItem _filterCategory(FoodItem category) {
+    final filteredSub = category.subCategories
+        ?.where((sub) => sub.dishes?.isNotEmpty ?? false)
+        .map(_filterCategory)
+        .toList();
+
+    return category.copyWith(subCategories: filteredSub);
+  }
+
+  FoodItem _updateCategoryWithInstruction(
+    FoodItem category,
+    int dishId,
+    String instruction,
+  ) {
+    final updatedDishes = category.dishes?.map((dish) {
+      if (dish.id == dishId) {
+        return dish.copyWith(cookingRequest: instruction);
       }
-
-      return updateCategory(category);
+      return dish;
     }).toList();
+
+    final updatedSub = category.subCategories
+        ?.map((sub) => _updateCategoryWithInstruction(sub, dishId, instruction))
+        .toList();
+
+    return category.copyWith(
+      dishes: updatedDishes,
+      subCategories: updatedSub,
+    );
   }
 }
 

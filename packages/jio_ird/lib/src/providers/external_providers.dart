@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:jio_ird/src/data/models/guest_info.dart';
 
 import '../focus_theme.dart';
-import '../ui/widgets/menu/bottom_layout.dart';
+import '../ui/screens/base/widgets/bottom_bar/bottom_layout.dart';
 
 final baseUrlProvider = Provider<String>((ref) => throw UnimplementedError());
 

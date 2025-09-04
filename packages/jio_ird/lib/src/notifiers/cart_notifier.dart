@@ -14,8 +14,15 @@ class CartNotifier extends StateNotifier<List<DishWithQuantity>> {
     final prefs = await SharedPreferences.getInstance();
     final jsonString = prefs.getString(_cartKey);
     if (jsonString != null) {
-      final List decoded = jsonDecode(jsonString);
-      state = decoded.map((e) => DishWithQuantity.fromJson(e)).toList();
+      try {
+        final List<dynamic> decoded = jsonDecode(jsonString);
+        state = decoded
+            .map((e) => DishWithQuantity.fromJson(e as Map<String, dynamic>))
+            .toList();
+      } catch (e) {
+        state = [];
+        await prefs.remove(_cartKey);
+      }
     }
   }
 
@@ -36,12 +43,13 @@ class CartNotifier extends StateNotifier<List<DishWithQuantity>> {
   }
 
   void increment(int index) {
+    if (index < 0 || index >= state.length) return;
     final updatedItem = state[index].copyWith(
       quantity: state[index].quantity + 1,
     );
     state = [
       for (int i = 0; i < state.length; i++)
-        if (i == index) updatedItem else state[i]
+        if (i == index) updatedItem else state[i],
     ];
     _saveCart();
   }
@@ -53,24 +61,28 @@ class CartNotifier extends StateNotifier<List<DishWithQuantity>> {
     if (item.quantity <= 1) {
       state = [
         for (int i = 0; i < state.length; i++)
-          if (i != index) state[i]
+          if (i != index) state[i],
       ];
     } else {
       state = [
         for (int i = 0; i < state.length; i++)
-          if (i == index) item.copyWith(quantity: item.quantity - 1) else state[i]
+          if (i == index)
+            item.copyWith(quantity: item.quantity - 1)
+          else
+            state[i],
       ];
     }
     _saveCart();
   }
 
   void updateCookingInstruction(int dishId, String text) {
-    state = state.map((item) {
-      if (item.dish.id == dishId) {
-        return item.copyWith(cookingRequest: text);
-      }
-      return item;
-    }).toList();
+    state = [
+      for (final item in state)
+        if (item.dish.id == dishId)
+          item.copyWith(cookingRequest: text)
+        else
+          item,
+    ];
     _saveCart();
   }
 
@@ -81,6 +93,6 @@ class CartNotifier extends StateNotifier<List<DishWithQuantity>> {
 }
 
 final itemQuantitiesProvider =
-StateNotifierProvider<CartNotifier, List<DishWithQuantity>>((ref) {
-  return CartNotifier();
-});
+    StateNotifierProvider<CartNotifier, List<DishWithQuantity>>(
+  (ref) => CartNotifier(),
+);

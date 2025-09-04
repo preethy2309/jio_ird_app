@@ -6,7 +6,7 @@ import '../../../data/models/dish_with_quantity.dart';
 import '../../../notifiers/cart_notifier.dart';
 import '../../../notifiers/meal_notifier.dart';
 import '../../../providers/focus_provider.dart';
-import '../menu/cooking_instruction_dialog.dart';
+import '../cooking_instruction_dialog.dart';
 import 'cart_item_tile.dart';
 
 class CartItemsList extends ConsumerStatefulWidget {

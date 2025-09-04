@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shimmer/shimmer.dart';
 
-import '../../../../providers/external_providers.dart';
+import '../../../../../providers/external_providers.dart';
+
 
 class ProfileIcon extends ConsumerStatefulWidget {
   const ProfileIcon({super.key});

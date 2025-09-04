@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'shimmer_loader.dart';
+import '../../../widgets/shimmer_loader.dart';
 
 class DishImage extends StatelessWidget {
   final String? imageUrl;

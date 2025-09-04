@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../providers/focus_provider.dart';
-import '../../../../providers/state_provider.dart';
-import '../../veg_indicator.dart';
+import '../../../../../providers/focus_provider.dart';
+import '../../../../../providers/state_provider.dart';
+import '../../../../widgets/veg_indicator.dart';
+
 
 class VegToggle extends ConsumerStatefulWidget {
   const VegToggle({super.key});

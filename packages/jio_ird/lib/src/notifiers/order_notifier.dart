@@ -5,46 +5,61 @@ import '../data/models/dish_with_quantity.dart';
 import '../notifiers/cart_notifier.dart';
 import '../providers/data_repository_provider.dart';
 import '../providers/state_provider.dart';
+import '../repository/data_repository.dart';
 import '../utils/util.dart';
 
 class OrderNotifier extends AutoDisposeNotifier<AsyncValue<String>> {
+  late final DataRepository _repo;
+  late final String _serialNum;
+  late final String _roomNo;
+
   @override
-  AsyncValue<String> build() => const AsyncValue.data("");
+  AsyncValue<String> build() {
+    _repo = ref.read(dataRepositoryProvider);
+    _serialNum = ref.watch(serialNumberProvider);
+    _roomNo = ref.watch(guestDetailsProvider).roomNo;
+
+    return const AsyncValue.data("");
+  }
 
   Future<void> placeOrder(List<DishWithQuantity> items) async {
+    if (items.isEmpty) {
+      state = const AsyncValue.error("Cart is empty", StackTrace.empty);
+      return;
+    }
+
     state = const AsyncValue.loading();
 
-    final repo = ref.read(dataRepositoryProvider);
-    final serialNum = ref.read(serialNumberProvider);
-    final roomNo = ref.read(guestDetailsProvider).roomNo;
-
-    final orderRequest = createOrderRequestFromDishWithQuantity(
-      items,
-      serialNum,
-      roomNo,
-    );
+    final orderRequest =
+    createOrderRequestFromDishWithQuantity(items, _serialNum, _roomNo);
 
     try {
-      final response = await repo.placeOrder(orderRequest);
+      final response = await _repo.placeOrder(orderRequest);
 
-      if (response['status'] == 200) {
-        ref.read(itemQuantitiesProvider.notifier).clearCart();
-        ref.read(orderPlacedProvider.notifier).state = true;
+      final status = response['status'] as int?;
+      final message = response['response'] as String? ?? "Unknown response";
 
-        state = AsyncValue.data(response['response'] ?? "Order placed");
+      if (status == 200) {
+        _onOrderSuccess(message);
       } else {
         state = AsyncValue.error(
-          response['response'] ?? "Failed to place order",
+          "Failed to place order: $message",
           StackTrace.current,
         );
       }
     } catch (e, st) {
-      state = AsyncValue.error(e, st);
+      state = AsyncValue.error("Unexpected error: $e", st);
     }
+  }
+
+  void _onOrderSuccess(String message) {
+    ref.read(itemQuantitiesProvider.notifier).clearCart();
+    ref.read(orderPlacedProvider.notifier).state = true;
+    state = AsyncValue.data(message);
   }
 }
 
 final orderNotifierProvider =
-    AutoDisposeNotifierProvider<OrderNotifier, AsyncValue<String>>(
+AutoDisposeNotifierProvider<OrderNotifier, AsyncValue<String>>(
   OrderNotifier.new,
 );

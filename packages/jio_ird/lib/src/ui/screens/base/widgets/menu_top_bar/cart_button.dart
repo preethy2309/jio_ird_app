@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import '../../../../notifiers/cart_notifier.dart';
+import '../../../../../notifiers/cart_notifier.dart';
 
 class CartButton extends ConsumerStatefulWidget {
   const CartButton({super.key});

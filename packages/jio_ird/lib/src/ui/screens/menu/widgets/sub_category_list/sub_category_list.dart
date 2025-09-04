@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../data/models/food_item.dart';
-import '../../../providers/focus_provider.dart';
-import '../../../providers/state_provider.dart';
-import 'category_tile.dart';
+import '../../../../../data/models/food_item.dart';
+import '../../../../../providers/focus_provider.dart';
+import '../../../../../providers/state_provider.dart';
+import '../category_list/category_tile.dart';
 
 class SubCategoryList extends ConsumerStatefulWidget {
   final List<FoodItem> subCategories;

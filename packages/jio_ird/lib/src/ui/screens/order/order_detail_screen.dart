@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../../data/models/order_status_response.dart';
-import '../widgets/my_orders/order_card.dart';
-import '../widgets/my_orders/order_info.dart';
-import 'base_screen.dart';
+import '../../../data/models/order_status_response.dart';
+import '../../widgets/my_orders/order_card.dart';
+import '../../widgets/my_orders/order_info.dart';
+import '../base/base_screen.dart';
 
 class OrderDetailScreen extends StatelessWidget {
   final OrderStatusResponse order;

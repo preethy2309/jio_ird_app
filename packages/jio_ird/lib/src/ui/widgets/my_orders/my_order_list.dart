@@ -4,7 +4,7 @@ import 'package:jio_ird/src/ui/widgets/my_order_shimmer.dart';
 
 import '../../../data/models/order_status_response.dart';
 import '../../../providers/state_provider.dart';
-import '../../screens/order_detail_screen.dart';
+import '../../screens/order/order_detail_screen.dart';
 import '../cart/cart_empty.dart';
 import 'order_info.dart';
 

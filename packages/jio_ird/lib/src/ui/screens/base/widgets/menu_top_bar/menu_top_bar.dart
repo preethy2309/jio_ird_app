@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:jio_ird/src/ui/widgets/menu/menu_top_bar/profile_icon.dart';
+import 'package:jio_ird/src/ui/screens/base/widgets/menu_top_bar/profile_icon.dart';
 
-import '../../header.dart';
+import 'header.dart';
 
 class MenuTopBar extends StatelessWidget {
   final String title;

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:jio_ird/src/ui/screens/base/widgets/background_image.dart';
+import 'package:jio_ird/src/ui/screens/base/widgets/menu_top_bar/menu_top_bar.dart';
 
-import '../../providers/external_providers.dart';
-import '../widgets/menu/bottom_layout.dart';
-import '../widgets/menu/menu_top_bar/menu_top_bar.dart';
+import '../../../providers/external_providers.dart';
+import 'widgets/bottom_bar/bottom_layout.dart';
 
 class BaseScreen extends ConsumerWidget {
   final String title;
@@ -26,25 +27,7 @@ class BaseScreen extends ConsumerWidget {
     return Scaffold(
       body: Stack(
         children: [
-          Positioned.fill(
-            child: bgImage != null
-                ? Image(
-                    image: bgImage,
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) {
-                      return Image.asset(
-                        'assets/images/bg.png',
-                        package: 'jio_ird',
-                        fit: BoxFit.cover,
-                      );
-                    },
-                  )
-                : Image.asset(
-                    'assets/images/bg.png',
-                    package: 'jio_ird',
-                    fit: BoxFit.cover,
-                  ),
-          ),
+          Positioned.fill(child: BackgroundImage(bgImage: bgImage)),
           Padding(
             padding: const EdgeInsets.only(left: 38, right: 32, top: 26),
             child: Column(
@@ -62,7 +45,6 @@ class BaseScreen extends ConsumerWidget {
           ),
         ],
       ),
-      backgroundColor: const Color(0x80000000),
       bottomNavigationBar: bottomBar ?? const BottomLayout(),
     );
   }
