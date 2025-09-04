@@ -244,7 +244,9 @@ class _DishListState extends ConsumerState<DishList> {
                         Builder(
                           builder: (context) {
                             Future.microtask(() {
-                              if (!plusNode.hasFocus && isFocused) {
+                              if (!plusNode.hasFocus &&
+                                  !minusNode.hasFocus &&
+                                  isFocused) {
                                 plusNode.requestFocus();
                                 _ensureVisible(plusNode);
                               }
