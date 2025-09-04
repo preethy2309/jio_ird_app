@@ -25,25 +25,27 @@ class BaseScreen extends ConsumerWidget {
     final bgImage = ref.watch(resolvedBackgroundImageProvider);
 
     return Scaffold(
-      body: Stack(
-        children: [
-          Positioned.fill(child: BackgroundImage(bgImage: bgImage)),
-          Padding(
-            padding: const EdgeInsets.only(left: 38, right: 32, top: 26),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                MenuTopBar(
-                  title: title,
-                  description: guestInfo.roomNo ?? "",
-                  icons: icons,
-                ),
-                const SizedBox(height: 20),
-                Expanded(child: child),
-              ],
-            ),
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: bgImage ??
+                const AssetImage('assets/images/bg.png', package: 'jio_ird'),
+            fit: BoxFit.cover,
           ),
-        ],
+        ),
+        padding: const EdgeInsets.only(left: 38, right: 32, top: 26),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            MenuTopBar(
+              title: title,
+              description: guestInfo.roomNo ?? "",
+              icons: icons,
+            ),
+            const SizedBox(height: 20),
+            Expanded(child: child),
+          ],
+        ),
       ),
       bottomNavigationBar: bottomBar ?? const BottomLayout(),
     );
