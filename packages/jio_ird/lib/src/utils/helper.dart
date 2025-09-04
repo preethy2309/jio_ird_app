@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../notifiers/meal_notifier.dart';
 import '../providers/state_provider.dart';
 
 bool hasSubCategories(WidgetRef ref) {

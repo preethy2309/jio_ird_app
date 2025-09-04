@@ -4,8 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../data/models/dish_with_quantity.dart';
 import '../../../notifiers/cart_notifier.dart';
+import '../../../notifiers/meal_notifier.dart';
 import '../../../providers/focus_provider.dart';
-import '../../../providers/state_provider.dart';
 import '../menu/cooking_instruction_dialog.dart';
 import 'cart_item_tile.dart';
 

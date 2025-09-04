@@ -5,6 +5,7 @@ import 'package:jio_ird/src/ui/widgets/dish_image.dart';
 
 import '../../../data/models/dish_model.dart';
 import '../../../notifiers/cart_notifier.dart';
+import '../../../notifiers/meal_notifier.dart';
 import '../../../providers/focus_provider.dart';
 import '../../../providers/state_provider.dart';
 import '../../../utils/helper.dart';

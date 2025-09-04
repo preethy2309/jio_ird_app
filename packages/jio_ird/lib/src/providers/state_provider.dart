@@ -5,23 +5,15 @@ import '../data/models/dish_model.dart';
 import '../data/models/food_item.dart';
 import '../data/models/order_status_response.dart';
 import '../notifiers/meal_notifier.dart';
-import 'api_service_provider.dart';
+import 'data_repository_provider.dart';
 
 enum CartTab { cart, orders }
 
-final mealsProvider =
-    StateNotifierProvider<MealsNotifier, List<FoodItem>>((ref) {
-  final api = ref.read(apiServiceProvider);
-  return MealsNotifier(api, ref.read(serialNumberProvider),
-      ref.read(guestDetailsProvider).propertyId);
-});
-
 final orderStatusProvider =
     FutureProvider<List<OrderStatusResponse>>((ref) async {
-  final api = ref.read(apiServiceProvider);
-  return api.getOrderStatus(
-    ref.read(serialNumberProvider),
-  );
+  final repo = ref.read(dataRepositoryProvider);
+  final serialNum = ref.read(serialNumberProvider);
+  return repo.checkOrderStatus(serialNum);
 });
 
 final vegOnlyProvider = StateProvider<bool>((ref) => false);

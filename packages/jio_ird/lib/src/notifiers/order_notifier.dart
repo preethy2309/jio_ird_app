@@ -3,7 +3,7 @@ import 'package:jio_ird/src/providers/external_providers.dart';
 
 import '../data/models/dish_with_quantity.dart';
 import '../notifiers/cart_notifier.dart';
-import '../providers/api_service_provider.dart';
+import '../providers/data_repository_provider.dart';
 import '../providers/state_provider.dart';
 import '../utils/util.dart';
 
@@ -13,13 +13,19 @@ class OrderNotifier extends AutoDisposeNotifier<AsyncValue<String>> {
 
   Future<void> placeOrder(List<DishWithQuantity> items) async {
     state = const AsyncValue.loading();
-    final api = ref.read(apiServiceProvider);
 
-    final orderRequest = createOrderRequestFromDishWithQuantity(items,
-        ref.read(serialNumberProvider), ref.read(guestDetailsProvider).roomNo);
+    final repo = ref.read(dataRepositoryProvider);
+    final serialNum = ref.read(serialNumberProvider);
+    final roomNo = ref.read(guestDetailsProvider).roomNo;
+
+    final orderRequest = createOrderRequestFromDishWithQuantity(
+      items,
+      serialNum,
+      roomNo,
+    );
 
     try {
-      final response = await api.createOrder(orderRequest);
+      final response = await repo.placeOrder(orderRequest);
 
       if (response['status'] == 200) {
         ref.read(itemQuantitiesProvider.notifier).clearCart();
@@ -40,4 +46,5 @@ class OrderNotifier extends AutoDisposeNotifier<AsyncValue<String>> {
 
 final orderNotifierProvider =
     AutoDisposeNotifierProvider<OrderNotifier, AsyncValue<String>>(
-        OrderNotifier.new);
+  OrderNotifier.new,
+);

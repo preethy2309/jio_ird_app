@@ -1,12 +1,13 @@
-import 'package:encrypt/encrypt.dart' as encrypt;
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:jio_ird/src/providers/external_providers.dart';
 
 final dioProvider = Provider<Dio>((ref) {
-  final dio = Dio();
-  dio.options.headers['Content-Type'] = 'application/json';
+  final dio = Dio(BaseOptions(
+    baseUrl: ref.watch(baseUrlProvider),
+    headers: {"Content-Type": "application/json"},
+  ));
 
   dio.interceptors.add(LogInterceptor(
     request: true,
@@ -51,24 +52,3 @@ final dioProvider = Provider<Dio>((ref) {
 
   return dio;
 });
-
-// loadAuthToken() {
-//   const String kEncryptionIV = "5b5bc6c117391111";
-//   const String kEncryptionKey = "4db779e269dc587dd171516a86a62913";
-//   const String kSerialNumber = "RNOSBFJNX026030";
-//   var currentTime = DateTime.now().millisecondsSinceEpoch;
-//
-//   String data =
-//       "{\"serial_num\":\"$kSerialNumber\",\"time\":\"$currentTime\"}";
-//
-//   final key = encrypt.Key.fromUtf8(kEncryptionKey);
-//   final iv = encrypt.IV.fromUtf8(kEncryptionIV);
-//
-//   final encrypter = encrypt.Encrypter(
-//     encrypt.AES(key, mode: encrypt.AESMode.cbc, padding: 'PKCS7'),
-//   );
-//
-//   final encrypted = encrypter.encrypt(data, iv: iv);
-//
-//   return encrypted.base64;
-// }

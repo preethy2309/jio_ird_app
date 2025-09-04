@@ -1,29 +1,37 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:jio_ird/src/repository/data_repository.dart';
 
 import '../data/models/food_item.dart';
-import '../data/services/api_service.dart';
+import '../providers/data_repository_provider.dart';
+import '../providers/external_providers.dart';
 
 class MealsNotifier extends StateNotifier<List<FoodItem>> {
-  MealsNotifier(this._api, String serialNumber, String propertyId) : super([]) {
-    loadMeals(serialNumber, propertyId);
+  final DataRepository repo;
+  final String serialNum;
+  final String propertyId;
+
+  MealsNotifier(this.repo, this.serialNum, this.propertyId) : super([]) {
+    loadMeals();
   }
 
-  final ApiService _api;
+  Future<void> loadMeals() async {
+    try {
+      final meals = await repo.fetchFoodDetails(serialNum, propertyId);
+      final filteredMeals = meals.where((category) {
+        category.sub_categories?.removeWhere(
+            (subCat) => (subCat.dishes == null || subCat.dishes!.isEmpty));
 
-  Future<void> loadMeals(String serialNumber, String propertyId) async {
-    final meals = await _api.getFoodDetails(serialNumber, propertyId);
-    final filteredMeals = meals.where((category) {
-      category.sub_categories?.removeWhere(
-          (subCat) => (subCat.dishes == null || subCat.dishes!.isEmpty));
+        final hasValidSubCats = category.sub_categories != null &&
+            category.sub_categories!.isNotEmpty;
+        final hasItems = category.dishes != null && category.dishes!.isNotEmpty;
 
-      final hasValidSubCats = category.sub_categories != null &&
-          category.sub_categories!.isNotEmpty;
-      final hasItems = category.dishes != null && category.dishes!.isNotEmpty;
+        return hasValidSubCats || hasItems;
+      }).toList();
 
-      return hasValidSubCats || hasItems;
-    }).toList();
-
-    state = filteredMeals;
+      state = filteredMeals;
+    } catch (e) {
+      state = [];
+    }
   }
 
   void updateDishCookingInstruction(int dishId, String newInstruction) {
@@ -48,3 +56,11 @@ class MealsNotifier extends StateNotifier<List<FoodItem>> {
     }).toList();
   }
 }
+
+final mealsProvider =
+    StateNotifierProvider<MealsNotifier, List<FoodItem>>((ref) {
+  final repo = ref.read(dataRepositoryProvider);
+  final serialNum = ref.read(serialNumberProvider);
+  final propertyId = ref.read(guestDetailsProvider).propertyId;
+  return MealsNotifier(repo, serialNum, propertyId);
+});

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../data/models/dish_model.dart';
 import '../../data/models/food_item.dart';
+import '../../notifiers/meal_notifier.dart';
 import '../../providers/external_providers.dart';
 import '../../providers/focus_provider.dart';
 import '../../providers/state_provider.dart';
