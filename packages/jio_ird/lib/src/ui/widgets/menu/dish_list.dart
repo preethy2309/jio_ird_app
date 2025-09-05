@@ -79,6 +79,8 @@ class _DishListState extends ConsumerState<DishList> {
     final focusedDish = ref.watch(focusedDishProvider);
     final itemQuantities = ref.watch(itemQuantitiesProvider);
     final showCategories = ref.watch(showCategoriesProvider);
+    final showSubCategories =
+        hasSubCategories(ref) && ref.watch(showSubCategoriesProvider);
 
     return ListView.builder(
       controller: _scrollController as ScrollController?,
@@ -90,8 +92,8 @@ class _DishListState extends ConsumerState<DishList> {
         final quantity = ref.watch(itemQuantitiesProvider.select((cart) => cart
             .firstWhere(
               (item) => item.dish.id == dish.id,
-              orElse: () => DishWithQuantity(dish: dish, quantity: 0),
-            )
+          orElse: () => DishWithQuantity(dish: dish, quantity: 0),
+        )
             .quantity));
 
         final dishNode = ref.watch(dishFocusNodeProvider(index));
@@ -112,8 +114,9 @@ class _DishListState extends ConsumerState<DishList> {
           },
           child: Focus(
             focusNode: dishNode,
-            skipTraversal: showCategories || isSelected,
-            canRequestFocus: !showCategories && !isSelected,
+            skipTraversal: (showCategories || showSubCategories) || isSelected,
+            canRequestFocus:
+            (!showCategories || !showSubCategories) && !isSelected,
             onFocusChange: (hasFocus) {
               if (hasFocus) {
                 ref.read(focusedDishProvider.notifier).state = index;
@@ -168,7 +171,7 @@ class _DishListState extends ConsumerState<DishList> {
               if (event.logicalKey == LogicalKeyboardKey.enter ||
                   event.logicalKey == LogicalKeyboardKey.select) {
                 final idx =
-                    itemQuantities.indexWhere((e) => e.dish.id == dish.id);
+                itemQuantities.indexWhere((e) => e.dish.id == dish.id);
                 final currentQty = idx >= 0 ? itemQuantities[idx].quantity : 0;
 
                 if (currentQty == 0) {
@@ -225,8 +228,8 @@ class _DishListState extends ConsumerState<DishList> {
                         ElevatedButton(
                           onPressed: () {
                             ref.read(itemQuantitiesProvider.notifier).addItem(
-                                  DishWithQuantity(dish: dish, quantity: 1),
-                                );
+                              DishWithQuantity(dish: dish, quantity: 1),
+                            );
                             Future.microtask(() {
                               plusNode.requestFocus();
                               _ensureVisible(plusNode);
