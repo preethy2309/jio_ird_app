@@ -31,8 +31,7 @@ class _EmptyCartScreenState extends State<EmptyCartScreen> {
         children: [
           // Image
           Image.asset(
-            package: 'jio_ird',
-            "assets/images/cart_empty.png",
+            "jio_ird/assets/images/cart_empty.png",
             width: 80,
             height: 80,
           ),

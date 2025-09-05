@@ -21,13 +21,12 @@ class SubCategoriesWithImage extends ConsumerStatefulWidget {
 class _SubCategoriesWithImageState
     extends ConsumerState<SubCategoriesWithImage> {
   final ScrollController _scrollController = ScrollController();
-  int focusedIndex = -1;
 
   @override
   Widget build(BuildContext context) {
     final noDishes = ref.watch(noDishesProvider);
     final showCategories = ref.watch(showCategoriesProvider);
-
+    final focusedIndex = ref.watch(focusedSubCategoryProvider);
     return ListView.builder(
       controller: _scrollController as ScrollController?,
       itemCount: widget.subCategories.length,
@@ -39,7 +38,7 @@ class _SubCategoriesWithImageState
 
         return PopScope(
           canPop: false,
-          onPopInvoked: (didPop) {
+          onPopInvokedWithResult: (didPop, _) {
             if (!didPop && isFocused) {
               if (hasSubCategories(ref)) {
                 ref.read(showSubCategoriesProvider.notifier).state = true;
@@ -53,12 +52,10 @@ class _SubCategoriesWithImageState
             canRequestFocus: !showCategories,
             focusNode: focusNode,
             onFocusChange: (hasFocus) {
-              setState(() => focusedIndex = index);
               ref.read(focusedSubCategoryProvider.notifier).state = index;
               if (hasFocus) {
-                ref.read(selectedSubCategoryProvider.notifier).state = index;
-                ref.read(selectedDishProvider.notifier).state = -1;
                 ref.read(focusedDishProvider.notifier).state = -1;
+                ref.read(selectedDishProvider.notifier).state = -1;
               }
             },
             onKeyEvent: (node, event) {
@@ -82,43 +79,43 @@ class _SubCategoriesWithImageState
               }
               return KeyEventResult.ignored;
             },
-            child: InkWell(
-              child: Container(
-                height: 76,
-                margin: const EdgeInsets.all(2),
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: isFocused
-                      ? Theme.of(context).colorScheme.secondary
-                      : Colors.transparent,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Row(
-                  children: [
-                    DishImage(
-                      imageUrl: subCategory.dishes?.isNotEmpty == true
-                          ? subCategory.dishes![0].dishImage
-                          : null,
-                      width: 75,
-                      height: 75,
-                      borderRadius: 6,
-                      fallbackWidth: 45,
-                      fallbackHeight: 45,
-                    ),
-                    const SizedBox(width: 10),
-                    Expanded(
-                      child: Text(
-                        subCategory.categoryName ?? '',
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                        ),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
+            child: Container(
+              height: 76,
+              margin: const EdgeInsets.all(2),
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: isFocused
+                    ? Theme.of(context).colorScheme.secondary
+                    : Colors.transparent,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Row(
+                children: [
+                  DishImage(
+                    imageUrl: subCategory.dishes?.isNotEmpty == true
+                        ? subCategory.dishes![0].dishImage
+                        : null,
+                    width: 75,
+                    height: 75,
+                    borderRadius: 6,
+                    fallbackWidth: 45,
+                    fallbackHeight: 45,
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: Text(
+                      subCategory.categoryName ?? '',
+                      style: TextStyle(
+                        color: isFocused
+                            ? Theme.of(context).colorScheme.primary
+                            : Colors.white,
+                        fontSize: 16,
                       ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),

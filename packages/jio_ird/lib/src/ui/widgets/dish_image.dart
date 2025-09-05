@@ -18,7 +18,7 @@ class DishImage extends StatelessWidget {
     required this.width,
     required this.height,
     this.borderRadius = 8.0,
-    this.fallbackAsset = 'assets/images/default.svg',
+    this.fallbackAsset = 'jio_ird/assets/images/default.svg',
     this.fallbackWidth = 45,
     this.fallbackHeight = 45,
     this.fit = BoxFit.cover,
@@ -63,7 +63,6 @@ class DishImage extends StatelessWidget {
         alignment: Alignment.center,
         child: SvgPicture.asset(
           fallbackAsset,
-          package: "jio_ird",
           width: fallbackWidth,
           height: fallbackHeight,
           fit: BoxFit.contain,

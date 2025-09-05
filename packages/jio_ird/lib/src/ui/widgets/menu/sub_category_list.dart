@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:jio_ird/src/ui/widgets/menu/sub_category_tile.dart';
 
 import '../../../data/models/food_item.dart';
 import '../../../providers/focus_provider.dart';
 import '../../../providers/state_provider.dart';
-import 'category_tile.dart';
 
 class SubCategoryList extends ConsumerStatefulWidget {
   final List<FoodItem> subCategories;
@@ -25,7 +25,7 @@ class _SubCategoryListState extends ConsumerState<SubCategoryList> {
 
     return PopScope(
       canPop: false,
-      onPopInvoked: (didPop) {
+      onPopInvokedWithResult: (didPop, _) {
         if (!didPop) {
           ref.read(showCategoriesProvider.notifier).state = true;
         }
@@ -43,12 +43,11 @@ class _SubCategoryListState extends ConsumerState<SubCategoryList> {
           itemBuilder: (context, index) {
             final isSelected = index == selectedSub;
             final isFocused = index == focusedIndex;
-            print("Preethy $isSelected $isFocused");
 
             final focusNode = ref.watch(subCategoryFocusNodeProvider(index));
 
-            return CategoryTile(
-              title: widget.subCategories[index].categoryName ?? '',
+            return SubCategoryTile(
+              subCategory: widget.subCategories[index],
               index: index,
               isSelected: isSelected,
               isFocused: isFocused,
@@ -63,12 +62,12 @@ class _SubCategoryListState extends ConsumerState<SubCategoryList> {
                 }
               },
               onFocusChange: (hasFocus) {
-                ref.read(focusedSubCategoryProvider.notifier).state = index;
-                if (hasFocus) {
-                  ref.read(selectedSubCategoryProvider.notifier).state = index;
-                  ref.read(selectedDishProvider.notifier).state = -1;
-                  ref.read(focusedDishProvider.notifier).state = -1;
-                }
+                  ref.read(focusedSubCategoryProvider.notifier).state = index;
+                  if (hasFocus) {
+                    ref.read(selectedSubCategoryProvider.notifier).state = index;
+                    ref.read(selectedDishProvider.notifier).state = -1;
+                    ref.read(focusedDishProvider.notifier).state = -1;
+                  }
               },
               onLeft: () {
                 ref.read(showCategoriesProvider.notifier).state = true;

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../providers/external_providers.dart';
-import '../widgets/menu/bottom_layout.dart';
 import '../widgets/menu/menu_top_bar/menu_top_bar.dart';
 
 class BaseScreen extends ConsumerWidget {
@@ -33,26 +32,29 @@ class BaseScreen extends ConsumerWidget {
                     fit: BoxFit.cover,
                     errorBuilder: (context, error, stackTrace) {
                       return Image.asset(
-                        'assets/images/bg.png',
-                        package: 'jio_ird',
+                        'jio_ird/assets/images/bg.png',
                         fit: BoxFit.cover,
                       );
                     },
                   )
                 : Image.asset(
-                    'assets/images/bg.png',
-                    package: 'jio_ird',
+                    'jio_ird/assets/images/bg.png',
                     fit: BoxFit.cover,
                   ),
           ),
           Padding(
-            padding: const EdgeInsets.only(left: 38, right: 32, top: 26),
+            padding: EdgeInsets.only(
+              left: 38,
+              right: 32,
+              top: 26,
+              bottom: bottomBar != null ? 40.0 : 0.0,
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 MenuTopBar(
                   title: title,
-                  description: guestInfo.roomNo ?? "",
+                  description: "Room No : ${guestInfo.roomNo}" ?? "",
                   icons: icons,
                 ),
                 const SizedBox(height: 20),
@@ -60,10 +62,16 @@ class BaseScreen extends ConsumerWidget {
               ],
             ),
           ),
+          if (bottomBar != null)
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: 0,
+              child: bottomBar,
+            ),
         ],
       ),
       backgroundColor: const Color(0x80000000),
-      bottomNavigationBar: bottomBar ?? const BottomLayout(),
     );
   }
 }

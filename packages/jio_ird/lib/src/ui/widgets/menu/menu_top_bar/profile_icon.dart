@@ -18,36 +18,34 @@ class _ProfileIconState extends ConsumerState<ProfileIcon> {
 
     return InkWell(
       onTap: _goToProfile,
-      child: ClipOval(
-        child: logo != null
-            ? Image(
-                image: logo,
-                width: 60,
-                height: 60,
-                fit: BoxFit.cover,
-                frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
-                  if (wasSynchronouslyLoaded || frame != null) {
-                    return child;
-                  }
-                  return _buildShimmer();
-                },
-                errorBuilder: (context, error, stackTrace) {
-                  return Image.asset(
-                    'assets/images/hotel_logo.png',
-                    package: 'jio_ird',
-                    width: 60,
-                    height: 60,
-                    fit: BoxFit.cover,
-                  );
-                },
-              )
-            : Image.asset(
-                'assets/images/hotel_logo.png',
-                package: 'jio_ird',
-                width: 60,
-                height: 60,
-                fit: BoxFit.cover,
-              ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(26),
+        child: SizedBox(
+          height: 40,
+          child: logo != null
+              ? Image(
+            image: logo,
+            fit: BoxFit.fitHeight,
+            frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
+              if (wasSynchronouslyLoaded || frame != null) {
+                return child;
+              }
+              return _buildShimmer();
+            },
+            errorBuilder: (context, error, stackTrace) {
+              return Image.asset(
+                'jio_ird/assets/images/hotel_logo.png',
+                height: 40,
+                fit: BoxFit.fitHeight,
+              );
+            },
+          )
+              : Image.asset(
+            'jio_ird/assets/images/hotel_logo.png',
+            height: 40,
+            fit: BoxFit.fitHeight,
+          ),
+        ),
       ),
     );
   }
@@ -57,9 +55,12 @@ class _ProfileIconState extends ConsumerState<ProfileIcon> {
       baseColor: Colors.grey.shade300,
       highlightColor: Colors.grey.shade100,
       child: Container(
-        width: 60,
-        height: 60,
-        color: Colors.white,
+        height: 40,
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(8), // ✅ Same rounded corners
+        ),
       ),
     );
   }

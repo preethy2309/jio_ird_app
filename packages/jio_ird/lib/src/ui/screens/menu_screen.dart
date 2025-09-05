@@ -213,7 +213,7 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
           // --- CASE 3: SubCategory + Dish List + Dish Detail ---
           else if (hasSubCategories(ref) && showSubCategories) ...[
             SizedBox(
-              width: 202,
+              width: 240,
               child:
                   SubCategoryList(subCategories: selectedCat.subCategories!),
             ),

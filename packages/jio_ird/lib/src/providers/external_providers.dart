@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:jio_ird/src/data/models/guest_info.dart';
@@ -33,6 +35,8 @@ ImageProvider? _resolveImage(String? pathOrUrl) {
   if (pathOrUrl == null) return null;
   if (pathOrUrl.startsWith('http')) {
     return NetworkImage(pathOrUrl);
+  } else if (pathOrUrl.startsWith('/')) {
+    return FileImage(File(pathOrUrl));
   } else {
     return AssetImage(pathOrUrl);
   }
