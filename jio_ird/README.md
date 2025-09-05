@@ -29,6 +29,9 @@ In your `pubspec.yaml`, add:
 dependencies:
   jio_ird:
   path: packages/jio_ird
+
+  assets:
+    - jio_ird/assets/images/
 ```
 
 Run:

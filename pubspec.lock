@@ -395,7 +395,7 @@ packages:
   jio_ird:
     dependency: "direct main"
     description:
-      path: "packages/jio_ird"
+      path: jio_ird
       relative: true
     source: path
     version: "1.0.1"
